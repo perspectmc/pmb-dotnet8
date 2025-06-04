@@ -1,0 +1,37 @@
+# macOS system files
+.DS_Store
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+[Bb]uild/
+[Ll]ogs/
+
+# Rider project files
+.idea/
+
+# Visual Studio Code
+.vscode/
+.history/
+
+# Backup & package files
+*.zip
+*.bak
+*.tmp
+
+# Log files
+*.log
+
+# Secrets or config
+appsettings.*.local.json
+.env
+
+# Global cache folders
+node_modules/
+packages/
