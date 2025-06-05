@@ -1,4 +1,0 @@
-C:\Personal\MBS\Medical Billing\Production\MBS.DataCache\bin\Debug\MBS.DataCache.dll
-C:\Personal\MBS\Medical Billing\Production\MBS.DataCache\bin\Debug\MBS.DataCache.pdb
-C:\Personal\MBS\Medical Billing\Production\MBS.DataCache\obj\Debug\MBS.DataCache.dll
-C:\Personal\MBS\Medical Billing\Production\MBS.DataCache\obj\Debug\MBS.DataCache.pdb
