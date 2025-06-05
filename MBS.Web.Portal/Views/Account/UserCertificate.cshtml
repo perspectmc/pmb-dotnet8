@@ -1,0 +1,75 @@
+﻿<pages enableViewState="false" buffer="true"></pages>
+
+@model MBS.Web.Portal.Models.UserCertificateViewModel
+@{
+    ViewBag.Title = "Certificate Information";
+}
+
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <h3 class="panel-title">@ViewBag.Title</h3>
+    </div>
+    <div class="panel-body">   
+        <button class="btn btn-sm control_buttons" style="margin-bottom:10px;" onclick="window.location.href='@Url.Action("Manage", "Account")';">
+            <img src="@Url.Content("~/Content/images/icon_back.png")" title="Back to Manage Account" />
+            <span>Back to Manage Account</span>
+        </button>  
+        <button class="btn btn-sm control_buttons" style="margin-bottom:10px;" onclick="ShowExport();">
+            <img src="@Url.Content("~/Content/images/icon_question.png")" title="Certificate Export Instruction" />
+            <span>Certificate Export Instruction</span>
+        </button> 
+        @using (Html.BeginForm("UserCertificate", "Account", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", role = "form" }))
+        {                                                
+            @Html.HiddenFor(m => m.UserCertificate.UserId)
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            
+            if (Model.CertificateExsited)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CertificatePublisher, new { @class = "col-sm-2 control-label" })
+                    @Html.TextBoxFor(m => m.CertificatePublisher, new { @class = "form-control",  @readonly="readonly", style = "width:600px;" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CertificateSubject, new { @class = "col-sm-2 control-label" })
+                    @Html.TextBoxFor(m => m.CertificateSubject, new { @class = "form-control",  @readonly="readonly", style = "width:660px;" })
+                </div>
+                    <div class="form-group">
+                    @Html.LabelFor(m => m.CertificateValidFrom, new { @class = "col-sm-2 control-label" })
+                    @Html.TextBoxFor(m => m.CertificateValidFrom, "{0:yyyy-MM-dd}", new { @class = "form-control",  @readonly="readonly", style = "width:120px;" })
+                </div>
+                    <div class="form-group">
+                    @Html.LabelFor(m => m.CertificateValidTo, new { @class = "col-sm-2 control-label" })
+                    @Html.TextBoxFor(m => m.CertificateValidTo, "{0:yyyy-MM-dd}", new { @class = "form-control",  @readonly="readonly", style = "width:120px;" })
+                </div>
+            }
+            <div class="form-group">
+                <label for="CertificateFile" class="col-sm-2 control-label">Upload Certificate</label>
+                <a href="javascript:void();" id="CertificateRequirement" class="pull-left control-label" onclick="return false;" style="padding-right:5px;" data-toggle="tooltip" 
+                title="<p style='text-align:left;'>The certificate must be in PKCS12 format and have .p12 extension. You must also provide the passkey you used during exported in order for the system to use.</p>">?</a>
+                <input type="file" name="CertificateFile" id="CertificateFile" class="form-control" style="width:400px;"/>                    
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.UserCertificate.CertificatePassKey, new { @class = "col-sm-2 control-label" })
+                @Html.PasswordFor(m => m.UserCertificate.CertificatePassKey, new { @class = "form-control", maxlength = "15", style = "width:200px;" })
+            </div>
+                       
+            <div class="form-group">
+                <div class="col-sm-offset-2">
+                    <button class="btn btn-default" type="submit">Update</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {       
+        UserCertificatePageLoad('@Model.CertificateExsited.ToString()' == 'True');
+    });
+
+    function ShowExport() {
+        window.open(_applicationBaseUrl + "/Content/export.pdf");
+        return false;
+    }
+</script>
