@@ -1,0 +1,13 @@
+C:\Personal\MBS\Medical Billing\Production\MBS.Common\bin\Release\MBS.Common.dll.config
+C:\Personal\MBS\Medical Billing\Production\MBS.Common\bin\Release\MBS.Common.dll
+C:\Personal\MBS\Medical Billing\Production\MBS.Common\bin\Release\MBS.Common.pdb
+C:\Personal\MBS\Medical Billing\Production\MBS.Common\bin\Release\System.Net.Http.Extensions.dll
+C:\Personal\MBS\Medical Billing\Production\MBS.Common\bin\Release\System.Net.Http.Primitives.dll
+C:\Personal\MBS\Medical Billing\Production\MBS.Common\bin\Release\System.Net.Http.Extensions.xml
+C:\Personal\MBS\Medical Billing\Production\MBS.Common\bin\Release\System.Net.Http.Primitives.xml
+C:\Personal\MBS\Medical Billing\Production\MBS.Common\obj\Release\MBS.Common.csproj.App.config
+C:\Personal\MBS\Medical Billing\Production\MBS.Common\obj\Release\MBS.Common.dll
+C:\Personal\MBS\Medical Billing\Production\MBS.Common\obj\Release\MBS.Common.pdb
+C:\Personal\MBS\Medical Billing\Production\MBS.Common\obj\Release\MBS.Common.csproj.AssemblyReference.cache
+C:\Personal\MBS\Medical Billing\Production\MBS.Common\obj\Release\MBS.Common.csproj.CoreCompileInputs.cache
+C:\Personal\MBS\Medical Billing\Production\MBS.Common\obj\Release\MBS.Common.csproj.CopyComplete
