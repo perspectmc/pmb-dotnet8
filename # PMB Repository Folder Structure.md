@@ -31,7 +31,7 @@ This document outlines the current folder and file layout for the Perspect Medic
 Main application source code, including:
 
 - `MBS.Web.Portal/` — ASP.NET Razor UI frontend
-- `MBS.WebApiService/` — Optional Web API (under review)
+- `MBS.WebApiService/` — Optional Web API (currently under review — see local README.md for notes)
 - `MBS.Common/` — Utility classes, extensions
 - `MBS.DomainModel/` — Entity definitions and enums
 - `MBS.Infrastructure.Data/` — Data access (e.g., EF Core, DbContext)
@@ -60,17 +60,26 @@ All Markdown documentation, including:
 - Features folder
 - Image assets
 
+Consider subdividing this folder as the documentation grows:
+- `/docs/specs/` – Feature specifications or detailed requirements
+- `/docs/architecture/` – System diagrams, infrastructure, and design decisions
+- `/docs/features/` – Per-module overviews and proposed enhancements
+
 ---
 
 ### /config/
 
 (If used) Holds shared config files like `appsettings.shared.json`.
 
+Clarify whether these settings are consumed dynamically during runtime or simply serve as developer references.
+
 ---
 
 ### /logs/
 
 Used for Serilog or structured local logging during development. Excluded from Git via `.gitignore`.
+
+Ensure logging targets (e.g., Serilog output paths) match this location in `appsettings.Development.json`.
 
 ---
 
@@ -87,3 +96,10 @@ Contains CI/CD workflows for automated build, test, and (optionally) publish. Cu
 ---
 
 This structure will evolve over time but is intended to remain modular, clear, and aligned with .NET best practices.
+
+---
+## Optional Enhancements for Future
+
+- `.editorconfig` – Use to enforce consistent code formatting across team members and IDEs.
+- `CONTRIBUTING.md` – Add to help onboard new collaborators and document development workflows.
+- `.aidocs/` – Reserve for AI-generated or AI-assisted documentation and planning support.
