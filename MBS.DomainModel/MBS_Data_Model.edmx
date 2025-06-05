@@ -1,0 +1,1675 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MedicalBillingSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Applications">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+          </Key>
+          <Property Name="ApplicationName" Type="nvarchar" MaxLength="235" Nullable="false" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="ClaimsIn">
+          <Key>
+            <PropertyRef Name="ClaimsInId" />
+          </Key>
+          <Property Name="ClaimsInId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="DownloadDate" Type="datetime" />
+          <Property Name="RecordIndex" Type="nvarchar" MaxLength="20" />
+          <Property Name="ClaimAmount" Type="float" Nullable="false" />
+          <Property Name="PaidAmount" Type="float" Nullable="false" />
+          <Property Name="Content" Type="varchar(max)" />
+          <Property Name="ValidationContent" Type="varchar(max)" />
+          <Property Name="DateChangeToAccepted" Type="datetime" />
+          <Property Name="SubmittedFileName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FileSubmittedStatus" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClaimsInReturn">
+          <Key>
+            <PropertyRef Name="ClaimsInReturnId" />
+          </Key>
+          <Property Name="ClaimsInReturnId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TotalSubmitted" Type="float" Nullable="false" />
+          <Property Name="TotalApproved" Type="float" Nullable="false" />
+          <Property Name="UploadDate" Type="datetime" Nullable="false" />
+          <Property Name="RecordIndex" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TotalPaid" Type="int" Nullable="false" />
+          <Property Name="TotalRejected" Type="int" Nullable="false" />
+          <Property Name="ReturnFooter" Type="nvarchar" MaxLength="110" />
+          <Property Name="Content" Type="varchar(max)" />
+          <Property Name="TotalPaidAmount" Type="float" Nullable="false" />
+          <Property Name="TotalPremiumAmount" Type="float" Nullable="false" />
+          <Property Name="TotalProgramAmount" Type="float" Nullable="false" />
+          <Property Name="OtherFeeAndPayment" Type="float" Nullable="false" />
+          <Property Name="ReturnFileType" Type="int" Nullable="false" />
+          <Property Name="ReturnFileName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ReturnFileDate" Type="datetime" />
+          <Property Name="RunCode" Type="nvarchar" MaxLength="2" />
+          <Property Name="TotalLineType" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="ClaimsResubmitted">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ClaimNumber" Type="int" Nullable="false" />
+          <Property Name="PatientLastName" Type="nvarchar" MaxLength="255" />
+          <Property Name="HospitalNumber" Type="nvarchar" MaxLength="255" />
+          <Property Name="ServiceDate" Type="datetime" Nullable="false" />
+          <Property Name="UnitCode" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="UnitNumber" Type="int" Nullable="false" />
+          <Property Name="UnitPremiumCode" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClaimsReturnPaymentSummary">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ClaimsInReturnId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="GroupIndex" Type="int" Nullable="false" />
+          <Property Name="LineNumber" Type="int" Nullable="false" />
+          <Property Name="TotalLineType" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="FeeSubmitted" Type="float" Nullable="false" />
+          <Property Name="FeeApproved" Type="float" Nullable="false" />
+          <Property Name="TotalPremiumAmount" Type="float" Nullable="false" />
+          <Property Name="TotalProgramAmount" Type="float" Nullable="false" />
+          <Property Name="TotalPaidAmount" Type="float" Nullable="false" />
+          <Property Name="RunCode" Type="nvarchar" MaxLength="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FaxDeliver">
+          <Key>
+            <PropertyRef Name="FaxDeliverId" />
+          </Key>
+          <Property Name="FaxDeliverId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ServiceRecordId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TransactionId" Type="bigint" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="PDFContent" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="Memberships">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PasswordFormat" Type="int" Nullable="false" />
+          <Property Name="PasswordSalt" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="PasswordQuestion" Type="nvarchar" MaxLength="256" />
+          <Property Name="PasswordAnswer" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsApproved" Type="bit" Nullable="false" />
+          <Property Name="IsLockedOut" Type="bit" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="LastLoginDate" Type="datetime" Nullable="false" />
+          <Property Name="LastPasswordChangedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastLockoutDate" Type="datetime" Nullable="false" />
+          <Property Name="FailedPasswordAttemptCount" Type="int" Nullable="false" />
+          <Property Name="FailedPasswordAttemptWindowStart" Type="datetime" Nullable="false" />
+          <Property Name="FailedPasswordAnswerAttemptCount" Type="int" Nullable="false" />
+          <Property Name="FailedPasswordAnswerAttemptWindowsStart" Type="datetime" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="256" />
+          <Property Name="IsResetPassword" Type="bit" Nullable="false" />
+          <Property Name="FirstTimeLoginDate" Type="datetime" />
+          <Property Name="PasswordTokenExpireDate" Type="datetime" />
+          <Property Name="PasswordToken" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="PaidClaim">
+          <Key>
+            <PropertyRef Name="PaidClaimId" />
+          </Key>
+          <Property Name="PaidClaimId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ClaimsInReturnId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RejectedClaim">
+          <Key>
+            <PropertyRef Name="RejectedClaimId" />
+          </Key>
+          <Property Name="RejectedClaimId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ClaimsInReturnId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="ServiceRecord">
+          <Key>
+            <PropertyRef Name="ServiceRecordId" />
+          </Key>
+          <Property Name="ServiceRecordId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ClaimsInId" Type="uniqueidentifier" />
+          <Property Name="ClaimNumber" Type="int" Nullable="false" />
+          <Property Name="PatientFirstName" Type="nvarchar" MaxLength="255" />
+          <Property Name="PatientLastName" Type="nvarchar" MaxLength="255" />
+          <Property Name="DateOfBirth" Type="datetime" Nullable="false" />
+          <Property Name="Sex" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="Province" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="HospitalNumber" Type="nvarchar" MaxLength="255" />
+          <Property Name="ReferringDoctorNumber" Type="nvarchar" MaxLength="4" />
+          <Property Name="ServiceDate" Type="datetime" Nullable="false" />
+          <Property Name="ServiceStartTime" Type="time" Precision="7" />
+          <Property Name="ServiceEndTime" Type="time" Precision="7" />
+          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="1000" />
+          <Property Name="PaidClaimId" Type="uniqueidentifier" />
+          <Property Name="RejectedClaimId" Type="uniqueidentifier" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ClaimAmount" Type="float" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PaidAmount" Type="float" Nullable="false" />
+          <Property Name="ClaimType" Type="int" Nullable="false" />
+          <Property Name="WCBFaxStatus" Type="nvarchar" MaxLength="25" />
+          <Property Name="MessageFromICS" Type="nvarchar(max)" />
+          <Property Name="PaymentApproveDate" Type="datetime" />
+          <Property Name="DischargeDate" Type="datetime" />
+          <Property Name="RollOverNumber" Type="int" Nullable="false" />
+          <Property Name="CPSClaimNumber" Type="nvarchar" MaxLength="12" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ServiceLocation" Type="nvarchar" MaxLength="1" />
+          <Property Name="FacilityNumber" Type="nvarchar" MaxLength="5" />
+          <Property Name="IsAdjustment" Type="bit" />
+          <Property Name="ClaimToIgnore" Type="bit" Nullable="false" />
+          <Property Name="VarianceAmount" Type="float" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="ClaimStatus" Type="int" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UnitRecord">
+          <Key>
+            <PropertyRef Name="UnitRecordId" />
+          </Key>
+          <Property Name="UnitRecordId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ServiceRecordId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UnitCode" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="UnitNumber" Type="int" Nullable="false" />
+          <Property Name="UnitAmount" Type="float" Nullable="false" />
+          <Property Name="UnitPremiumCode" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="ExplainCode" Type="nvarchar" MaxLength="2" />
+          <Property Name="RecordIndex" Type="bigint" Nullable="false" />
+          <Property Name="PaidAmount" Type="float" Nullable="false" />
+          <Property Name="DiagCode" Type="nvarchar" MaxLength="3" />
+          <Property Name="RunCode" Type="nvarchar" MaxLength="5" />
+          <Property Name="ExplainCode2" Type="nvarchar" MaxLength="2" />
+          <Property Name="ExplainCode3" Type="nvarchar" MaxLength="2" />
+          <Property Name="RecordClaimType" Type="nvarchar" MaxLength="1" />
+          <Property Name="SpecialCircumstanceIndicator" Type="nvarchar" MaxLength="2" />
+          <Property Name="BilateralIndicator" Type="nvarchar" MaxLength="1" />
+          <Property Name="StartTime" Type="time" Precision="7" />
+          <Property Name="EndTime" Type="time" Precision="7" />
+          <Property Name="ProgramPayment" Type="float" Nullable="false" />
+          <Property Name="SubmittedAmount" Type="float" />
+          <Property Name="SubmittedRecordIndex" Type="bigint" />
+          <Property Name="OriginalRunCode" Type="nvarchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="UserCertificates">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CertificateEncoded" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CertificatePassKey" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserProfiles">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DoctorNumber" Type="nvarchar" MaxLength="4" />
+          <Property Name="DoctorName" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="ClinicNumber" Type="nvarchar" MaxLength="3" />
+          <Property Name="DiagnosticCode" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="CorporationIndicator" Type="nvarchar" MaxLength="1" />
+          <Property Name="Street" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Province" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="6" Nullable="false" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="15" />
+          <Property Name="ClaimMode" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="GroupNumber" Type="nvarchar" MaxLength="3" />
+          <Property Name="GroupUserKey" Type="nvarchar" MaxLength="100" />
+          <Property Name="DefaultPremCode" Type="nvarchar" MaxLength="1" />
+          <Property Name="DefaultServiceLocation" Type="nvarchar" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsAnonymous" Type="bit" Nullable="false" />
+          <Property Name="LastActivityDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UsersInRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'medicalbillingsystem2017.dbo.ClaimsSearchView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ClaimsSearchView">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="DoctorName" />
+            <PropertyRef Name="ServiceRecordId" />
+            <PropertyRef Name="ClaimStatus" />
+            <PropertyRef Name="ClaimStatusString" />
+            <PropertyRef Name="ClaimNumber" />
+            <PropertyRef Name="ServiceDate" />
+            <PropertyRef Name="CreatedDate" />
+            <PropertyRef Name="UnitRecordId" />
+            <PropertyRef Name="UnitCode" />
+            <PropertyRef Name="UnitNumber" />
+            <PropertyRef Name="UnitPremiumCode" />
+            <PropertyRef Name="PaidAmount" />
+          </Key>
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DoctorName" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="ServiceRecordId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ClaimStatus" Type="int" Nullable="false" />
+          <Property Name="ClaimStatusString" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="SubmissionDate" Type="datetime" />
+          <Property Name="ClaimNumber" Type="int" Nullable="false" />
+          <Property Name="PatientFirstName" Type="nvarchar" MaxLength="255" />
+          <Property Name="PatientLastName" Type="nvarchar" MaxLength="255" />
+          <Property Name="HospitalNumber" Type="nvarchar" MaxLength="255" />
+          <Property Name="ServiceDate" Type="datetime" Nullable="false" />
+          <Property Name="CPSClaimNumber" Type="nvarchar" MaxLength="12" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UnitRecordId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RunCode" Type="nvarchar" MaxLength="5" />
+          <Property Name="DiagCode" Type="nvarchar" MaxLength="3" />
+          <Property Name="UnitCode" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="UnitNumber" Type="int" Nullable="false" />
+          <Property Name="UnitPremiumCode" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="SubmittedRecordIndex" Type="bigint" />
+          <Property Name="ExplainCode" Type="nvarchar" MaxLength="2" />
+          <Property Name="ExplainCode2" Type="nvarchar" MaxLength="2" />
+          <Property Name="ExplainCode3" Type="nvarchar" MaxLength="2" />
+          <Property Name="ClaimAmount" Type="float" />
+          <Property Name="PaidAmount" Type="float" Nullable="false" />
+          <Property Name="VarianceAmount" Type="float" />
+        </EntityType>
+        <Association Name="FK_ClaimsIn_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="ClaimsIn" Type="Self.ClaimsIn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ClaimsIn">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClaimsInReturn_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="ClaimsInReturn" Type="Self.ClaimsInReturn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ClaimsInReturn">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClaimsResubmitted_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="ClaimsResubmitted" Type="Self.ClaimsResubmitted" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ClaimsResubmitted">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClaimsReturnPaymentSummary_ClaimsInReturn">
+          <End Role="ClaimsInReturn" Type="Self.ClaimsInReturn" Multiplicity="1" />
+          <End Role="ClaimsReturnPaymentSummary" Type="Self.ClaimsReturnPaymentSummary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClaimsInReturn">
+              <PropertyRef Name="ClaimsInReturnId" />
+            </Principal>
+            <Dependent Role="ClaimsReturnPaymentSummary">
+              <PropertyRef Name="ClaimsInReturnId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClaimsReturnPaymentSummary_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="ClaimsReturnPaymentSummary" Type="Self.ClaimsReturnPaymentSummary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ClaimsReturnPaymentSummary">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FaxDeliver_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="FaxDeliver" Type="Self.FaxDeliver" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="FaxDeliver">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaidClaim_ClaimsInReturn">
+          <End Role="ClaimsInReturn" Type="Self.ClaimsInReturn" Multiplicity="1" />
+          <End Role="PaidClaim" Type="Self.PaidClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClaimsInReturn">
+              <PropertyRef Name="ClaimsInReturnId" />
+            </Principal>
+            <Dependent Role="PaidClaim">
+              <PropertyRef Name="ClaimsInReturnId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RejectedClaim_ClaimsInReturn">
+          <End Role="ClaimsInReturn" Type="Self.ClaimsInReturn" Multiplicity="1" />
+          <End Role="RejectedClaim" Type="Self.RejectedClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClaimsInReturn">
+              <PropertyRef Name="ClaimsInReturnId" />
+            </Principal>
+            <Dependent Role="RejectedClaim">
+              <PropertyRef Name="ClaimsInReturnId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRecord_ClaimsIn">
+          <End Role="ClaimsIn" Type="Self.ClaimsIn" Multiplicity="0..1" />
+          <End Role="ServiceRecord" Type="Self.ServiceRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClaimsIn">
+              <PropertyRef Name="ClaimsInId" />
+            </Principal>
+            <Dependent Role="ServiceRecord">
+              <PropertyRef Name="ClaimsInId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRecord_PaidClaim">
+          <End Role="PaidClaim" Type="Self.PaidClaim" Multiplicity="0..1" />
+          <End Role="ServiceRecord" Type="Self.ServiceRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaidClaim">
+              <PropertyRef Name="PaidClaimId" />
+            </Principal>
+            <Dependent Role="ServiceRecord">
+              <PropertyRef Name="PaidClaimId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRecord_RejectedClaim">
+          <End Role="RejectedClaim" Type="Self.RejectedClaim" Multiplicity="0..1" />
+          <End Role="ServiceRecord" Type="Self.ServiceRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RejectedClaim">
+              <PropertyRef Name="RejectedClaimId" />
+            </Principal>
+            <Dependent Role="ServiceRecord">
+              <PropertyRef Name="RejectedClaimId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRecord_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="ServiceRecord" Type="Self.ServiceRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ServiceRecord">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UnitRecord_ServiceRecord">
+          <End Role="ServiceRecord" Type="Self.ServiceRecord" Multiplicity="1" />
+          <End Role="UnitRecord" Type="Self.UnitRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceRecord">
+              <PropertyRef Name="ServiceRecordId" />
+            </Principal>
+            <Dependent Role="UnitRecord">
+              <PropertyRef Name="ServiceRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserCertificates_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserCertificates" Type="Self.UserCertificates" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserCertificates">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserProfiles" Type="Self.UserProfiles" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserProfiles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MembershipApplication">
+          <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
+          <End Role="Memberships" Type="Self.Memberships" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="Memberships">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MembershipUser">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Memberships" Type="Self.Memberships" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Memberships">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RoleApplication">
+          <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
+          <End Role="Roles" Type="Self.Roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="Roles">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserApplication">
+          <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MedicalBillingSystemModelStoreContainer">
+          <EntitySet Name="Applications" EntityType="Self.Applications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClaimsIn" EntityType="Self.ClaimsIn" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClaimsInReturn" EntityType="Self.ClaimsInReturn" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClaimsResubmitted" EntityType="Self.ClaimsResubmitted" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClaimsReturnPaymentSummary" EntityType="Self.ClaimsReturnPaymentSummary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FaxDeliver" EntityType="Self.FaxDeliver" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Memberships" EntityType="Self.Memberships" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaidClaim" EntityType="Self.PaidClaim" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RejectedClaim" EntityType="Self.RejectedClaim" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceRecord" EntityType="Self.ServiceRecord" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UnitRecord" EntityType="Self.UnitRecord" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserCertificates" EntityType="Self.UserCertificates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProfiles" EntityType="Self.UserProfiles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsersInRoles" EntityType="Self.UsersInRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClaimsSearchView" EntityType="Self.ClaimsSearchView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ClaimsSearchView].[UserId] AS [UserId], 
+    [ClaimsSearchView].[UserName] AS [UserName], 
+    [ClaimsSearchView].[DoctorName] AS [DoctorName], 
+    [ClaimsSearchView].[ServiceRecordId] AS [ServiceRecordId], 
+    [ClaimsSearchView].[ClaimStatus] AS [ClaimStatus], 
+    [ClaimsSearchView].[ClaimStatusString] AS [ClaimStatusString], 
+    [ClaimsSearchView].[SubmissionDate] AS [SubmissionDate], 
+    [ClaimsSearchView].[ClaimNumber] AS [ClaimNumber], 
+    [ClaimsSearchView].[PatientFirstName] AS [PatientFirstName], 
+    [ClaimsSearchView].[PatientLastName] AS [PatientLastName], 
+    [ClaimsSearchView].[HospitalNumber] AS [HospitalNumber], 
+    [ClaimsSearchView].[ServiceDate] AS [ServiceDate], 
+    [ClaimsSearchView].[CPSClaimNumber] AS [CPSClaimNumber], 
+    [ClaimsSearchView].[CreatedDate] AS [CreatedDate], 
+    [ClaimsSearchView].[UnitRecordId] AS [UnitRecordId], 
+    [ClaimsSearchView].[RunCode] AS [RunCode], 
+    [ClaimsSearchView].[DiagCode] AS [DiagCode], 
+    [ClaimsSearchView].[UnitCode] AS [UnitCode], 
+    [ClaimsSearchView].[UnitNumber] AS [UnitNumber], 
+    [ClaimsSearchView].[UnitPremiumCode] AS [UnitPremiumCode], 
+    [ClaimsSearchView].[SubmittedRecordIndex] AS [SubmittedRecordIndex], 
+    [ClaimsSearchView].[ExplainCode] AS [ExplainCode], 
+    [ClaimsSearchView].[ExplainCode2] AS [ExplainCode2], 
+    [ClaimsSearchView].[ExplainCode3] AS [ExplainCode3], 
+    [ClaimsSearchView].[ClaimAmount] AS [ClaimAmount], 
+    [ClaimsSearchView].[PaidAmount] AS [PaidAmount], 
+    [ClaimsSearchView].[VarianceAmount] AS [VarianceAmount]
+    FROM [dbo].[ClaimsSearchView] AS [ClaimsSearchView]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ClaimsIn_Users" Association="Self.FK_ClaimsIn_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ClaimsIn" EntitySet="ClaimsIn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClaimsInReturn_Users" Association="Self.FK_ClaimsInReturn_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ClaimsInReturn" EntitySet="ClaimsInReturn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClaimsResubmitted_Users" Association="Self.FK_ClaimsResubmitted_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ClaimsResubmitted" EntitySet="ClaimsResubmitted" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClaimsReturnPaymentSummary_ClaimsInReturn" Association="Self.FK_ClaimsReturnPaymentSummary_ClaimsInReturn">
+            <End Role="ClaimsInReturn" EntitySet="ClaimsInReturn" />
+            <End Role="ClaimsReturnPaymentSummary" EntitySet="ClaimsReturnPaymentSummary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClaimsReturnPaymentSummary_Users" Association="Self.FK_ClaimsReturnPaymentSummary_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ClaimsReturnPaymentSummary" EntitySet="ClaimsReturnPaymentSummary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FaxDeliver_Users" Association="Self.FK_FaxDeliver_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FaxDeliver" EntitySet="FaxDeliver" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaidClaim_ClaimsInReturn" Association="Self.FK_PaidClaim_ClaimsInReturn">
+            <End Role="ClaimsInReturn" EntitySet="ClaimsInReturn" />
+            <End Role="PaidClaim" EntitySet="PaidClaim" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RejectedClaim_ClaimsInReturn" Association="Self.FK_RejectedClaim_ClaimsInReturn">
+            <End Role="ClaimsInReturn" EntitySet="ClaimsInReturn" />
+            <End Role="RejectedClaim" EntitySet="RejectedClaim" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRecord_ClaimsIn" Association="Self.FK_ServiceRecord_ClaimsIn">
+            <End Role="ClaimsIn" EntitySet="ClaimsIn" />
+            <End Role="ServiceRecord" EntitySet="ServiceRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRecord_PaidClaim" Association="Self.FK_ServiceRecord_PaidClaim">
+            <End Role="PaidClaim" EntitySet="PaidClaim" />
+            <End Role="ServiceRecord" EntitySet="ServiceRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRecord_RejectedClaim" Association="Self.FK_ServiceRecord_RejectedClaim">
+            <End Role="RejectedClaim" EntitySet="RejectedClaim" />
+            <End Role="ServiceRecord" EntitySet="ServiceRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRecord_Users" Association="Self.FK_ServiceRecord_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ServiceRecord" EntitySet="ServiceRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UnitRecord_ServiceRecord" Association="Self.FK_UnitRecord_ServiceRecord">
+            <End Role="ServiceRecord" EntitySet="ServiceRecord" />
+            <End Role="UnitRecord" EntitySet="UnitRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserCertificates_Users" Association="Self.FK_UserCertificates_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserCertificates" EntitySet="UserCertificates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_Users" Association="Self.FK_UserProfile_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserProfiles" EntitySet="UserProfiles" />
+          </AssociationSet>
+          <AssociationSet Name="MembershipApplication" Association="Self.MembershipApplication">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="Memberships" EntitySet="Memberships" />
+          </AssociationSet>
+          <AssociationSet Name="MembershipUser" Association="Self.MembershipUser">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Memberships" EntitySet="Memberships" />
+          </AssociationSet>
+          <AssociationSet Name="RoleApplication" Association="Self.RoleApplication">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="Roles" EntitySet="Roles" />
+          </AssociationSet>
+          <AssociationSet Name="UserApplication" Association="Self.UserApplication">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MedicalBillingSystemModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="MedicalBillingSystemEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Applications" EntityType="MedicalBillingSystemModel.Applications" />
+          <EntitySet Name="PaidClaim" EntityType="MedicalBillingSystemModel.PaidClaim" />
+          <EntitySet Name="RejectedClaim" EntityType="MedicalBillingSystemModel.RejectedClaim" />
+          <EntitySet Name="Roles" EntityType="MedicalBillingSystemModel.Roles" />
+          <EntitySet Name="UserCertificates" EntityType="MedicalBillingSystemModel.UserCertificates" />
+          <EntitySet Name="Users" EntityType="MedicalBillingSystemModel.Users" />
+          <EntitySet Name="UsersInRoles" EntityType="MedicalBillingSystemModel.UsersInRoles" />
+          <AssociationSet Name="RoleApplication" Association="MedicalBillingSystemModel.RoleApplication">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="Roles" EntitySet="Roles" />
+          </AssociationSet>
+          <AssociationSet Name="UserApplication" Association="MedicalBillingSystemModel.UserApplication">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserCertificates_Users" Association="MedicalBillingSystemModel.FK_UserCertificates_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserCertificates" EntitySet="UserCertificates" />
+          </AssociationSet>
+          <EntitySet Name="FaxDeliver" EntityType="MedicalBillingSystemModel.FaxDeliver" />
+          <AssociationSet Name="FK_FaxDeliver_Users" Association="MedicalBillingSystemModel.FK_FaxDeliver_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FaxDeliver" EntitySet="FaxDeliver" />
+          </AssociationSet>
+          <EntitySet Name="ClaimsIn" EntityType="MedicalBillingSystemModel.ClaimsIn" />
+          <EntitySet Name="ClaimsInReturn" EntityType="MedicalBillingSystemModel.ClaimsInReturn" />
+          <AssociationSet Name="FK_ClaimsIn_Users" Association="MedicalBillingSystemModel.FK_ClaimsIn_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ClaimsIn" EntitySet="ClaimsIn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClaimsInReturn_Users" Association="MedicalBillingSystemModel.FK_ClaimsInReturn_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ClaimsInReturn" EntitySet="ClaimsInReturn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaidClaim_ClaimsInReturn" Association="MedicalBillingSystemModel.FK_PaidClaim_ClaimsInReturn">
+            <End Role="ClaimsInReturn" EntitySet="ClaimsInReturn" />
+            <End Role="PaidClaim" EntitySet="PaidClaim" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RejectedClaim_ClaimsInReturn" Association="MedicalBillingSystemModel.FK_RejectedClaim_ClaimsInReturn">
+            <End Role="ClaimsInReturn" EntitySet="ClaimsInReturn" />
+            <End Role="RejectedClaim" EntitySet="RejectedClaim" />
+          </AssociationSet>
+          <EntitySet Name="UserProfiles" EntityType="MedicalBillingSystemModel.UserProfiles" />
+          <AssociationSet Name="FK_UserProfile_Users" Association="MedicalBillingSystemModel.FK_UserProfile_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserProfiles" EntitySet="UserProfiles" />
+          </AssociationSet>
+          <EntitySet Name="Memberships" EntityType="MedicalBillingSystemModel.Memberships" />
+          <AssociationSet Name="MembershipApplication" Association="MedicalBillingSystemModel.MembershipApplication">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="Memberships" EntitySet="Memberships" />
+          </AssociationSet>
+          <AssociationSet Name="MembershipUser" Association="MedicalBillingSystemModel.MembershipUser">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Memberships" EntitySet="Memberships" />
+          </AssociationSet>
+          <EntitySet Name="UnitRecord" EntityType="MedicalBillingSystemModel.UnitRecord" />
+          <EntitySet Name="ServiceRecord" EntityType="MedicalBillingSystemModel.ServiceRecord" />
+          <AssociationSet Name="FK_ServiceRecord_ClaimsIn" Association="MedicalBillingSystemModel.FK_ServiceRecord_ClaimsIn">
+            <End Role="ClaimsIn" EntitySet="ClaimsIn" />
+            <End Role="ServiceRecord" EntitySet="ServiceRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRecord_PaidClaim" Association="MedicalBillingSystemModel.FK_ServiceRecord_PaidClaim">
+            <End Role="PaidClaim" EntitySet="PaidClaim" />
+            <End Role="ServiceRecord" EntitySet="ServiceRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRecord_RejectedClaim" Association="MedicalBillingSystemModel.FK_ServiceRecord_RejectedClaim">
+            <End Role="RejectedClaim" EntitySet="RejectedClaim" />
+            <End Role="ServiceRecord" EntitySet="ServiceRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRecord_Users" Association="MedicalBillingSystemModel.FK_ServiceRecord_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ServiceRecord" EntitySet="ServiceRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UnitRecord_ServiceRecord" Association="MedicalBillingSystemModel.FK_UnitRecord_ServiceRecord">
+            <End Role="ServiceRecord" EntitySet="ServiceRecord" />
+            <End Role="UnitRecord" EntitySet="UnitRecord" />
+          </AssociationSet>
+          <EntitySet Name="ClaimsSearchView" EntityType="MedicalBillingSystemModel.ClaimsSearchView" />
+          <EntitySet Name="ClaimsResubmitted" EntityType="MedicalBillingSystemModel.ClaimsResubmitted" />
+          <AssociationSet Name="FK_ClaimsResubmitted_Users" Association="MedicalBillingSystemModel.FK_ClaimsResubmitted_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ClaimsResubmitted" EntitySet="ClaimsResubmitted" />
+          </AssociationSet>
+          <EntitySet Name="ClaimsReturnPaymentSummary" EntityType="MedicalBillingSystemModel.ClaimsReturnPaymentSummary" />
+          <AssociationSet Name="FK_ClaimsReturnPaymentSummary_ClaimsInReturn" Association="MedicalBillingSystemModel.FK_ClaimsReturnPaymentSummary_ClaimsInReturn">
+            <End Role="ClaimsInReturn" EntitySet="ClaimsInReturn" />
+            <End Role="ClaimsReturnPaymentSummary" EntitySet="ClaimsReturnPaymentSummary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClaimsReturnPaymentSummary_Users" Association="MedicalBillingSystemModel.FK_ClaimsReturnPaymentSummary_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ClaimsReturnPaymentSummary" EntitySet="ClaimsReturnPaymentSummary" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Applications">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+          </Key>
+          <Property Type="String" Name="ApplicationName" Nullable="false" MaxLength="235" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="ApplicationId" Nullable="false" />
+          <Property Type="String" Name="Description" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Roles" Relationship="MedicalBillingSystemModel.RoleApplication" FromRole="Applications" ToRole="Roles" />
+          <NavigationProperty Name="Users" Relationship="MedicalBillingSystemModel.UserApplication" FromRole="Applications" ToRole="Users" />
+          <NavigationProperty Name="Memberships" Relationship="MedicalBillingSystemModel.MembershipApplication" FromRole="Applications" ToRole="Memberships" />
+        </EntityType>
+        <EntityType Name="PaidClaim">
+          <Key>
+            <PropertyRef Name="PaidClaimId" />
+          </Key>
+          <Property Type="Guid" Name="PaidClaimId" Nullable="false" />
+          <Property Type="Guid" Name="ClaimsInReturnId" Nullable="false" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ClaimsInReturn" Relationship="MedicalBillingSystemModel.FK_PaidClaim_ClaimsInReturn" FromRole="PaidClaim" ToRole="ClaimsInReturn" />
+          <NavigationProperty Name="ServiceRecord" Relationship="MedicalBillingSystemModel.FK_ServiceRecord_PaidClaim" FromRole="PaidClaim" ToRole="ServiceRecord" />
+        </EntityType>
+        <EntityType Name="RejectedClaim">
+          <Key>
+            <PropertyRef Name="RejectedClaimId" />
+          </Key>
+          <Property Type="Guid" Name="RejectedClaimId" Nullable="false" />
+          <Property Type="Guid" Name="ClaimsInReturnId" Nullable="false" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ClaimsInReturn" Relationship="MedicalBillingSystemModel.FK_RejectedClaim_ClaimsInReturn" FromRole="RejectedClaim" ToRole="ClaimsInReturn" />
+          <NavigationProperty Name="ServiceRecord" Relationship="MedicalBillingSystemModel.FK_ServiceRecord_RejectedClaim" FromRole="RejectedClaim" ToRole="ServiceRecord" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Type="Guid" Name="ApplicationId" Nullable="false" />
+          <Property Type="Guid" Name="RoleId" Nullable="false" />
+          <Property Type="String" Name="RoleName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Applications" Relationship="MedicalBillingSystemModel.RoleApplication" FromRole="Roles" ToRole="Applications" />
+        </EntityType>
+        <EntityType Name="UserCertificates">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="CertificateEncoded" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CertificatePassKey" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="MedicalBillingSystemModel.FK_UserCertificates_Users" FromRole="UserCertificates" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Type="Guid" Name="ApplicationId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsAnonymous" Nullable="false" />
+          <Property Type="DateTime" Name="LastActivityDate" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Applications" Relationship="MedicalBillingSystemModel.UserApplication" FromRole="Users" ToRole="Applications" />
+          <NavigationProperty Name="UserCertificates" Relationship="MedicalBillingSystemModel.FK_UserCertificates_Users" FromRole="Users" ToRole="UserCertificates" />
+          <NavigationProperty Name="FaxDeliver" Relationship="MedicalBillingSystemModel.FK_FaxDeliver_Users" FromRole="Users" ToRole="FaxDeliver" />
+          <NavigationProperty Name="ClaimsIn" Relationship="MedicalBillingSystemModel.FK_ClaimsIn_Users" FromRole="Users" ToRole="ClaimsIn" />
+          <NavigationProperty Name="ClaimsInReturn" Relationship="MedicalBillingSystemModel.FK_ClaimsInReturn_Users" FromRole="Users" ToRole="ClaimsInReturn" />
+          <NavigationProperty Name="UserProfiles" Relationship="MedicalBillingSystemModel.FK_UserProfile_Users" FromRole="Users" ToRole="UserProfiles" />
+          <NavigationProperty Name="Memberships" Relationship="MedicalBillingSystemModel.MembershipUser" FromRole="Users" ToRole="Memberships" />
+          <NavigationProperty Name="ServiceRecord" Relationship="MedicalBillingSystemModel.FK_ServiceRecord_Users" FromRole="Users" ToRole="ServiceRecord" />
+          <NavigationProperty Name="ClaimsResubmitted" Relationship="MedicalBillingSystemModel.FK_ClaimsResubmitted_Users" FromRole="Users" ToRole="ClaimsResubmitted" />
+          <NavigationProperty Name="ClaimsReturnPaymentSummary" Relationship="MedicalBillingSystemModel.FK_ClaimsReturnPaymentSummary_Users" FromRole="Users" ToRole="ClaimsReturnPaymentSummary" />
+        </EntityType>
+        <EntityType Name="UsersInRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="Guid" Name="RoleId" Nullable="false" />
+        </EntityType>
+        <Association Name="RoleApplication">
+          <End Type="MedicalBillingSystemModel.Applications" Role="Applications" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.Roles" Role="Roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="Roles">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserApplication">
+          <End Type="MedicalBillingSystemModel.Applications" Role="Applications" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.Users" Role="Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserCertificates_Users">
+          <End Type="MedicalBillingSystemModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.UserCertificates" Role="UserCertificates" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserCertificates">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FaxDeliver">
+          <Key>
+            <PropertyRef Name="FaxDeliverId" />
+          </Key>
+          <Property Type="Guid" Name="FaxDeliverId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="Guid" Name="ServiceRecordId" Nullable="false" />
+          <Property Type="Int64" Name="TransactionId" Nullable="false" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="MedicalBillingSystemModel.FK_FaxDeliver_Users" FromRole="FaxDeliver" ToRole="Users" />
+          <Property Name="PDFContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_FaxDeliver_Users">
+          <End Type="MedicalBillingSystemModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.FaxDeliver" Role="FaxDeliver" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="FaxDeliver">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ClaimsIn">
+          <Key>
+            <PropertyRef Name="ClaimsInId" />
+          </Key>
+          <Property Type="Guid" Name="ClaimsInId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="DownloadDate" Precision="3" />
+          <Property Type="String" Name="RecordIndex" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Type="Double" Name="ClaimAmount" Nullable="false" />
+          <Property Type="Double" Name="PaidAmount" Nullable="false" />
+          <Property Type="String" Name="Content" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="MedicalBillingSystemModel.FK_ClaimsIn_Users" FromRole="ClaimsIn" ToRole="Users" />
+          <Property Name="ValidationContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ServiceRecord" Relationship="MedicalBillingSystemModel.FK_ServiceRecord_ClaimsIn" FromRole="ClaimsIn" ToRole="ServiceRecord" />
+          <Property Name="SubmittedFileName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FileSubmittedStatus" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DateChangeToAccepted" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ClaimsInReturn">
+          <Key>
+            <PropertyRef Name="ClaimsInReturnId" />
+          </Key>
+          <Property Type="Guid" Name="ClaimsInReturnId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="Double" Name="TotalSubmitted" Nullable="false" />
+          <Property Type="Double" Name="TotalApproved" Nullable="false" />
+          <Property Type="DateTime" Name="UploadDate" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="RecordIndex" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="TotalPaid" Nullable="false" />
+          <Property Type="Int32" Name="TotalRejected" Nullable="false" />
+          <Property Type="String" Name="ReturnFooter" MaxLength="110" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Content" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="MedicalBillingSystemModel.FK_ClaimsInReturn_Users" FromRole="ClaimsInReturn" ToRole="Users" />
+          <NavigationProperty Name="PaidClaim" Relationship="MedicalBillingSystemModel.FK_PaidClaim_ClaimsInReturn" FromRole="ClaimsInReturn" ToRole="PaidClaim" />
+          <NavigationProperty Name="RejectedClaim" Relationship="MedicalBillingSystemModel.FK_RejectedClaim_ClaimsInReturn" FromRole="ClaimsInReturn" ToRole="RejectedClaim" />
+          <Property Name="TotalPaidAmount" Type="Double" Nullable="false" />
+          <Property Name="TotalPremiumAmount" Type="Double" Nullable="false" />
+          <Property Name="TotalProgramAmount" Type="Double" Nullable="false" />
+          <Property Name="ReturnFileType" Type="Int32" Nullable="false" />
+          <Property Name="OtherFeeAndPayment" Type="Double" Nullable="false" />
+          <Property Name="ReturnFileName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReturnFileDate" Type="DateTime" Precision="3" />
+          <Property Name="RunCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="TotalLineType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ClaimsReturnPaymentSummary" Relationship="MedicalBillingSystemModel.FK_ClaimsReturnPaymentSummary_ClaimsInReturn" FromRole="ClaimsInReturn" ToRole="ClaimsReturnPaymentSummary" />
+        </EntityType>
+        <Association Name="FK_ClaimsIn_Users">
+          <End Type="MedicalBillingSystemModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.ClaimsIn" Role="ClaimsIn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ClaimsIn">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClaimsInReturn_Users">
+          <End Type="MedicalBillingSystemModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.ClaimsInReturn" Role="ClaimsInReturn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ClaimsInReturn">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaidClaim_ClaimsInReturn">
+          <End Type="MedicalBillingSystemModel.ClaimsInReturn" Role="ClaimsInReturn" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.PaidClaim" Role="PaidClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClaimsInReturn">
+              <PropertyRef Name="ClaimsInReturnId" />
+            </Principal>
+            <Dependent Role="PaidClaim">
+              <PropertyRef Name="ClaimsInReturnId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RejectedClaim_ClaimsInReturn">
+          <End Type="MedicalBillingSystemModel.ClaimsInReturn" Role="ClaimsInReturn" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.RejectedClaim" Role="RejectedClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClaimsInReturn">
+              <PropertyRef Name="ClaimsInReturnId" />
+            </Principal>
+            <Dependent Role="RejectedClaim">
+              <PropertyRef Name="ClaimsInReturnId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UserProfiles">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="DoctorNumber" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="DoctorName" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="ClinicNumber" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="DiagnosticCode" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="CorporationIndicator" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Street" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Province" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimMode" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="MedicalBillingSystemModel.FK_UserProfile_Users" FromRole="UserProfiles" ToRole="Users" />
+          <Property Name="GroupNumber" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="GroupUserKey" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DefaultPremCode" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="DefaultServiceLocation" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_UserProfile_Users">
+          <End Type="MedicalBillingSystemModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.UserProfiles" Role="UserProfiles" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserProfiles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Memberships">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordFormat" Type="Int32" Nullable="false" />
+          <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordQuestion" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordAnswer" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsApproved" Type="Boolean" Nullable="false" />
+          <Property Name="IsLockedOut" Type="Boolean" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastLoginDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastPasswordChangedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastLockoutDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FailedPasswordAttemptCount" Type="Int32" Nullable="false" />
+          <Property Name="FailedPasswordAttemptWindowStart" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FailedPasswordAnswerAttemptCount" Type="Int32" Nullable="false" />
+          <Property Name="FailedPasswordAnswerAttemptWindowsStart" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Comment" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="IsResetPassword" Type="Boolean" Nullable="false" />
+          <Property Name="FirstTimeLoginDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordTokenExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordToken" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Applications" Relationship="MedicalBillingSystemModel.MembershipApplication" FromRole="Memberships" ToRole="Applications" />
+          <NavigationProperty Name="Users" Relationship="MedicalBillingSystemModel.MembershipUser" FromRole="Memberships" ToRole="Users" />
+        </EntityType>
+        <Association Name="MembershipApplication">
+          <End Type="MedicalBillingSystemModel.Applications" Role="Applications" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.Memberships" Role="Memberships" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="Memberships">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MembershipUser">
+          <End Type="MedicalBillingSystemModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.Memberships" Role="Memberships" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Memberships">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UnitRecord">
+          <Key>
+            <PropertyRef Name="UnitRecordId" />
+          </Key>
+          <Property Name="UnitRecordId" Type="Guid" Nullable="false" />
+          <Property Name="ServiceRecordId" Type="Guid" Nullable="false" />
+          <Property Name="UnitCode" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="UnitNumber" Type="Int32" Nullable="false" />
+          <Property Name="UnitAmount" Type="Double" Nullable="false" />
+          <Property Name="UnitPremiumCode" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="ExplainCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="RecordIndex" Type="Int64" Nullable="false" />
+          <Property Name="PaidAmount" Type="Double" Nullable="false" />
+          <Property Name="DiagCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="RunCode" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="ExplainCode2" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="ExplainCode3" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="RecordClaimType" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="SpecialCircumstanceIndicator" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="BilateralIndicator" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="StartTime" Type="Time" Precision="7" />
+          <Property Name="EndTime" Type="Time" Precision="7" />
+          <Property Name="ProgramPayment" Type="Double" Nullable="false" />
+          <Property Name="SubmittedAmount" Type="Double" />
+          <Property Name="SubmittedRecordIndex" Type="Int64" />
+          <NavigationProperty Name="ServiceRecord" Relationship="MedicalBillingSystemModel.FK_UnitRecord_ServiceRecord" FromRole="UnitRecord" ToRole="ServiceRecord" />
+          <Property Name="OriginalRunCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ServiceRecord">
+          <Key>
+            <PropertyRef Name="ServiceRecordId" />
+          </Key>
+          <Property Name="ServiceRecordId" Type="Guid" Nullable="false" />
+          <Property Name="ClaimsInId" Type="Guid" />
+          <Property Name="ClaimNumber" Type="Int32" Nullable="false" />
+          <Property Name="PatientFirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PatientLastName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfBirth" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Sex" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Province" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="HospitalNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ReferringDoctorNumber" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="ServiceDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ServiceStartTime" Type="Time" Precision="7" />
+          <Property Name="ServiceEndTime" Type="Time" Precision="7" />
+          <Property Name="LastModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="Comment" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="PaidClaimId" Type="Guid" />
+          <Property Name="RejectedClaimId" Type="Guid" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ClaimAmount" Type="Double" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="PaidAmount" Type="Double" Nullable="false" />
+          <Property Name="ClaimType" Type="Int32" Nullable="false" />
+          <Property Name="WCBFaxStatus" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="MessageFromICS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentApproveDate" Type="DateTime" Precision="3" />
+          <Property Name="DischargeDate" Type="DateTime" Precision="3" />
+          <Property Name="RollOverNumber" Type="Int32" Nullable="false" />
+          <Property Name="ServiceLocation" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="FacilityNumber" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ClaimsIn" Relationship="MedicalBillingSystemModel.FK_ServiceRecord_ClaimsIn" FromRole="ServiceRecord" ToRole="ClaimsIn" />
+          <NavigationProperty Name="PaidClaim" Relationship="MedicalBillingSystemModel.FK_ServiceRecord_PaidClaim" FromRole="ServiceRecord" ToRole="PaidClaim" />
+          <NavigationProperty Name="RejectedClaim" Relationship="MedicalBillingSystemModel.FK_ServiceRecord_RejectedClaim" FromRole="ServiceRecord" ToRole="RejectedClaim" />
+          <NavigationProperty Name="Users" Relationship="MedicalBillingSystemModel.FK_ServiceRecord_Users" FromRole="ServiceRecord" ToRole="Users" />
+          <NavigationProperty Name="UnitRecord" Relationship="MedicalBillingSystemModel.FK_UnitRecord_ServiceRecord" FromRole="ServiceRecord" ToRole="UnitRecord" />
+          <Property Name="Notes" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CPSClaimNumber" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="IsAdjustment" Type="Boolean" />
+          <Property Name="VarianceAmount" Type="Double" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ClaimToIgnore" Type="Boolean" Nullable="false" />
+          <Property Name="ClaimStatus" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <Association Name="FK_ServiceRecord_ClaimsIn">
+          <End Type="MedicalBillingSystemModel.ClaimsIn" Role="ClaimsIn" Multiplicity="0..1" />
+          <End Type="MedicalBillingSystemModel.ServiceRecord" Role="ServiceRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClaimsIn">
+              <PropertyRef Name="ClaimsInId" />
+            </Principal>
+            <Dependent Role="ServiceRecord">
+              <PropertyRef Name="ClaimsInId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRecord_PaidClaim">
+          <End Type="MedicalBillingSystemModel.PaidClaim" Role="PaidClaim" Multiplicity="0..1" />
+          <End Type="MedicalBillingSystemModel.ServiceRecord" Role="ServiceRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaidClaim">
+              <PropertyRef Name="PaidClaimId" />
+            </Principal>
+            <Dependent Role="ServiceRecord">
+              <PropertyRef Name="PaidClaimId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRecord_RejectedClaim">
+          <End Type="MedicalBillingSystemModel.RejectedClaim" Role="RejectedClaim" Multiplicity="0..1" />
+          <End Type="MedicalBillingSystemModel.ServiceRecord" Role="ServiceRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RejectedClaim">
+              <PropertyRef Name="RejectedClaimId" />
+            </Principal>
+            <Dependent Role="ServiceRecord">
+              <PropertyRef Name="RejectedClaimId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRecord_Users">
+          <End Type="MedicalBillingSystemModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.ServiceRecord" Role="ServiceRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ServiceRecord">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UnitRecord_ServiceRecord">
+          <End Type="MedicalBillingSystemModel.ServiceRecord" Role="ServiceRecord" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.UnitRecord" Role="UnitRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceRecord">
+              <PropertyRef Name="ServiceRecordId" />
+            </Principal>
+            <Dependent Role="UnitRecord">
+              <PropertyRef Name="ServiceRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ClaimsSearchView">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="ServiceRecordId" />
+            <PropertyRef Name="ClaimStatus" />
+            <PropertyRef Name="ClaimNumber" />
+            <PropertyRef Name="ServiceDate" />
+            <PropertyRef Name="CreatedDate" />
+            <PropertyRef Name="UnitRecordId" />
+            <PropertyRef Name="UnitCode" />
+            <PropertyRef Name="UnitNumber" />
+            <PropertyRef Name="UnitPremiumCode" />
+            <PropertyRef Name="PaidAmount" />
+            <PropertyRef Name="ClaimStatusString" />
+            <PropertyRef Name="DoctorName" />
+          </Key>
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ServiceRecordId" Type="Guid" Nullable="false" />
+          <Property Name="ClaimStatus" Type="Int32" Nullable="false" />
+          <Property Name="SubmissionDate" Type="DateTime" Precision="3" />
+          <Property Name="ClaimNumber" Type="Int32" Nullable="false" />
+          <Property Name="PatientFirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PatientLastName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HospitalNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ServiceDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CPSClaimNumber" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UnitRecordId" Type="Guid" Nullable="false" />
+          <Property Name="RunCode" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="DiagCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="UnitCode" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="UnitNumber" Type="Int32" Nullable="false" />
+          <Property Name="UnitPremiumCode" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="ExplainCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="ExplainCode2" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="ExplainCode3" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimAmount" Type="Double" />
+          <Property Name="PaidAmount" Type="Double" Nullable="false" />
+          <Property Name="VarianceAmount" Type="Double" />
+          <Property Name="ClaimStatusString" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="DoctorName" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="SubmittedRecordIndex" Type="Int64" />
+        </EntityType>
+        <EntityType Name="ClaimsResubmitted">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="ClaimNumber" Type="Int32" Nullable="false" />
+          <Property Name="PatientLastName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HospitalNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ServiceDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Users" Relationship="MedicalBillingSystemModel.FK_ClaimsResubmitted_Users" FromRole="ClaimsResubmitted" ToRole="Users" />
+          <Property Name="UnitCode" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="UnitNumber" Type="Int32" Nullable="false" />
+          <Property Name="UnitPremiumCode" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_ClaimsResubmitted_Users">
+          <End Type="MedicalBillingSystemModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.ClaimsResubmitted" Role="ClaimsResubmitted" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ClaimsResubmitted">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ClaimsReturnPaymentSummary">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="ClaimsInReturnId" Type="Guid" Nullable="false" />
+          <Property Name="GroupIndex" Type="Int32" Nullable="false" />
+          <Property Name="TotalLineType" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FeeSubmitted" Type="Double" Nullable="false" />
+          <Property Name="FeeApproved" Type="Double" Nullable="false" />
+          <Property Name="TotalPremiumAmount" Type="Double" Nullable="false" />
+          <Property Name="TotalProgramAmount" Type="Double" Nullable="false" />
+          <Property Name="TotalPaidAmount" Type="Double" Nullable="false" />
+          <Property Name="RunCode" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ClaimsInReturn" Relationship="MedicalBillingSystemModel.FK_ClaimsReturnPaymentSummary_ClaimsInReturn" FromRole="ClaimsReturnPaymentSummary" ToRole="ClaimsInReturn" />
+          <NavigationProperty Name="Users" Relationship="MedicalBillingSystemModel.FK_ClaimsReturnPaymentSummary_Users" FromRole="ClaimsReturnPaymentSummary" ToRole="Users" />
+          <Property Name="LineNumber" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ClaimsReturnPaymentSummary_ClaimsInReturn">
+          <End Type="MedicalBillingSystemModel.ClaimsInReturn" Role="ClaimsInReturn" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.ClaimsReturnPaymentSummary" Role="ClaimsReturnPaymentSummary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClaimsInReturn">
+              <PropertyRef Name="ClaimsInReturnId" />
+            </Principal>
+            <Dependent Role="ClaimsReturnPaymentSummary">
+              <PropertyRef Name="ClaimsInReturnId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClaimsReturnPaymentSummary_Users">
+          <End Type="MedicalBillingSystemModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="MedicalBillingSystemModel.ClaimsReturnPaymentSummary" Role="ClaimsReturnPaymentSummary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ClaimsReturnPaymentSummary">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MedicalBillingSystemModelStoreContainer" CdmEntityContainer="MedicalBillingSystemEntities">
+          <EntitySetMapping Name="Applications">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.Applications">
+              <MappingFragment StoreEntitySet="Applications">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaidClaim">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.PaidClaim">
+              <MappingFragment StoreEntitySet="PaidClaim">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ClaimsInReturnId" ColumnName="ClaimsInReturnId" />
+                <ScalarProperty Name="PaidClaimId" ColumnName="PaidClaimId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RejectedClaim">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.RejectedClaim">
+              <MappingFragment StoreEntitySet="RejectedClaim">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ClaimsInReturnId" ColumnName="ClaimsInReturnId" />
+                <ScalarProperty Name="RejectedClaimId" ColumnName="RejectedClaimId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.Roles">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserCertificates">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.UserCertificates">
+              <MappingFragment StoreEntitySet="UserCertificates">
+                <ScalarProperty Name="CertificatePassKey" ColumnName="CertificatePassKey" />
+                <ScalarProperty Name="CertificateEncoded" ColumnName="CertificateEncoded" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="LastActivityDate" ColumnName="LastActivityDate" />
+                <ScalarProperty Name="IsAnonymous" ColumnName="IsAnonymous" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UsersInRoles">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.UsersInRoles">
+              <MappingFragment StoreEntitySet="UsersInRoles">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FaxDeliver">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.FaxDeliver">
+              <MappingFragment StoreEntitySet="FaxDeliver">
+                <ScalarProperty Name="PDFContent" ColumnName="PDFContent" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="ServiceRecordId" ColumnName="ServiceRecordId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FaxDeliverId" ColumnName="FaxDeliverId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClaimsIn">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.ClaimsIn">
+              <MappingFragment StoreEntitySet="ClaimsIn">
+                <ScalarProperty Name="DateChangeToAccepted" ColumnName="DateChangeToAccepted" />
+                <ScalarProperty Name="FileSubmittedStatus" ColumnName="FileSubmittedStatus" />
+                <ScalarProperty Name="SubmittedFileName" ColumnName="SubmittedFileName" />
+                <ScalarProperty Name="ValidationContent" ColumnName="ValidationContent" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+                <ScalarProperty Name="ClaimAmount" ColumnName="ClaimAmount" />
+                <ScalarProperty Name="RecordIndex" ColumnName="RecordIndex" />
+                <ScalarProperty Name="DownloadDate" ColumnName="DownloadDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ClaimsInId" ColumnName="ClaimsInId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClaimsInReturn">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.ClaimsInReturn">
+              <MappingFragment StoreEntitySet="ClaimsInReturn">
+                <ScalarProperty Name="TotalLineType" ColumnName="TotalLineType" />
+                <ScalarProperty Name="RunCode" ColumnName="RunCode" />
+                <ScalarProperty Name="ReturnFileDate" ColumnName="ReturnFileDate" />
+                <ScalarProperty Name="ReturnFileName" ColumnName="ReturnFileName" />
+                <ScalarProperty Name="OtherFeeAndPayment" ColumnName="OtherFeeAndPayment" />
+                <ScalarProperty Name="ReturnFileType" ColumnName="ReturnFileType" />
+                <ScalarProperty Name="TotalProgramAmount" ColumnName="TotalProgramAmount" />
+                <ScalarProperty Name="TotalPremiumAmount" ColumnName="TotalPremiumAmount" />
+                <ScalarProperty Name="TotalPaidAmount" ColumnName="TotalPaidAmount" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="ReturnFooter" ColumnName="ReturnFooter" />
+                <ScalarProperty Name="TotalRejected" ColumnName="TotalRejected" />
+                <ScalarProperty Name="TotalPaid" ColumnName="TotalPaid" />
+                <ScalarProperty Name="RecordIndex" ColumnName="RecordIndex" />
+                <ScalarProperty Name="UploadDate" ColumnName="UploadDate" />
+                <ScalarProperty Name="TotalApproved" ColumnName="TotalApproved" />
+                <ScalarProperty Name="TotalSubmitted" ColumnName="TotalSubmitted" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ClaimsInReturnId" ColumnName="ClaimsInReturnId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.UserProfiles">
+              <MappingFragment StoreEntitySet="UserProfiles">
+                <ScalarProperty Name="DefaultServiceLocation" ColumnName="DefaultServiceLocation" />
+                <ScalarProperty Name="DefaultPremCode" ColumnName="DefaultPremCode" />
+                <ScalarProperty Name="GroupUserKey" ColumnName="GroupUserKey" />
+                <ScalarProperty Name="GroupNumber" ColumnName="GroupNumber" />
+                <ScalarProperty Name="ClaimMode" ColumnName="ClaimMode" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="CorporationIndicator" ColumnName="CorporationIndicator" />
+                <ScalarProperty Name="DiagnosticCode" ColumnName="DiagnosticCode" />
+                <ScalarProperty Name="ClinicNumber" ColumnName="ClinicNumber" />
+                <ScalarProperty Name="DoctorName" ColumnName="DoctorName" />
+                <ScalarProperty Name="DoctorNumber" ColumnName="DoctorNumber" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Memberships">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.Memberships">
+              <MappingFragment StoreEntitySet="Memberships">
+                <ScalarProperty Name="PasswordToken" ColumnName="PasswordToken" />
+                <ScalarProperty Name="PasswordTokenExpireDate" ColumnName="PasswordTokenExpireDate" />
+                <ScalarProperty Name="FirstTimeLoginDate" ColumnName="FirstTimeLoginDate" />
+                <ScalarProperty Name="IsResetPassword" ColumnName="IsResetPassword" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="FailedPasswordAnswerAttemptWindowsStart" ColumnName="FailedPasswordAnswerAttemptWindowsStart" />
+                <ScalarProperty Name="FailedPasswordAnswerAttemptCount" ColumnName="FailedPasswordAnswerAttemptCount" />
+                <ScalarProperty Name="FailedPasswordAttemptWindowStart" ColumnName="FailedPasswordAttemptWindowStart" />
+                <ScalarProperty Name="FailedPasswordAttemptCount" ColumnName="FailedPasswordAttemptCount" />
+                <ScalarProperty Name="LastLockoutDate" ColumnName="LastLockoutDate" />
+                <ScalarProperty Name="LastPasswordChangedDate" ColumnName="LastPasswordChangedDate" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsLockedOut" ColumnName="IsLockedOut" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="PasswordAnswer" ColumnName="PasswordAnswer" />
+                <ScalarProperty Name="PasswordQuestion" ColumnName="PasswordQuestion" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordFormat" ColumnName="PasswordFormat" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UnitRecord">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.UnitRecord">
+              <MappingFragment StoreEntitySet="UnitRecord">
+                <ScalarProperty Name="OriginalRunCode" ColumnName="OriginalRunCode" />
+                <ScalarProperty Name="SubmittedRecordIndex" ColumnName="SubmittedRecordIndex" />
+                <ScalarProperty Name="SubmittedAmount" ColumnName="SubmittedAmount" />
+                <ScalarProperty Name="ProgramPayment" ColumnName="ProgramPayment" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="BilateralIndicator" ColumnName="BilateralIndicator" />
+                <ScalarProperty Name="SpecialCircumstanceIndicator" ColumnName="SpecialCircumstanceIndicator" />
+                <ScalarProperty Name="RecordClaimType" ColumnName="RecordClaimType" />
+                <ScalarProperty Name="ExplainCode3" ColumnName="ExplainCode3" />
+                <ScalarProperty Name="ExplainCode2" ColumnName="ExplainCode2" />
+                <ScalarProperty Name="RunCode" ColumnName="RunCode" />
+                <ScalarProperty Name="DiagCode" ColumnName="DiagCode" />
+                <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+                <ScalarProperty Name="RecordIndex" ColumnName="RecordIndex" />
+                <ScalarProperty Name="ExplainCode" ColumnName="ExplainCode" />
+                <ScalarProperty Name="UnitPremiumCode" ColumnName="UnitPremiumCode" />
+                <ScalarProperty Name="UnitAmount" ColumnName="UnitAmount" />
+                <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
+                <ScalarProperty Name="UnitCode" ColumnName="UnitCode" />
+                <ScalarProperty Name="ServiceRecordId" ColumnName="ServiceRecordId" />
+                <ScalarProperty Name="UnitRecordId" ColumnName="UnitRecordId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceRecord">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.ServiceRecord">
+              <MappingFragment StoreEntitySet="ServiceRecord">
+                <ScalarProperty Name="ClaimStatus" ColumnName="ClaimStatus" />
+                <ScalarProperty Name="ClaimToIgnore" ColumnName="ClaimToIgnore" />
+                <ScalarProperty Name="VarianceAmount" ColumnName="VarianceAmount" />
+                <ScalarProperty Name="IsAdjustment" ColumnName="IsAdjustment" />
+                <ScalarProperty Name="CPSClaimNumber" ColumnName="CPSClaimNumber" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="FacilityNumber" ColumnName="FacilityNumber" />
+                <ScalarProperty Name="ServiceLocation" ColumnName="ServiceLocation" />
+                <ScalarProperty Name="RollOverNumber" ColumnName="RollOverNumber" />
+                <ScalarProperty Name="DischargeDate" ColumnName="DischargeDate" />
+                <ScalarProperty Name="PaymentApproveDate" ColumnName="PaymentApproveDate" />
+                <ScalarProperty Name="MessageFromICS" ColumnName="MessageFromICS" />
+                <ScalarProperty Name="WCBFaxStatus" ColumnName="WCBFaxStatus" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ClaimAmount" ColumnName="ClaimAmount" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="RejectedClaimId" ColumnName="RejectedClaimId" />
+                <ScalarProperty Name="PaidClaimId" ColumnName="PaidClaimId" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+                <ScalarProperty Name="ServiceEndTime" ColumnName="ServiceEndTime" />
+                <ScalarProperty Name="ServiceStartTime" ColumnName="ServiceStartTime" />
+                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+                <ScalarProperty Name="ReferringDoctorNumber" ColumnName="ReferringDoctorNumber" />
+                <ScalarProperty Name="HospitalNumber" ColumnName="HospitalNumber" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="PatientLastName" ColumnName="PatientLastName" />
+                <ScalarProperty Name="PatientFirstName" ColumnName="PatientFirstName" />
+                <ScalarProperty Name="ClaimNumber" ColumnName="ClaimNumber" />
+                <ScalarProperty Name="ClaimsInId" ColumnName="ClaimsInId" />
+                <ScalarProperty Name="ServiceRecordId" ColumnName="ServiceRecordId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClaimsSearchView">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.ClaimsSearchView">
+              <MappingFragment StoreEntitySet="ClaimsSearchView">
+                <ScalarProperty Name="SubmittedRecordIndex" ColumnName="SubmittedRecordIndex" />
+                <ScalarProperty Name="DoctorName" ColumnName="DoctorName" />
+                <ScalarProperty Name="ClaimStatusString" ColumnName="ClaimStatusString" />
+                <ScalarProperty Name="VarianceAmount" ColumnName="VarianceAmount" />
+                <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+                <ScalarProperty Name="ClaimAmount" ColumnName="ClaimAmount" />
+                <ScalarProperty Name="ExplainCode3" ColumnName="ExplainCode3" />
+                <ScalarProperty Name="ExplainCode2" ColumnName="ExplainCode2" />
+                <ScalarProperty Name="ExplainCode" ColumnName="ExplainCode" />
+                <ScalarProperty Name="UnitPremiumCode" ColumnName="UnitPremiumCode" />
+                <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
+                <ScalarProperty Name="UnitCode" ColumnName="UnitCode" />
+                <ScalarProperty Name="DiagCode" ColumnName="DiagCode" />
+                <ScalarProperty Name="RunCode" ColumnName="RunCode" />
+                <ScalarProperty Name="UnitRecordId" ColumnName="UnitRecordId" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CPSClaimNumber" ColumnName="CPSClaimNumber" />
+                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+                <ScalarProperty Name="HospitalNumber" ColumnName="HospitalNumber" />
+                <ScalarProperty Name="PatientLastName" ColumnName="PatientLastName" />
+                <ScalarProperty Name="PatientFirstName" ColumnName="PatientFirstName" />
+                <ScalarProperty Name="ClaimNumber" ColumnName="ClaimNumber" />
+                <ScalarProperty Name="SubmissionDate" ColumnName="SubmissionDate" />
+                <ScalarProperty Name="ClaimStatus" ColumnName="ClaimStatus" />
+                <ScalarProperty Name="ServiceRecordId" ColumnName="ServiceRecordId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClaimsResubmitted">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.ClaimsResubmitted">
+              <MappingFragment StoreEntitySet="ClaimsResubmitted">
+                <ScalarProperty Name="UnitPremiumCode" ColumnName="UnitPremiumCode" />
+                <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
+                <ScalarProperty Name="UnitCode" ColumnName="UnitCode" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+                <ScalarProperty Name="HospitalNumber" ColumnName="HospitalNumber" />
+                <ScalarProperty Name="PatientLastName" ColumnName="PatientLastName" />
+                <ScalarProperty Name="ClaimNumber" ColumnName="ClaimNumber" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClaimsReturnPaymentSummary">
+            <EntityTypeMapping TypeName="MedicalBillingSystemModel.ClaimsReturnPaymentSummary">
+              <MappingFragment StoreEntitySet="ClaimsReturnPaymentSummary">
+                <ScalarProperty Name="LineNumber" ColumnName="LineNumber" />
+                <ScalarProperty Name="RunCode" ColumnName="RunCode" />
+                <ScalarProperty Name="TotalPaidAmount" ColumnName="TotalPaidAmount" />
+                <ScalarProperty Name="TotalProgramAmount" ColumnName="TotalProgramAmount" />
+                <ScalarProperty Name="TotalPremiumAmount" ColumnName="TotalPremiumAmount" />
+                <ScalarProperty Name="FeeApproved" ColumnName="FeeApproved" />
+                <ScalarProperty Name="FeeSubmitted" ColumnName="FeeSubmitted" />
+                <ScalarProperty Name="TotalLineType" ColumnName="TotalLineType" />
+                <ScalarProperty Name="GroupIndex" ColumnName="GroupIndex" />
+                <ScalarProperty Name="ClaimsInReturnId" ColumnName="ClaimsInReturnId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
