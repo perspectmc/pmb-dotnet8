@@ -12,7 +12,7 @@ Establish a reliable foundation for migration by preparing the development envir
 - **Cursor AI:** Tracking of refactoring progress and batch code analysis.
 
 ### Action Steps
-- [ ] Create GitHub repository: `perspect/pmb-modernization`
+- [ ] Create GitHub repository: `perspect/pmb-dotnet8`
 - [ ] Configure repository directories: `/src`, `/aidocs`, `/tests`, `/tools`, `/infra`
 - [ ] Install required developer tools:
     - GitHub Desktop or CLI
