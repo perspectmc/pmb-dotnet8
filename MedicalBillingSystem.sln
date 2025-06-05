@@ -1,0 +1,129 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3655A2FA-BF78-4A1F-9137-A5E82C8024F7}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBS.Web.Portal", "MBS.Web.Portal\MBS.Web.Portal.csproj", "{41E309CF-175F-4E76-B603-AA058672BC3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBS.Common", "MBS.Common\MBS.Common.csproj", "{34839D0C-17D6-44C8-906C-2715A957110E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBS.DomainModel", "MBS.DomainModel\MBS.DomainModel.csproj", "{EF21D129-8F3B-4B52-957A-466BE65A2580}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBS.RetrieveReturn", "MBS.RetrieveReturn\MBS.RetrieveReturn.csproj", "{1F7AF497-DDC1-4B72-A07A-A8B7BAA21072}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBS.DataCache", "MBS.DataCache\MBS.DataCache.csproj", "{7C747626-D441-466E-9961-11A61606318A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBS.WebApiService", "MBS.WebApiService\MBS.WebApiService.csproj", "{042DC694-22D7-4882-9249-46AA9BE8EBC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBS.TestCodeUsed", "MBS.TestCodeUsed\MBS.TestCodeUsed.csproj", "{0F92C147-39C9-4BAB-9085-66D973323950}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBS.SubmittedPendingClaims", "MBS.SubmittedPendingClaims\MBS.SubmittedPendingClaims.csproj", "{2390510F-BFFC-40B9-A3C5-1420CEEC63EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBS.PasswordChanger", "MBS.PasswordChanger\MBS.PasswordChanger.csproj", "{795C975C-B19E-4D5A-B187-C5977110262A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		DebugLocal|Any CPU = DebugLocal|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{41E309CF-175F-4E76-B603-AA058672BC3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41E309CF-175F-4E76-B603-AA058672BC3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41E309CF-175F-4E76-B603-AA058672BC3E}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{41E309CF-175F-4E76-B603-AA058672BC3E}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{41E309CF-175F-4E76-B603-AA058672BC3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41E309CF-175F-4E76-B603-AA058672BC3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34839D0C-17D6-44C8-906C-2715A957110E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34839D0C-17D6-44C8-906C-2715A957110E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34839D0C-17D6-44C8-906C-2715A957110E}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{34839D0C-17D6-44C8-906C-2715A957110E}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{34839D0C-17D6-44C8-906C-2715A957110E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34839D0C-17D6-44C8-906C-2715A957110E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF21D129-8F3B-4B52-957A-466BE65A2580}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF21D129-8F3B-4B52-957A-466BE65A2580}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF21D129-8F3B-4B52-957A-466BE65A2580}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF21D129-8F3B-4B52-957A-466BE65A2580}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{EF21D129-8F3B-4B52-957A-466BE65A2580}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF21D129-8F3B-4B52-957A-466BE65A2580}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F7AF497-DDC1-4B72-A07A-A8B7BAA21072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F7AF497-DDC1-4B72-A07A-A8B7BAA21072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F7AF497-DDC1-4B72-A07A-A8B7BAA21072}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F7AF497-DDC1-4B72-A07A-A8B7BAA21072}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{1F7AF497-DDC1-4B72-A07A-A8B7BAA21072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F7AF497-DDC1-4B72-A07A-A8B7BAA21072}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C747626-D441-466E-9961-11A61606318A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C747626-D441-466E-9961-11A61606318A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C747626-D441-466E-9961-11A61606318A}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C747626-D441-466E-9961-11A61606318A}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{7C747626-D441-466E-9961-11A61606318A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C747626-D441-466E-9961-11A61606318A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{042DC694-22D7-4882-9249-46AA9BE8EBC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{042DC694-22D7-4882-9249-46AA9BE8EBC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{042DC694-22D7-4882-9249-46AA9BE8EBC9}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{042DC694-22D7-4882-9249-46AA9BE8EBC9}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{042DC694-22D7-4882-9249-46AA9BE8EBC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{042DC694-22D7-4882-9249-46AA9BE8EBC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F92C147-39C9-4BAB-9085-66D973323950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F92C147-39C9-4BAB-9085-66D973323950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F92C147-39C9-4BAB-9085-66D973323950}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F92C147-39C9-4BAB-9085-66D973323950}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{0F92C147-39C9-4BAB-9085-66D973323950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F92C147-39C9-4BAB-9085-66D973323950}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2390510F-BFFC-40B9-A3C5-1420CEEC63EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2390510F-BFFC-40B9-A3C5-1420CEEC63EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2390510F-BFFC-40B9-A3C5-1420CEEC63EF}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{2390510F-BFFC-40B9-A3C5-1420CEEC63EF}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{2390510F-BFFC-40B9-A3C5-1420CEEC63EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2390510F-BFFC-40B9-A3C5-1420CEEC63EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{795C975C-B19E-4D5A-B187-C5977110262A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{795C975C-B19E-4D5A-B187-C5977110262A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{795C975C-B19E-4D5A-B187-C5977110262A}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{795C975C-B19E-4D5A-B187-C5977110262A}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{795C975C-B19E-4D5A-B187-C5977110262A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{795C975C-B19E-4D5A-B187-C5977110262A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 10
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://bexinan.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = MBS.Common\\MBS.Common.csproj
+		SccProjectName1 = MBS.Common
+		SccLocalPath1 = MBS.Common
+		SccProjectUniqueName2 = MBS.DomainModel\\MBS.DomainModel.csproj
+		SccProjectName2 = MBS.DomainModel
+		SccLocalPath2 = MBS.DomainModel
+		SccProjectUniqueName3 = MBS.Web.Portal\\MBS.Web.Portal.csproj
+		SccProjectName3 = MBS.Web.Portal
+		SccLocalPath3 = MBS.Web.Portal
+		SccProjectUniqueName4 = MBS.RetrieveReturn\\MBS.RetrieveReturn.csproj
+		SccProjectName4 = MBS.RetrieveReturn
+		SccLocalPath4 = MBS.RetrieveReturn
+		SccProjectUniqueName5 = MBS.DataCache\\MBS.DataCache.csproj
+		SccProjectName5 = MBS.DataCache
+		SccLocalPath5 = MBS.DataCache
+		SccProjectUniqueName6 = MBS.WebApiService\\MBS.WebApiService.csproj
+		SccProjectName6 = MBS.WebApiService
+		SccLocalPath6 = MBS.WebApiService
+		SccProjectUniqueName7 = MBS.TestCodeUsed\\MBS.TestCodeUsed.csproj
+		SccProjectName7 = MBS.TestCodeUsed
+		SccLocalPath7 = MBS.TestCodeUsed
+		SccProjectUniqueName8 = MBS.SubmittedPendingClaims\\MBS.SubmittedPendingClaims.csproj
+		SccProjectName8 = MBS.SubmittedPendingClaims
+		SccLocalPath8 = MBS.SubmittedPendingClaims
+		SccProjectUniqueName9 = MBS.PasswordChanger\\MBS.PasswordChanger.csproj
+		SccProjectName9 = MBS.PasswordChanger
+		SccLocalPath9 = MBS.PasswordChanger
+	EndGlobalSection
+EndGlobal
