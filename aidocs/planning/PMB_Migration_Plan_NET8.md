@@ -12,16 +12,16 @@ Establish a reliable foundation for migration by preparing the development envir
 - **Cursor AI:** Tracking of refactoring progress and batch code analysis.
 
 ### Action Steps
-- [ ] Create GitHub repository: `perspect/pmb-dotnet8`
-- [ ] Configure repository directories: `/src`, `/aidocs`, `/tests`, `/tools`, `/infra`
-- [ ] Install required developer tools:
-    - GitHub Desktop or CLI
+- [X] Create GitHub repository: `perspect/pmb-dotnet8`
+- [X] Configure repository directories: `/src`, `/aidocs`, `/tests`, `/tools`, `/infra`
+- [ ] Install required developer tools on new PC:
+     GitHub Desktop or CLI
     - Visual Studio Code with C# Dev Kit and .NET 8 SDK
     - SQL Server Management Studio
     - Postman
     - GitLens and REST Client (VS Code extensions)
 - [ ] Install AI tools: Cursor AI, Claude 4 Opus, ChatGPT-4o (Pro), Gemini 2.5 Pro
-- [ ] Create `.aidocs/README.md` to explain folder structure
+- [X] Create `.aidocs/README.md` to explain folder structure
 - [ ] Initialize `.gitignore`, `README.md`, and `migration_journal.md`
 - [ ] Set Visual Studio Code as the default `.md` editor for both macOS and Windows environments
 - [ ] Document hardware and development environment specifications in `/aidocs/Infra/HomeSetup.md`

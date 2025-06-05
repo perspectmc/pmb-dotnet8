@@ -1,3 +1,5 @@
+> 📘 For strategic overview and remote architecture context, see: `# GitHub Synchronization and Branching S.md`
+
 # Branching Overview
 
 ## Branches
