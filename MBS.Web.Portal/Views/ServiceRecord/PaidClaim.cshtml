@@ -1,0 +1,63 @@
+﻿<pages enableViewState="false" buffer="true"></pages>
+
+@Scripts.Render("~/Scripts/PaidClaimIndex.js?v=" + MBS.DataCache.StaticCodeList.VersionNumber)    
+
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <h3 class="panel-title">View Paid Claims</h3>
+    </div>
+    <div class="panel-body">       
+        <div class="pull-left">
+            <button class="btn btn-sm control_buttons" onclick="batchResubmission();" style="padding-left: 5px;">
+                <img src="@Url.Content("~/Content/images/icon_arrange.png")" title="Batch Resubmission" />
+                <span>Batch Resubmission</span>
+            </button>
+        </div>
+        <div class="pull-right" style="padding-bottom:10px;">
+            <button class="btn btn-sm control_buttons" onclick="window.location.href='@Url.Action("Index", "ClaimsInReturn")'">
+                <img src="@Url.Content("~/Content/images/icon_arrange.png")" title="View Downloaded Return Files" />
+                <span>View Downloaded Return Files</span>
+            </button>
+        </div>   		
+		<table id="paidclaim" class="table table-hover">	
+			<thead>
+				<tr>         
+                    <th><input type="checkbox" name="all"></th>   
+					<th class="col-sm-1">Claim #</th>
+					<th class="col-sm-1">Hospital #</th>        
+					<th class="col-sm-1">Last Name</th> 
+					<th class="col-sm-1">First Name</th>
+					<th class="col-sm-1">Service Date</th>
+                    <th class="col-sm-1">Pmt App Date</th>
+					<th class="col-sm-1">Claim Amount</th>
+                    <th class="col-sm-1">Paid Amount</th>
+                    <th class="col-sm-1">Variance</th>
+                    <th class="col-sm-1">CPS #</th>
+                    <th class="col-sm-1">Fee Codes</th>
+                    <th class="col-sm-1">Explain Codes</th>
+					<th class="col-sm-2"></th>
+				</tr>         
+			</thead>
+			<tbody>
+			</tbody>   
+		</table>
+	</div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $("input:checkbox[name=batch]").prop("checked", false);
+
+        PaidClaimIndexPageLoad('@Url.Content("~/Content/images/icon_edit.png")');
+
+        $("input:checkbox[name=all]").change(function () {
+            if (this.checked) {
+                $("input:checkbox[name=batch]").prop("checked", true);
+            } else {
+                $("input:checkbox[name=batch]").prop("checked", false);
+            }
+        });
+    });
+</script>
+
+

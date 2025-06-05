@@ -1,0 +1,46 @@
+<pages enableViewState="false" buffer="true"></pages>
+
+@model MBS.Web.Portal.Models.ChangeEmailModel
+@{
+    ViewBag.Title = "Change Email";
+}
+
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <h3 class="panel-title">@ViewBag.Title</h3>
+    </div>
+    <div class="panel-body">
+        <button class="btn btn-sm control_buttons" onclick="window.location.href='@Url.Action("Manage", "Account")';">
+            <img src="@Url.Content("~/Content/images/icon_back.png")" title="Back to Manage Account" />
+            <span>Back to Manage Account</span>
+        </button>
+
+        @using (Html.BeginForm("ChangeEmail", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            
+            <div class="form-group" style="padding-top:10px;">
+                <label for="CurrentEmail" class="col-sm-2 control-label">Current Email</label>
+                @Html.TextBoxFor(m => m.CurrentEmail, new { type = "text", @class="form-control", style="width:300px", disabled="disabled" })
+            </div>
+            
+            <div class="form-group" style="padding-top:10px;">
+                <label for="NewEmail" class="col-sm-2 control-label">New Email</label>
+                @Html.TextBoxFor(m => m.NewEmail, new { type = "text", @class="form-control", style="width:300px" })
+            </div>
+            
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button class="btn btn-default" type="submit">Update</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">       
+    $(function () {
+        SetRequiredField("NewEmail");
+    });
+</script>

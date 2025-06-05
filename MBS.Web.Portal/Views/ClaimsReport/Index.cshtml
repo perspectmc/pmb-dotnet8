@@ -1,0 +1,102 @@
+﻿<pages enableViewState="false" buffer="true"></pages>
+
+@model MBS.Web.Portal.Models.ClaimsReportViewModel
+@{
+    ViewBag.Title = "Report for Paid and/or Rejected Claims";
+}
+
+@Scripts.Render("~/Scripts/ClaimsInReportIndex.js?v=" + MBS.DataCache.StaticCodeList.VersionNumber)    
+
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <h3 class="panel-title">@ViewBag.Title</h3>
+    </div>
+    <div class="panel-body">
+        
+        @using (Html.BeginForm("Index", "ClaimsReport", FormMethod.Post, new { id = "claimsReportForm", @class = "form-inline", role = "form" }))
+        {
+            @Html.AntiForgeryToken()   
+            @Html.ValidationSummary()    
+            @Html.HiddenFor(m => m.IsInfoFilled)
+
+            <div style="padding-bottom:10px;">
+                <div class="form-group">
+                    <label for="ReportType">Claim Type</label>
+                    @Html.DropDownListFor(m => m.ReportType, Model.ReportTypeList, new { style = "width:260px;", @class="form-control" })
+                </div>            
+                <br />
+                <div class="form-group" style="padding-top:10px;">
+                    <label for="ServiceStartDate">Range Start Date (dd/mm/yyyy)</label>
+                    @Html.TextBoxFor(m => m.ServiceStartDate, new { type = "text", maxlength = "10", style = "width:120px;", @class="form-control" })
+                </div>
+                <div class="form-group" style="padding-left:10px;padding-top:10px;">
+                    <label for="ServiceEndDate">Range End Date (dd/mm/yyyy)</label>
+                    @Html.TextBoxFor(m => m.ServiceEndDate, new { type = "text", maxlength = "10", style = "width:120px;", @class="form-control" })
+                </div>
+            </div>
+            
+            <div class="pull-left">
+                <button class="btn btn-sm control_buttons" onclick="GenerateReportDate('7day');return false;">
+                    <img src="@Url.Content("~/Content/images/icon_report.png")" title="Last 7 Days" />
+                    <span>Last 7 Days</span>
+                </button>
+                <button class="btn btn-sm control_buttons" onclick="GenerateReportDate('1month');return false;">
+                    <img src="@Url.Content("~/Content/images/icon_report.png")" title="Last Month" />
+                    <span>Last Month</span>
+                </button>
+                <button class="btn btn-sm control_buttons" onclick="GenerateReportDate('3month');return false;">
+                    <img src="@Url.Content("~/Content/images/icon_report.png")" title="Last 3 Months" />
+                    <span>Last 3 Months</span>
+                </button>
+                <button class="btn btn-sm control_buttons" onclick="GenerateReportDate('12month');return false;">
+                    <img src="@Url.Content("~/Content/images/icon_report.png")" title="Last 12 Months" />
+                    <span>Last 12 Months</span>
+                </button>     
+                 <button class="btn btn-sm control_buttons" onclick="GenerateReportDate('previousyear');return false;">
+                    <img src="@Url.Content("~/Content/images/icon_report.png")" title="Previous Year" />
+                    <span>Previous Year</span>
+                </button>
+                <button class="btn btn-sm control_buttons" onclick="GenerateReportDate('yeartodate');return false;">
+                    <img src="@Url.Content("~/Content/images/icon_report.png")" title="Year To Date" />
+                    <span>Year To Date</span>
+                </button>           
+                <button class="btn btn-sm control_buttons" onclick="SearchResult();return false;">
+                    <img src="@Url.Content("~/Content/images/icon_arrange.png")" title="Range Specified" />
+                    <span>Range Specified</span>
+                </button>
+            </div>                                
+        }         
+        <br /><br />
+        <div style="float:left;padding-top:15px;">
+            <div class="form-group">
+                <label>
+               @(Model.ReportType < 3 ? "Total Number of Claims: " + Model.TotalNumberOfRecords : "Total Number of Unit Records: " + Model.TotalNumberOfRecords)
+                </label>
+            </div>
+            <div class="form-group">
+                <label>Total Amount: @string.Format("{0:C}", Model.TotalPaidAmount)</label>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-sm control_buttons" onclick="DownloadReport(1);return false;" id="GenerateReport" 
+                        data-original-title="User profile must be filled to generate report!" data-toggle="tooltip" 
+                        data-placement="right">
+                    <img src="@Url.Content("~/Content/images/icon_report.png")" title="RTF Report" />
+                    <span>RTF Report</span>
+                </button>
+                <button class="btn btn-sm control_buttons" onclick="DownloadReport(2);return false;" id="GeneratePDFReport" 
+                        data-original-title="User profile must be filled to generate report!" data-toggle="tooltip" 
+                        data-placement="right">
+                    <img src="@Url.Content("~/Content/images/icon_report.png")" title="PDF Report" />
+                    <span>PDF Report</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var isFilled = "@Model.IsInfoFilled" == "True" ? true : false;
+        ClaimsInReportPageLoad(isFilled);
+    });
+</script>

@@ -1,0 +1,68 @@
+﻿@model MBS.Web.Portal.Models.ClaimsPDFReportViewModel
+@{
+    Layout = null;
+}
+
+<itext creationdate="@DateTime.UtcNow.AddHours(Model.TimeZoneOffset).ToString()" producer="Perspect Medical Billing System">
+
+    <paragraph>
+	    <chunk style="font-family:Times;font-weight:bold;">CLAIMS REPORT - </chunk>
+        <chunk style="font-family:Times;font-weight:bold;">@Model.ReportType            </chunk>
+        <chunk style="font-family:Times;font-weight:bold;">DOWNLOAD DATE: </chunk>
+        <chunk style="font-family:Times;font-weight:bold;">@DateTime.UtcNow.AddHours(Model.TimeZoneOffset).ToString()</chunk>
+    </paragraph>    
+    <newline />
+    <paragraph>
+        <chunk style="font-family:Times;font-weight:bold;">PRACTITIONER # @Model.DoctorNumber          </chunk>
+        <chunk style="font-family:Times;font-weight:bold;">SERVICE DATE: </chunk>
+        <chunk style="font-family:Times;font-weight:bold;">@Model.StartDate.ToString("dd/MM/yyyy")</chunk>
+        <chunk style="font-family:Times;font-weight:bold;"> TO </chunk>
+        <chunk style="font-family:Times;font-weight:bold;">@Model.EndDate.ToString("dd/MM/yyyy")</chunk>
+    </paragraph>
+    <table width="100%" cellpadding="1.0" cellspacing="1.0" widths="23;24;9;10;12;10;12">
+        <row>
+	        <cell><chunk style="font-family:Times;font-size:9px;font-weight:bold;">FIRST NAME</chunk></cell>
+	        <cell><chunk style="font-family:Times;font-size:9px;font-weight:bold;">LAST NAME</chunk></cell>
+	        <cell><chunk style="font-family:Times;font-size:9px;font-weight:bold;">BIRTHDATE</chunk></cell>
+            <cell><chunk style="font-family:Times;font-size:9px;font-weight:bold;">SERVICE DATE</chunk></cell>
+            <cell><chunk style="font-family:Times;font-size:9px;font-weight:bold;">SUBMISSION DATE</chunk></cell>
+            <cell><chunk style="font-family:Times;font-size:9px;font-weight:bold;">SERVICE CODE</chunk></cell>
+            <cell><chunk style="font-family:Times;font-size:9px;font-weight:bold;">TOTAL SERVICES</chunk></cell>
+
+        </row>
+        @foreach (var item in Model.RecordList)
+        {           
+            <row>
+	            <cell><chunk style="font-family:Times;font-size:9px;">@item.FirstName</chunk></cell> 
+                <cell><chunk style="font-family:Times;font-size:9px;">@item.LastName</chunk></cell>
+                <cell><chunk style="font-family:Times;font-size:9px;">@item.BirthDate.ToString("yyMM")</chunk></cell>
+                <cell><chunk style="font-family:Times;font-size:9px;">@item.ServiceDate.ToString("dd/MM/yyyy")</chunk></cell>
+                <cell><chunk style="font-family:Times;font-size:9px;">@item.SubmissionDate</chunk></cell>
+                <cell><chunk style="font-family:Times;font-size:9px;">@item.UnitCode</chunk></cell>
+                <cell><chunk style="font-family:Times;font-size:9px;">@item.UnitNumber</chunk></cell>
+            </row>  
+        }
+    
+    </table>
+
+    <newline />
+
+    <table width="100%" cellpadding="1.0" cellspacing="1.0" widths="10;10">
+        <row>
+	        <cell><chunk style="font-family:Times;font-size:9px;font-weight:bold;">SERVICE CODE</chunk></cell>
+	        <cell><chunk style="font-family:Times;font-size:9px;font-weight:bold;"># OF USED</chunk></cell>
+        </row>
+    
+        @foreach (var item in Model.UnitRecordUsedList)
+        {
+            <row>
+	            <cell><chunk style="font-family:Times;font-size:9px;">@item.UnitCode.TrimStart('0')</chunk></cell> 
+                <cell><chunk style="font-family:Times;font-size:9px;">@item.TotalUnitNumber</chunk></cell> 
+            </row>
+        }
+    
+    </table>
+
+    <newline />
+
+</itext>
