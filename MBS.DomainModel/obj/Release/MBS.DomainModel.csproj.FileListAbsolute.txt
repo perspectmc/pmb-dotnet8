@@ -1,0 +1,12 @@
+C:\Personal\MBS\Medical Billing\Production\MBS.DomainModel\bin\Release\MBS.DomainModel.dll.config
+C:\Personal\MBS\Medical Billing\Production\MBS.DomainModel\bin\Release\MBS.DomainModel.dll
+C:\Personal\MBS\Medical Billing\Production\MBS.DomainModel\bin\Release\MBS.DomainModel.pdb
+C:\Personal\MBS\Medical Billing\Production\MBS.DomainModel\bin\Release\EntityFramework.dll
+C:\Personal\MBS\Medical Billing\Production\MBS.DomainModel\bin\Release\EntityFramework.SqlServer.dll
+C:\Personal\MBS\Medical Billing\Production\MBS.DomainModel\bin\Release\EntityFramework.xml
+C:\Personal\MBS\Medical Billing\Production\MBS.DomainModel\bin\Release\EntityFramework.SqlServer.xml
+C:\Personal\MBS\Medical Billing\Production\MBS.DomainModel\obj\Release\MBS.DomainModel.dll
+C:\Personal\MBS\Medical Billing\Production\MBS.DomainModel\obj\Release\MBS.DomainModel.pdb
+C:\Personal\MBS\Medical Billing\Production\MBS.DomainModel\obj\Release\MBS.DomainModel.csproj.AssemblyReference.cache
+C:\Personal\MBS\Medical Billing\Production\MBS.DomainModel\obj\Release\MBS.DomainModel.csproj.CoreCompileInputs.cache
+C:\Personal\MBS\Medical Billing\Production\MBS.DomainModel\obj\Release\MBS.DomainModel.csproj.CopyComplete

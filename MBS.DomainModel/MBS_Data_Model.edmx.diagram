@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a69817a734bb4a59bb859e738c3637f0" Name="Diagram1" ZoomLevel="83">
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.Applications" Width="1.5" PointX="0.75" PointY="16.5" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.PaidClaim" Width="1.5" PointX="7.5" PointY="23" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.RejectedClaim" Width="1.5" PointX="7.5" PointY="25.75" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.Roles" Width="1.5" PointX="3" PointY="7.25" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.UserCertificates" Width="1.5" PointX="5.25" PointY="29" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.Users" Width="1.5" PointX="3" PointY="23.375" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.UsersInRoles" Width="1.5" PointX="0.75" PointY="0.75" />
+        <AssociationConnector Association="MedicalBillingSystemModel.RoleApplication" />
+        <AssociationConnector Association="MedicalBillingSystemModel.UserApplication" />
+        <AssociationConnector Association="MedicalBillingSystemModel.FK_UserCertificates_Users" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.FaxDeliver" Width="1.5" PointX="5.25" PointY="16.25" />
+        <AssociationConnector Association="MedicalBillingSystemModel.FK_FaxDeliver_Users" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.ClaimsIn" Width="1.5" PointX="5.25" PointY="19.25" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.ClaimsInReturn" Width="1.5" PointX="5.25" PointY="23.625" />
+        <AssociationConnector Association="MedicalBillingSystemModel.FK_ClaimsIn_Users" />
+        <AssociationConnector Association="MedicalBillingSystemModel.FK_ClaimsInReturn_Users" />
+        <AssociationConnector Association="MedicalBillingSystemModel.FK_PaidClaim_ClaimsInReturn" />
+        <AssociationConnector Association="MedicalBillingSystemModel.FK_RejectedClaim_ClaimsInReturn" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.UserProfiles" Width="1.5" PointX="5.25" PointY="31.375" />
+        <AssociationConnector Association="MedicalBillingSystemModel.FK_UserProfile_Users" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.Memberships" Width="1.5" PointX="8.25" PointY="15.75" />
+        <AssociationConnector Association="MedicalBillingSystemModel.MembershipApplication" />
+        <AssociationConnector Association="MedicalBillingSystemModel.MembershipUser" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.UnitRecord" Width="1.5" PointX="13" PointY="21.125" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.ServiceRecord" Width="1.5" PointX="10.75" PointY="19.75" />
+        <AssociationConnector Association="MedicalBillingSystemModel.FK_ServiceRecord_ClaimsIn" />
+        <AssociationConnector Association="MedicalBillingSystemModel.FK_ServiceRecord_PaidClaim" />
+        <AssociationConnector Association="MedicalBillingSystemModel.FK_ServiceRecord_RejectedClaim" />
+        <AssociationConnector Association="MedicalBillingSystemModel.FK_ServiceRecord_Users" />
+        <AssociationConnector Association="MedicalBillingSystemModel.FK_UnitRecord_ServiceRecord" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.ClaimsSearchView" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.ClaimsResubmitted" Width="1.5" PointX="5.25" PointY="12" />
+        <AssociationConnector Association="MedicalBillingSystemModel.FK_ClaimsResubmitted_Users" />
+        <EntityTypeShape EntityType="MedicalBillingSystemModel.ClaimsReturnPaymentSummary" Width="1.5" PointX="7.5" PointY="28.5" />
+        <AssociationConnector Association="MedicalBillingSystemModel.FK_ClaimsReturnPaymentSummary_ClaimsInReturn" />
+        <AssociationConnector Association="MedicalBillingSystemModel.FK_ClaimsReturnPaymentSummary_Users" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

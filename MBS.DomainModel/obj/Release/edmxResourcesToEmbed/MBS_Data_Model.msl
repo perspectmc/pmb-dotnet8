@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MedicalBillingSystemModelStoreContainer" CdmEntityContainer="MedicalBillingSystemEntities">
+    <EntitySetMapping Name="Applications">
+      <EntityTypeMapping TypeName="MedicalBillingSystemModel.Applications">
+        <MappingFragment StoreEntitySet="Applications">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+          <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PaidClaim">
+      <EntityTypeMapping TypeName="MedicalBillingSystemModel.PaidClaim">
+        <MappingFragment StoreEntitySet="PaidClaim">
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="ClaimsInReturnId" ColumnName="ClaimsInReturnId" />
+          <ScalarProperty Name="PaidClaimId" ColumnName="PaidClaimId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RejectedClaim">
+      <EntityTypeMapping TypeName="MedicalBillingSystemModel.RejectedClaim">
+        <MappingFragment StoreEntitySet="RejectedClaim">
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="ClaimsInReturnId" ColumnName="ClaimsInReturnId" />
+          <ScalarProperty Name="RejectedClaimId" ColumnName="RejectedClaimId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="MedicalBillingSystemModel.Roles">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserCertificates">
+      <EntityTypeMapping TypeName="MedicalBillingSystemModel.UserCertificates">
+        <MappingFragment StoreEntitySet="UserCertificates">
+          <ScalarProperty Name="CertificatePassKey" ColumnName="CertificatePassKey" />
+          <ScalarProperty Name="CertificateEncoded" ColumnName="CertificateEncoded" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="MedicalBillingSystemModel.Users">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="LastActivityDate" ColumnName="LastActivityDate" />
+          <ScalarProperty Name="IsAnonymous" ColumnName="IsAnonymous" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UsersInRoles">
+      <EntityTypeMapping TypeName="MedicalBillingSystemModel.UsersInRoles">
+        <MappingFragment StoreEntitySet="UsersInRoles">
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FaxDeliver">
+      <EntityTypeMapping TypeName="MedicalBillingSystemModel.FaxDeliver">
+        <MappingFragment StoreEntitySet="FaxDeliver">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+          <ScalarProperty Name="ServiceRecordId" ColumnName="ServiceRecordId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="FaxDeliverId" ColumnName="FaxDeliverId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClaimsIn">
+      <EntityTypeMapping TypeName="MedicalBillingSystemModel.ClaimsIn">
+        <MappingFragment StoreEntitySet="ClaimsIn">
+          <ScalarProperty Name="ValidationContent" ColumnName="ValidationContent" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+          <ScalarProperty Name="ClaimAmount" ColumnName="ClaimAmount" />
+          <ScalarProperty Name="RecordIndex" ColumnName="RecordIndex" />
+          <ScalarProperty Name="DownloadDate" ColumnName="DownloadDate" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ClaimsInId" ColumnName="ClaimsInId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClaimsInReturn">
+      <EntityTypeMapping TypeName="MedicalBillingSystemModel.ClaimsInReturn">
+        <MappingFragment StoreEntitySet="ClaimsInReturn">
+          <ScalarProperty Name="ReturnFileDate" ColumnName="ReturnFileDate" />
+          <ScalarProperty Name="ReturnFileName" ColumnName="ReturnFileName" />
+          <ScalarProperty Name="OtherFeeAndPayment" ColumnName="OtherFeeAndPayment" />
+          <ScalarProperty Name="ReturnFileType" ColumnName="ReturnFileType" />
+          <ScalarProperty Name="TotalProgramAmount" ColumnName="TotalProgramAmount" />
+          <ScalarProperty Name="TotalPremiumAmount" ColumnName="TotalPremiumAmount" />
+          <ScalarProperty Name="TotalPaidAmount" ColumnName="TotalPaidAmount" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="ReturnFooter" ColumnName="ReturnFooter" />
+          <ScalarProperty Name="TotalRejected" ColumnName="TotalRejected" />
+          <ScalarProperty Name="TotalPaid" ColumnName="TotalPaid" />
+          <ScalarProperty Name="RecordIndex" ColumnName="RecordIndex" />
+          <ScalarProperty Name="UploadDate" ColumnName="UploadDate" />
+          <ScalarProperty Name="TotalApproved" ColumnName="TotalApproved" />
+          <ScalarProperty Name="TotalSubmitted" ColumnName="TotalSubmitted" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ClaimsInReturnId" ColumnName="ClaimsInReturnId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserProfiles">
+      <EntityTypeMapping TypeName="MedicalBillingSystemModel.UserProfiles">
+        <MappingFragment StoreEntitySet="UserProfiles">
+          <ScalarProperty Name="DefaultPremCode" ColumnName="DefaultPremCode" />
+          <ScalarProperty Name="GroupUserKey" ColumnName="GroupUserKey" />
+          <ScalarProperty Name="GroupNumber" ColumnName="GroupNumber" />
+          <ScalarProperty Name="ClaimMode" ColumnName="ClaimMode" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+          <ScalarProperty Name="Province" ColumnName="Province" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="CorporationIndicator" ColumnName="CorporationIndicator" />
+          <ScalarProperty Name="DiagnosticCode" ColumnName="DiagnosticCode" />
+          <ScalarProperty Name="ClinicNumber" ColumnName="ClinicNumber" />
+          <ScalarProperty Name="DoctorName" ColumnName="DoctorName" />
+          <ScalarProperty Name="DoctorNumber" ColumnName="DoctorNumber" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Memberships">
+      <EntityTypeMapping TypeName="MedicalBillingSystemModel.Memberships">
+        <MappingFragment StoreEntitySet="Memberships">
+          <ScalarProperty Name="PasswordToken" ColumnName="PasswordToken" />
+          <ScalarProperty Name="PasswordTokenExpireDate" ColumnName="PasswordTokenExpireDate" />
+          <ScalarProperty Name="FirstTimeLoginDate" ColumnName="FirstTimeLoginDate" />
+          <ScalarProperty Name="IsResetPassword" ColumnName="IsResetPassword" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="FailedPasswordAnswerAttemptWindowsStart" ColumnName="FailedPasswordAnswerAttemptWindowsStart" />
+          <ScalarProperty Name="FailedPasswordAnswerAttemptCount" ColumnName="FailedPasswordAnswerAttemptCount" />
+          <ScalarProperty Name="FailedPasswordAttemptWindowStart" ColumnName="FailedPasswordAttemptWindowStart" />
+          <ScalarProperty Name="FailedPasswordAttemptCount" ColumnName="FailedPasswordAttemptCount" />
+          <ScalarProperty Name="LastLockoutDate" ColumnName="LastLockoutDate" />
+          <ScalarProperty Name="LastPasswordChangedDate" ColumnName="LastPasswordChangedDate" />
+          <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="IsLockedOut" ColumnName="IsLockedOut" />
+          <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+          <ScalarProperty Name="PasswordAnswer" ColumnName="PasswordAnswer" />
+          <ScalarProperty Name="PasswordQuestion" ColumnName="PasswordQuestion" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+          <ScalarProperty Name="PasswordFormat" ColumnName="PasswordFormat" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UnitRecord">
+      <EntityTypeMapping TypeName="MedicalBillingSystemModel.UnitRecord">
+        <MappingFragment StoreEntitySet="UnitRecord">
+          <ScalarProperty Name="SubmittedRecordIndex" ColumnName="SubmittedRecordIndex" />
+          <ScalarProperty Name="SubmittedAmount" ColumnName="SubmittedAmount" />
+          <ScalarProperty Name="ProgramPayment" ColumnName="ProgramPayment" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="BilateralIndicator" ColumnName="BilateralIndicator" />
+          <ScalarProperty Name="SpecialCircumstanceIndicator" ColumnName="SpecialCircumstanceIndicator" />
+          <ScalarProperty Name="RecordClaimType" ColumnName="RecordClaimType" />
+          <ScalarProperty Name="ExplainCode3" ColumnName="ExplainCode3" />
+          <ScalarProperty Name="ExplainCode2" ColumnName="ExplainCode2" />
+          <ScalarProperty Name="RunCode" ColumnName="RunCode" />
+          <ScalarProperty Name="DiagCode" ColumnName="DiagCode" />
+          <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+          <ScalarProperty Name="RecordIndex" ColumnName="RecordIndex" />
+          <ScalarProperty Name="ExplainCode" ColumnName="ExplainCode" />
+          <ScalarProperty Name="UnitPremiumCode" ColumnName="UnitPremiumCode" />
+          <ScalarProperty Name="UnitAmount" ColumnName="UnitAmount" />
+          <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
+          <ScalarProperty Name="UnitCode" ColumnName="UnitCode" />
+          <ScalarProperty Name="ServiceRecordId" ColumnName="ServiceRecordId" />
+          <ScalarProperty Name="UnitRecordId" ColumnName="UnitRecordId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ServiceRecord">
+      <EntityTypeMapping TypeName="MedicalBillingSystemModel.ServiceRecord">
+        <MappingFragment StoreEntitySet="ServiceRecord">
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="FacilityNumber" ColumnName="FacilityNumber" />
+          <ScalarProperty Name="ServiceLocation" ColumnName="ServiceLocation" />
+          <ScalarProperty Name="RollOverNumber" ColumnName="RollOverNumber" />
+          <ScalarProperty Name="DischargeDate" ColumnName="DischargeDate" />
+          <ScalarProperty Name="PaymentApproveDate" ColumnName="PaymentApproveDate" />
+          <ScalarProperty Name="MessageFromICS" ColumnName="MessageFromICS" />
+          <ScalarProperty Name="WCBFaxStatus" ColumnName="WCBFaxStatus" />
+          <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+          <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ClaimAmount" ColumnName="ClaimAmount" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="RejectedClaimId" ColumnName="RejectedClaimId" />
+          <ScalarProperty Name="PaidClaimId" ColumnName="PaidClaimId" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="ServiceEndTime" ColumnName="ServiceEndTime" />
+          <ScalarProperty Name="ServiceStartTime" ColumnName="ServiceStartTime" />
+          <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+          <ScalarProperty Name="ReferringDoctorNumber" ColumnName="ReferringDoctorNumber" />
+          <ScalarProperty Name="HospitalNumber" ColumnName="HospitalNumber" />
+          <ScalarProperty Name="Province" ColumnName="Province" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+          <ScalarProperty Name="PatientLastName" ColumnName="PatientLastName" />
+          <ScalarProperty Name="PatientFirstName" ColumnName="PatientFirstName" />
+          <ScalarProperty Name="ClaimNumber" ColumnName="ClaimNumber" />
+          <ScalarProperty Name="ClaimsInId" ColumnName="ClaimsInId" />
+          <ScalarProperty Name="ServiceRecordId" ColumnName="ServiceRecordId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
