@@ -1,0 +1,179 @@
+﻿<pages enableViewState="false" buffer="true"></pages>
+
+@model IEnumerable<MBS.Web.Portal.Models.SimpleRecord>
+
+@Scripts.Render("~/Scripts/RecordSubmittedIndex.js?v=" + MBS.DataCache.StaticCodeList.VersionNumber)    
+
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <h3 class="panel-title">View Submitted Claims</h3>
+    </div>
+    <div class="panel-body">     
+        <div class="pull-left">
+            <button class="btn btn-sm control_buttons" onclick="batchResubmission();" style="padding-left: 5px;">
+                <img src="@Url.Content("~/Content/images/icon_arrange.png")" title="Batch Resubmission" />
+                <span>Batch Resubmission</span>
+            </button>
+            <button class="btn btn-sm control_buttons" onclick="batchIgnore();" style="padding-left: 5px;">
+                <img src="@Url.Content("~/Content/images/icon_delete.png")" title="Batch Delete" />
+                <span>Batch Delete</span>
+            </button>
+
+        </div>
+        <div class="pull-right" style="padding-bottom:10px;">
+            <button class="btn btn-sm control_buttons" onclick="window.location.href='@Url.Action("ViewClaimsInFiles", "ClaimsIn")'">
+                <img src="@Url.Content("~/Content/images/icon_arrange.png")" title="View Submitted ClaimsIn Files" />
+                <span>View Submitted ClaimsIn Files</span>
+            </button>
+        </div>
+		<table id="unitrecords" class="table table-hover">		
+			<thead>
+				<tr>            
+                    <th><input type="checkbox" name="all"></th>
+					<th class="col-sm-1">Claim #</th>
+					<th class="col-sm-1">Hospital #</th>        
+					<th class="col-sm-1">Last Name</th> 
+					<th class="col-sm-1">First Name</th>
+					<th class="col-sm-1">Date of Service</th>
+                    <th class="col-sm-1">Submission Date</th>
+					<th class="col-sm-1">Claim Amount</th>
+                    <th class="col-sm-1">Fee Codes</th>
+                    <th class="col-sm-1">WCB</th>
+					<th class="col-sm-5"></th>
+				</tr>         
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+                {                  
+					<tr class="@(item.IsSubmissionPending ? "alert-warning" : "")" id="@(@item.ServiceRecordId)" onmouseover="$(this).find('.control_buttons').show()" onmouseout="$(this).find('.control_buttons').hide()" >					
+                        <td style="width:10px;"><input type="checkbox" name="batch" /></td>
+                        <td>
+                            @item.ClaimNumber
+                        </td>
+
+						<td>
+							@item.HospitalNumber
+						</td>
+						<td>
+							@item.PatientLastName
+						</td>
+						<td>
+							@item.PatientFirstName
+						</td>                   
+						<td>
+							@string.Format("{0}/{1}/{2}", item.ServiceDate.ToString("dd"), item.ServiceDate.ToString("MM"), item.ServiceDate.ToString("yyyy"))
+						</td>
+                        <td>
+                            @(item.SubmissionDate.HasValue ? string.Format("{0}/{1}/{2}", item.SubmissionDate.Value.ToString("dd"), item.SubmissionDate.Value.ToString("MM"), item.SubmissionDate.Value.ToString("yyyy")) : "")
+                        </td>                        
+						<td>
+							@string.Format("{0:C}", item.ClaimAmount)
+						</td> 
+                        <td>
+                            @item.DistinctFeeCodes
+                        </td>   
+                        <td class="wcbfaxstatus">
+                            @item.WCBFaxStatus
+                        </td>                                  
+						<td>
+							<div class="control_buttons clearfix" style="display:none;">
+								<button class="btn btn-xs" onclick="window.location.href='@Url.Action("Edit", "ServiceRecord")?type=submitted&id=@item.ServiceRecordId'" >
+									<img src="@Url.Content("~/Content/images/icon_edit.png")" title="View" />
+									<span>View</span>
+								</button>	
+                                @if (!item.IsSubmissionPending)
+                                {
+                                    <button class="btn btn-xs" onclick="DeleteServiceRecord('@item.ServiceRecordId');CancelPropagation(event);" >
+									    <img src="@Url.Content("~/Content/images/icon_delete.png")" title="Delete" />
+									    <span>Delete</span>
+								    </button>
+                                    <button class="btn btn-xs" onclick="ResubmitServiceRecord('@item.ServiceRecordId');CancelPropagation(event);" >
+									    <img src="@Url.Content("~/Content/images/icon_edit.png")" title="Edit & Resubmit" />
+									    <span>Edit & Resubmit</span>
+								    </button>
+
+                                    if (item.WCBFaxStatus != "")
+                                    {
+                                        if (!string.IsNullOrEmpty(item.WCBFaxStatus))
+                                        {
+                                            <button class="btn btn-xs activate" onclick="ActivateServiceRecord('@item.ServiceRecordId');CancelPropagation(event);">
+                                                <img src="@Url.Content("~/Content/images/icon_okay.png")" title="Validate" />
+                                                <span>Validate</span>
+                                            </button>
+                                        }
+
+                                        <button class="btn btn-xs activate" onclick="ViewFaxReceipt('@item.ServiceRecordId');CancelPropagation(event);">
+                                            <img src="@Url.Content("~/Content/images/icon_phone.png")" title="Receipt" />
+                                            <span>Fax Receipt</span>
+                                        </button>
+                                    }
+                                }			
+                                	                         
+							</div>
+						</td>                                                   
+					</tr>
+				}
+			</tbody>   
+		</table>
+	</div>
+</div>
+
+<div class="modal fade" id="viewFaxReceipt" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Fax Receipt</h4>
+            </div>
+            <div class="modal-body">
+                <div id="FaxReceiptDetail" style="text-align:center;vertical-align:central;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $("input:checkbox[name=batch]").prop( "checked", false );
+
+	    $('#unitrecords').dataTable({
+	        "stateSave": true,
+	        "stateDuration": -1,
+            "lengthMenu": [[50, 100, 300, -1], [50, 100, 300, "All"]],
+            "pageLength": 100,
+            "searching" : true,
+	        "order": [[1, "desc"]],
+	        "columns": [
+                { "orderable": false },
+                null,
+                null,
+                null,
+                null,
+                { "orderDataType": "dom-text", "type": "date-eu" },
+                { "orderDataType": "dom-text", "type": "date-eu" },
+                null,
+                { "orderable": false },
+                null,
+                { "orderable": false }
+	        ],
+	        "drawCallback": function (settings) {
+	            $("input:checkbox[name=batch]").prop( "checked", false );
+	            $("input:checkbox[name=all]").prop( "checked", false );
+	        }
+	    });
+
+	    $("input:checkbox[name=all]").change(function() { 
+	        if(this.checked) { 
+	            $("input:checkbox[name=batch]").prop( "checked", true );
+	        } else {
+	            $("input:checkbox[name=batch]").prop( "checked", false );
+	        }
+	    });
+	});    
+</script>
+
+

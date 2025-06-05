@@ -1,0 +1,111 @@
+﻿@using MBS.Web.Portal.Constants
+@model MBS.Web.Portal.Models.ServiceRecordDetailModel
+
+@{
+    ViewBag.Title = (Model.Record.ClaimStatus == (int)SearchClaimType.Paid ?
+                        "View Paid Claim - #" + Model.Record.ClaimNumber :
+                            (Model.Record.ClaimStatus == (int)SearchClaimType.Rejected ? "Edit Rejected Claim - #" + Model.Record.ClaimNumber :
+                                (Model.Record.ClaimStatus == (int)SearchClaimType.Submitted ? "View Submitted Claim Info - #" + Model.Record.ClaimNumber :
+                                    (Model.Record.ClaimStatus == (int)SearchClaimType.Pending ? "View Pending Claim Info - #" + Model.Record.ClaimNumber :
+                                        "Edit Unsubmitted Claim Info - #" + Model.Record.ClaimNumber))));
+    ViewBag.CPSClaimNumber = (Model.Record.ClaimsInId.HasValue ? "CPS Claim #" + Model.Record.CPSClaimNumber : "");
+}
+
+<div class="panel panel-warning">
+    <div class="panel-heading" style="height:40px;">        
+        <div style="float:left"><h3 class="panel-title">@ViewBag.Title</h3></div>
+        <div style="float:right"><h3 class="panel-title">@ViewBag.CPSClaimNumber</h3></div>           
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm("Edit", "ServiceRecord", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Record.ServiceRecordId)
+            @Html.HiddenFor(m => m.Record.UserId)
+            @Html.HiddenFor(m => m.Record.ClaimsInId)
+            @Html.HiddenFor(m => m.Record.PaidClaimId)
+            @Html.HiddenFor(m => m.Record.RejectedClaimId)
+            @Html.HiddenFor(m => m.Record.CreatedDate)
+            @Html.HiddenFor(m => m.Record.ClaimNumber)
+            @Html.HiddenFor(m => m.Record.RollOverNumber)
+            @Html.HiddenFor(m => m.ReferFrom)
+            @Html.HiddenFor(m => m.Record.ClaimToIgnore)
+            @Html.HiddenFor(m => m.Record.ClaimStatus)
+
+            <div class="form-group" style="width:800px;">
+                <div class="col-sm-offset-4">
+                    @if (Model.Record.ClaimStatus == (int)SearchClaimType.Unsubmitted || Model.Record.ClaimStatus == (int)SearchClaimType.Rejected)
+                    {
+                        <button class="btn btn-default" type="submit" tabindex="76" onclick="SetButtonUsedToSubmit('');">Save</button>
+                        if (Model.Record.ClaimStatus == (int)SearchClaimType.Unsubmitted)
+                        {
+                            <button class="btn btn-default" type="submit" tabindex="77" onclick="SetButtonUsedToSubmit('SaveAndAddNew');">Save and Add New</button>
+                        }
+
+                        if (Model.Record.ClaimStatus == (int)SearchClaimType.Rejected)
+                        {
+                            <button class="btn btn-default" type="submit" tabindex="77" onclick="SetButtonUsedToSubmit('SaveAsResubmit');">Save As Resubmit</button>
+                        }                        
+                    }
+
+                    @if (Model.Record.ClaimStatus == (int)SearchClaimType.Submitted || Model.Record.ClaimStatus == (int)SearchClaimType.Pending || Model.Record.ClaimStatus == (int)SearchClaimType.Paid)
+                    { 
+                        <button class="btn btn-default paidResubmitButton" type="submit" tabindex="77" onclick="return PaidResubmissionClick();">Resubmit And Edit</button>
+                    }
+
+                    <button class="btn btn-default cancelButton" type="button" onclick="GoBack();CancelPropagation(event);" tabindex="78">Cancel</button>
+                    <div class="pull-right">
+                        @Html.RadioButtonFor(m => m.Record.ClaimType, 0, Model.Record.ClaimType == 0) <span>MSB Claim</span>
+                        @Html.RadioButtonFor(m => m.Record.ClaimType, 1, Model.Record.ClaimType == 1) <span>WCB Claim</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pull-left">
+                @Html.ValidationSummary()
+                @Html.Partial("_CreateOrEdit", Model)
+            </div>
+
+            <div class="form-group" style="width:800px;">
+                <div class="col-sm-offset-4">
+                    @if (Model.Record.ClaimStatus == (int)SearchClaimType.Unsubmitted || Model.Record.ClaimStatus == (int)SearchClaimType.Rejected)
+                    {
+                        <button class="btn btn-default" type="submit" tabindex="73" onclick="SetButtonUsedToSubmit('');">Save</button>
+                        if (Model.Record.ClaimStatus == (int)SearchClaimType.Unsubmitted)
+                        {
+                            <button class="btn btn-default" type="submit" tabindex="74" onclick="SetButtonUsedToSubmit('SaveAndAddNew');">Save and Add New</button>
+                        }
+
+                        if (Model.Record.ClaimStatus == (int)SearchClaimType.Rejected)
+                        {
+                            <button class="btn btn-default" type="submit" tabindex="77" onclick="SetButtonUsedToSubmit('SaveAsResubmit');">Save As Resubmit</button>
+                        }
+                    }
+
+                    @if (Model.Record.ClaimStatus == (int)SearchClaimType.Submitted || Model.Record.ClaimStatus == (int)SearchClaimType.Pending || Model.Record.ClaimStatus == (int)SearchClaimType.Paid)
+                    {
+                        <button class="btn btn-default paidResubmitButton" type="submit" tabindex="77" onclick="return PaidResubmissionClick();">Resubmit And Edit</button>
+                    }
+
+                    <button class="btn btn-default cancelButton" type="button" onclick="GoBack();CancelPropagation(event);" tabindex="75">Cancel</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">	
+    function GoBack() {
+        history.back();        
+    }
+
+    function PaidResubmissionClick() {
+        var result = confirm("Are you sure you want to resubmit this claim?");
+        if (result) {
+            SetButtonUsedToSubmit('ResubmitAndEdit');
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>

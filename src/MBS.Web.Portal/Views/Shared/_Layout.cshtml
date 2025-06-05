@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Medical Billing System</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="googlebot" content="noindex, nofollow">
+
+        <script type="text/javascript">
+            _applicationBaseUrl = '@Url.Content("~")';
+            if (_applicationBaseUrl == "/") {
+                _applicationBaseUrl = "";
+            }
+
+            function ShowExport() {
+                window.open(_applicationBaseUrl + "/Home/ManualPDF");
+                return false;
+            }
+             
+        </script>
+        @Styles.Render("~/Content/site.css")
+        @Styles.Render("~/Content/bootstrap.min.css")
+        @Styles.Render("~/Content/bootstrap-theme.min.css")
+        @Styles.Render("~/Content/themes/base/css")
+        @Styles.Render("~/Content/datatable")
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryui")
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/jquerymaskedinput")
+        @Scripts.Render("~/Scripts/bootstrap.min.js")
+        @Scripts.Render("~/bundles/datatable")
+
+        @if (Request.IsAuthenticated)
+        {
+            @Scripts.Render("~/Scripts/Common.js?v=" + MBS.DataCache.StaticCodeList.VersionNumber)    
+            @Scripts.Render("~/Scripts/date-eu.js") 
+            @Scripts.Render("~/Scripts/de_datetime.js") 
+        }
+    </head>
+    <body>
+        
+        <div class="navbar navbar-default" role="navigation" style="margin-bottom: 19px;">
+            <div class="container" style="width: 1500px;">     
+                           
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                
+                @if (Request.IsAuthenticated)
+                {                    
+                    <div class="navbar-collapse collapse" style="width: max-content;">
+                        <div>
+                            <div id="UserProfileName" style="float:right;font-size:18px;margin-top:12px;"></div>
+                        </div>
+                        @if (!User.IsInRole("Administrator"))
+                        {
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                                <li>@Html.ActionLink("New Claims", "NotSubmitted", "ServiceRecord")</li>
+                                <li>@Html.ActionLink("Submitted Claims", "Index", "ServiceRecord")</li>
+                                <li>@Html.ActionLink("Pending Claims", "Index", "ServiceRecord/PendingClaim")</li>
+                                <li>@Html.ActionLink("Paid Claims", "Index", "ServiceRecord/PaidClaim")</li>
+                                <li>@Html.ActionLink("Rejected Claims", "Index", "ServiceRecord/RejectedClaim")</li>
+                                <li>@Html.ActionLink("Search Claims", "Index", "ServiceRecord/SearchClaims")</li>
+                                <li>@Html.ActionLink("Search Claims Beta", "Index", "ServiceRecord/SearchClaimsBeta")</li>
+                                <li>@Html.ActionLink("Reports", "Index", "ClaimsReport")</li>
+                                <li>@Html.ActionLink("Account Management", "Manage", "Account")</li>
+                                <li><a href="about:blank" onclick="ShowExport(); return false;" style="color:#428bca;">Manual</a></li>
+                                <li class="dropdown">
+                                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-form navbar-left" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <a href="javascript:document.getElementById('logoutForm').submit();" class="navbar-form navbar-left" onclick="clearDataTableStates();">Log off</a>
+                                    }
+                                </li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Enabled Users", "Index", "UserManagement")</li>
+                                <li>@Html.ActionLink("Disabled Users", "DisabledUsers", "UserManagement")</li>
+                                <li>@Html.ActionLink("Search Claims", "Index", "ServiceRecord/SearchClaims")</li>
+                                <li>@Html.ActionLink("Search Claims Beta", "Index", "ServiceRecord/SearchClaimsBeta")</li>
+                                <li class="dropdown">
+                                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-form navbar-left" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <a href="javascript:document.getElementById('logoutForm').submit();" class="navbar-form navbar-left" onclick="deleteAllCookies();clearDataTableStates();">Log off</a>
+                                    }
+                                </li>
+                            </ul>                           
+                        }
+                    </div><!--/.navbar-collapse -->
+                }
+                else
+                {
+                    <div class="navbar-collapse collapse">                                               
+                        <ul class="nav navbar-nav">
+                            <li><a href="about:blank" onclick="ShowExport(); return false;" style="color:#428bca;">Manual</a></li>                                                    
+                        </ul> 
+                    </div>
+                }              
+            </div>
+        </div>
+
+        <div class="container" style="width: 1500px;">                        
+            @RenderSection("featured", required: false)
+            <div>
+                @RenderBody()
+            </div>            
+        </div>            
+        <div class="footer">
+            <center><h5><small>&copy; @DateTime.Now.Year - Perspect Medical Billing</small></h5></center>
+        </div>            
+
+        @RenderSection("scripts", required: false)
+    </body>
+@if (Request.IsAuthenticated)
+{
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                async: true,
+                type: "GET",
+                cache: false,
+                url: _applicationBaseUrl + '/Account/GetUserDoctoName',
+                success: function (response) {
+                    if (response != null && response != undefined) {
+                        $("#UserProfileName").html(response);
+                    }
+                },
+                error: function (msg) {
+                }
+            });
+        });
+
+        function clearDataTableStates()
+        {
+            sessionStorage.clear();
+        }
+
+        function deleteAllCookies() {
+            console.log("deleting cookies..");
+            const cookies = document.cookie.split(";");
+
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i];
+                const eqPos = cookie.indexOf("=");
+                const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            }
+        }
+
+    </script>
+}
+</html>

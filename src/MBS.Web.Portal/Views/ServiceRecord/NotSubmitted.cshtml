@@ -1,0 +1,196 @@
+﻿<pages enableViewState="false" buffer="true"></pages>
+
+@model MBS.Web.Portal.Models.NotSubmittedViewModel
+@{
+    ViewBag.Title = "New Claims";
+}
+
+@Scripts.Render("~/Scripts/NotSubmittedIndex.js?v=" + MBS.DataCache.StaticCodeList.VersionNumber)    
+
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            @ViewBag.Title
+
+            @{
+                var totalAmountRange = "";
+                if (Model.TotalAmount > 85000d)
+                {
+                    totalAmountRange = "timeSpanDanger";
+                }
+                else if (Model.TotalAmount > 60000d)
+                {
+                    totalAmountRange = "timeSpanStart";
+                }
+            }
+
+            <div id="totalAmount" class="pull-right @totalAmountRange">Total Amount: @string.Format("{0:C}", Model.TotalAmount)</div>
+        </h3>
+    </div>
+    <div class="panel-body">
+        @if (!Model.ContainUserProfile)
+        {
+            <div class="alert alert-danger" style="width:750px;">
+                You must fill in your User Profile in order to submit to MSB site. Click @Html.ActionLink("here", "UserProfile", "Account") to fill in your profile.
+            </div>
+        }
+
+        @if (Model.ContainUserProfile && !Model.ContainRequiredSubmissionData)
+        {
+            <div class="alert alert-danger" style="width:750px;">
+                You must fill in Group Number and Group User Key in order to submit to MSB site. Click @Html.ActionLink("here", "UserProfile", "Account") to fill in your profile.
+            </div>
+        }
+
+        @if (Model.TotalAmount > 100000d)
+        {
+            <div class="alert alert-danger" style="width:750px;">
+                Your accumlated claim amount is over $100,000 limit. You are not able to submit claims now, please contact colin@perspect.ca!
+            </div>
+        }
+        else if (Model.TotalAmount > 85000d)
+        {
+            <div class="alert alert-danger" style="width:750px;">
+                Your accumlated claim amount is soon to hit $100,000 limit. If over the limit, you will not able to submit the claims! Please submit the claims below asap!
+            </div>
+        }
+
+        @if (Model.TotalAmount < 100000d)
+        {
+            <div class="pull-left">
+                <button class="btn btn-sm control_buttons" onclick="window.location.href='@Url.Action("Create", "ServiceRecord")'">
+                    <img src="@Url.Content("~/Content/images/icon_add.png")" title="Add New Claim" />
+                    <span>Add New Claim</span>
+                </button>
+            </div>
+        }
+
+        <div class="pull-right" style="padding-bottom:10px;">
+            <button class="btn btn-sm control_buttons submit_button" onclick="SubmitReport();" @((Model.AllowToSubmit && Model.ContainUserProfile && Model.ContainRequiredSubmissionData && Model.UnSubmittedList.Count() > 0) ? string.Empty : "disabled")>
+                <img src="@Url.Content("~/Content/images/icon_collection.png")" title="Submit" />
+                <span>Submit Claims</span>
+            </button>
+        </div>
+        <table id="notsubmitted" class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="col-sm-1">Claim #</th>
+                    <th class="col-sm-1">Hospital #</th>
+                    <th class="col-sm-1">Last Name</th>
+                    <th class="col-sm-1">First Name</th>
+                    <th class="col-sm-1">Date of Service</th>
+                    <th class="col-sm-1"># Days Left</th>
+                    <th class="col-sm-1">Claim Amount</th>
+                    <th class="col-sm-1">Fee Codes</th>
+                    <th class="col-sm-2">Last Modified Date</th>
+                    <th class="col-sm-2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.UnSubmittedList)
+                {
+                    <tr id="@item.ServiceRecordId" class="@(item.ClaimType == 0 ? "msbclaim" : "wcbclaim")" onmouseover="$(this).find('.control_buttons').show()" onmouseout="$(this).find('.control_buttons').hide()">
+                        <td>
+                            @item.ClaimNumber
+                        </td>
+                        <td>
+                            @item.HospitalNumber
+                        </td>
+                        <td>
+                            @item.PatientLastName
+                        </td>
+                        <td>
+                            @item.PatientFirstName
+                        </td>
+                        <td>
+                            @string.Format("{0}/{1}/{2}", item.ServiceDate.ToString("dd"), item.ServiceDate.ToString("MM"), item.ServiceDate.ToString("yyyy"))
+                        </td>
+                        @{
+                            var timeSpan = (item.ServiceDate.AddMonths(6) - Model.CurrentDate).Days;
+                            var timeColorRange = "";
+                            if (timeSpan <= 30)
+                            {
+                                timeColorRange = "timeSpanDanger";
+                            }
+                            else if (timeSpan <= 60)
+                            {
+                                timeColorRange = "timeSpanWarning";
+                            }
+                            else if (timeSpan <= 90)
+                            {
+                                timeColorRange = "timeSpanStart";
+                            }
+
+                            <td class="@timeColorRange">@timeSpan</td>
+                        }
+                        <td class="claimAmount">
+                            @string.Format("{0:C}", item.ClaimAmount)
+                        </td>
+                        <td>@item.DistinctFeeCodes</td>
+                        <td>
+                            @(item.LastModifiedDate.HasValue ? string.Format("{0}/{1}/{2} {3}", item.LastModifiedDate.Value.AddHours(ViewBag.TimeZoneOffset).ToString("dd"), item.LastModifiedDate.Value.AddHours(ViewBag.TimeZoneOffset).ToString("MM"), item.LastModifiedDate.Value.AddHours(ViewBag.TimeZoneOffset).ToString("yyyy"), item.LastModifiedDate.Value.AddHours(ViewBag.TimeZoneOffset).ToString(" HH:mm:ss")) : string.Empty)
+                        </td>
+                        <td>
+                            <div class="control_buttons clearfix" style="display:none;">
+                                <button class="btn btn-xs" onclick="OpenDetail('@item.ServiceRecordId');CancelPropagation(event);">
+                                    <img src="@Url.Content("~/Content/images/icon_edit.png")" title="Edit" />
+                                    <span>Edit</span>
+                                </button>
+                                <button class="btn btn-xs" onclick="DeleteServiceRecord('@item.ServiceRecordId');CancelPropagation(event);">
+                                    <img src="@Url.Content("~/Content/images/icon_delete.png")" title="Delete" />
+                                    <span>Delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<div class="modal fade" id="submission" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Claims Submission</h4>
+            </div>
+            <div class="modal-body">         
+                <div id="SubmissionResult" style="text-align:center;vertical-align:central;">                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="hiddenPopupMessage" style="display:none"></div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#notsubmitted').dataTable({
+            "stateSave": true,
+            "stateDuration": -1,
+            "lengthMenu": [[50, 100, 300, -1], [50, 100, 300, "All"]],
+            "pageLength": 100,
+            "searching": true,
+            "order": [[0, "desc"]],
+            "columns": [
+                null,
+                null,
+                null,
+                null,
+                { "orderDataType": "dom-text", "type": "date-eu" },
+                null,
+                null,
+                { "orderable": false },
+                { "orderDataType": "dom-text", "type": "de_datetime" },
+                { "orderable": false }
+            ]
+        });              
+    });   
+</script>

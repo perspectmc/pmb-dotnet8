@@ -32,6 +32,16 @@ obj/
 appsettings.*.local.json
 .env
 
+# Legacy Visual Studio publish profiles
+*.PublishSettings
+*.vssscc
+*.vspscc
+
+# SQL Server tooling artifacts
+*.mdf
+*.ldf
+*.sqlproj.user
+
 # Global cache folders
 node_modules/
 packages/
