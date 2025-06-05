@@ -13,6 +13,7 @@ This file outlines the full work breakdown for PMB modernization, grouped into s
 | Code | Action                                                                                 | Status       |
 |------|----------------------------------------------------------------------------------------|--------------|
 | P1   | Complete full code and SQL schema review (SOURCE_OVERVIEW, Excel docs)                | ✔ Done       |
+| P1   | Audit source code for hardcoded credentials or secrets, remove or externalize to secure config | 🔜 Next |
 | P1   | Confirm backup status and implement daily VPS-to-local incremental backup             | 🟡 In Progress |
 | P1   | Audit encryption and privacy handling of PHI                                           | 🟡 In Progress |
 | P1   | Begin security hardening plan for VPS (firewall, access lockdown, Cloudflare)         | 🔜 Next       |
