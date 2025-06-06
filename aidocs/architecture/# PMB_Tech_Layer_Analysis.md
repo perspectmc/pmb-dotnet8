@@ -66,7 +66,8 @@ A detailed review of the current architecture to assess modernization needs, upg
   - Requires migration to EF Core Code First
 
 - **Database**  
-  - `ClaimsIn.sql`, `ServiceRecord.sql`, `Users.sql`
+  - Core SQL tables (`ClaimsIn.sql`, `ServiceRecord.sql`, `Users.sql`)  
+    - ⚠️ *Note: The legacy `SQLDatabaseProj` project has been marked obsolete by the original developer (June 6, 2025), but its schema content was historically used for reference.*
 
 - **Repositories**  
   - `ClaimsInRepository.cs`, `HomeRepository.cs`
@@ -81,7 +82,8 @@ A detailed review of the current architecture to assess modernization needs, upg
 
 - **Build & CI/CD**  
   - No structured CI/CD pipeline detected  
-  - Needs GitHub Actions or Azure DevOps
+  - Historical Azure DevOps integration was present in some folder structures  
+  - Needs GitHub Actions or clean Azure DevOps pipeline
 
 ---
 

@@ -26,14 +26,16 @@ _Last updated: May 27, 2025_
 | `MBS.DomainModel`       | Entity definitions for claims, users, transactions                      |
 | `MBS.Common`            | Helpers: string formatting, security, HTML encoding                     |
 | `MBS.RetrieveReturn`    | Parser for MSB return files (`returns.TXT`) and claim status updater     |
-| `MBS.ReconcileClaims`   | Legacy reconciliation logic (batch-style)                                |
+| `MBS.ReconcileClaims`   | Obsolete legacy reconciliation logic (batch-style) — removed by developer; available on request |
 | `MBS.PasswordChanger`   | Standalone password reset utility (manual use; method typo present)      |
 | `MBS.ApplicationInitializer` | Auto-generated; no business logic                                  |
 | `App_Data`              | Static PDFs, templates, legacy assets                                   |
 | `App_Start`             | Standard ASP.NET startup config (routes, bundles, filters)              |
-| `SQLDatabaseProj`       | DB schema project (now fully exported to Excel)                         |
+| `SQLDatabaseProj`       | Obsolete DB schema project — superseded by exported Excel version; removed by developer |
 | `MBS.TestCodeUsed`      | Deprecated code, not used                                               |
 | `.nuget`, `packages`    | NuGet metadata and restore configs                                      |
+
+**Note:** Ben (original developer) confirmed on June 6, 2025 that both `MBS.ReconcileClaims` and `SQLDatabaseProj` are obsolete and were intentionally removed. They can be restored upon request.
 
 ---
 
@@ -94,7 +96,7 @@ _Last updated: May 27, 2025_
 ## ⚠️ 6. Known Gaps / Limitations
 
 - No impersonation logging or audit trail  
-- No version control (e.g., Git)  
+- Recently adopted Git version control; legacy folders were removed and may need review for completeness  
 - No CI/CD pipeline  
 - Hardcoded values in Razor views  
 - Legacy/unmaintained folders still present  

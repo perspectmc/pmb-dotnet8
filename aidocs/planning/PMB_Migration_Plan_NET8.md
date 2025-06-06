@@ -22,7 +22,7 @@ Establish a reliable foundation for migration by preparing the development envir
     - GitLens and REST Client (VS Code extensions)
 - [ ] Install AI tools: Cursor AI, Claude 4 Opus, ChatGPT-4o (Pro), Gemini 2.5 Pro
 - [X] Create `.aidocs/README.md` to explain folder structure
-- [ ] Initialize `.gitignore`, `README.md`, and `migration_journal.md`
+- [X] Initialize `.gitignore`, `README.md`, and `migration_journal.md`
 - [ ] Set Visual Studio Code as the default `.md` editor for both macOS and Windows environments
 - [ ] Document hardware and development environment specifications in `/aidocs/Infra/HomeSetup.md`
 - [ ] Execute environment setup tasks in parallel with architecture documentation to optimize project timelines.

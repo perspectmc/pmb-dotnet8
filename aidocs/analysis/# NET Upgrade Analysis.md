@@ -1,6 +1,3 @@
-
-
-
 # .NET Upgrade Analysis Report
 
 **Project Name:** MBS Application  
@@ -19,12 +16,13 @@ This report documents the results of a full upgrade analysis across the Perspect
 
 ## 1. Summary of Findings
 
-- Projects analyzed: 8  
+- Projects analyzed: 7  
 - Total issues identified: 38  
 - Mandatory fixes: 25  
 - Optional upgrades: 7  
 - Potential enhancements: 6  
-- Estimated upgrade effort: 38 story points
+- Estimated upgrade effort: 38 story points  
+- Two projects (MBS.ReconcileClaims, SQLDatabaseProj) marked obsolete and excluded from scope
 
 **Key upgrade categories:**
 - NuGet dependency updates
@@ -55,10 +53,9 @@ This report documents the results of a full upgrade analysis across the Perspect
 - Convert to SDK format  
 - Upgrade to .NET 8.0
 
-### 2.5 MBS.RetrieveReturn
-- EntityFramework 6.4.4 → upgrade to 6.5.1  
-- Convert project format  
-- Upgrade to .NET 8.0
+### 2.5 MBS.ReconcileClaims (Archived)
+- This project is marked obsolete by the original developer (Ben).
+- No upgrade work required unless needed for legacy reference.
 
 ### 2.6 MBS.SubmittedPendingClaims
 - EntityFramework 6.4.4 → upgrade to 6.5.1  
@@ -78,6 +75,10 @@ This report documents the results of a full upgrade analysis across the Perspect
 - Remove redundant packages (now built into .NET 8)  
 - Convert to SDK-style project  
 - Upgrade to .NET 8.0-windows
+
+### 2.9 SQLDatabaseProj (Archived)
+- Marked obsolete by developer; excluded from .NET 8 upgrade.
+- Retain for reference only. No further action required.
 
 ---
 

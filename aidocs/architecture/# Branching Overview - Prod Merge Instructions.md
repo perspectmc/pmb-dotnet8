@@ -12,6 +12,18 @@
 - `cleanup/deprecated-removal`: Used for identifying and safely removing obsolete files.
 - `migration/net8`: Branch for tracking the .NET 8 upgrade and related changes.
 
+> 🔒 **Safety Note:** To prevent accidental changes to the production repository (`prod`), a Git safeguard has been added on local machines. The push URL for `prod` is intentionally disabled using:
+>
+> ```bash
+> git remote set-url --push prod no_push
+> ```
+>
+> This allows read-only access (e.g., `git fetch prod`) but blocks all pushes. Only Ben should push to `prod`. To temporarily restore push access (e.g., in emergencies), run:
+>
+> ```bash
+> git remote set-url --push prod https://github.com/perspectmc/pmb-prod.git
+> ```
+
 ## Merge Policy
 
 - Weekly merges **from `prod/main` → `main`** to track changes in production.
