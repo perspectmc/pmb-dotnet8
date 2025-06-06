@@ -196,3 +196,20 @@ function batchIgnore()
         }
     }
 }
+
+
+function DownloadFaxPDF(id) {
+    if (id != "") {
+        var iframe = document.createElement("iframe");
+        iframe.src = _applicationBaseUrl + '/ServiceRecord/DownloadFaxPDF?id=' + id;
+
+        // This makes the IFRAME invisible to the user.
+        iframe.style.display = "none";
+
+        // Add the IFRAME to the page.  This will trigger
+        //   a request to GenerateFile now.
+        document.body.appendChild(iframe);
+    } else {
+        alert("Invalid parameters");
+    }
+}

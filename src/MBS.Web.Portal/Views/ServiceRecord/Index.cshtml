@@ -92,7 +92,7 @@
 									    <span>Edit & Resubmit</span>
 								    </button>
 
-                                    if (item.WCBFaxStatus != "")
+                                    if (item.ClaimType == 1 && item.WCBFaxStatus != "")
                                     {
                                         if (!string.IsNullOrEmpty(item.WCBFaxStatus))
                                         {
@@ -105,6 +105,11 @@
                                         <button class="btn btn-xs activate" onclick="ViewFaxReceipt('@item.ServiceRecordId');CancelPropagation(event);">
                                             <img src="@Url.Content("~/Content/images/icon_phone.png")" title="Receipt" />
                                             <span>Fax Receipt</span>
+                                        </button>
+
+                                        <button class="btn btn-xs" onclick="DownloadFaxPDF('@item.ServiceRecordId');CancelPropagation(event);">
+                                            <img src="@Url.Content("~/Content/images/icon_arrange.png")" title="View" />
+                                            <span>Fax File</span>
                                         </button>
                                     }
                                 }			

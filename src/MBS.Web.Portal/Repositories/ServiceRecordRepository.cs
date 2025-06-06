@@ -120,7 +120,7 @@ namespace MBS.Web.Portal.Repositories
             return context.Database.SqlQuery<SimpleRecord>(
                 "SELECT MAX(sr.ServiceRecordId) AS ServiceRecordId, MAX(sr.ClaimNumber) AS ClaimNumber, MAX(sr.HospitalNumber) AS HospitalNumber, MAX(sr.PatientLastName) AS PatientLastName, " +
                 "MAX(sr.PatientFirstName) AS PatientFirstName, MAX(sr.ServiceDate) AS ServiceDate, MAX(sr.ClaimAmount) AS ClaimAmount, " +
-                "STRING_AGG(ur.UnitCode, ',') AS AllFeeCodes, MAX(sr.CPSClaimNumber) As CPSClaimNumber, MAX(sr.LastModifiedDate) AS LastModifiedDate " +
+                "STRING_AGG(ur.UnitCode, ',') AS AllFeeCodes, MAX(sr.CPSClaimNumber) As CPSClaimNumber, MAX(sr.LastModifiedDate) AS LastModifiedDate, MAX(sr.ClaimType) AS ClaimType " +
                 "FROM ServiceRecord sr LEFT JOIN UnitRecord ur ON sr.ServiceRecordId = ur.ServiceRecordId " +
                 "WHERE sr.UserId = '" + userId + "' AND sr.CPSClaimNumber IS NULL AND sr.RejectedClaimId IS NULL AND sr.ClaimsInId IS NULL AND sr.PaidClaimId IS NULL AND sr.ClaimToIgnore = 0 " +
                 "GROUP BY sr.ServiceRecordId " +
@@ -140,7 +140,7 @@ namespace MBS.Web.Portal.Repositories
             return context.Database.SqlQuery<SimpleRecord>(
                 "SELECT MAX(sr.ServiceRecordId) AS ServiceRecordId, MAX(sr.ClaimNumber) AS ClaimNumber, MAX(sr.HospitalNumber) AS HospitalNumber, MAX(sr.PatientLastName) AS PatientLastName, " +
                 "MAX(sr.PatientFirstName) AS PatientFirstName, MAX(sr.ServiceDate) AS ServiceDate, MAX(sr.ClaimAmount) AS ClaimAmount, " +
-                "STRING_AGG(ur.UnitCode, ',') AS AllFeeCodes, MAX(sr.WCBFaxStatus) AS WCBFaxStatus, " +
+                "STRING_AGG(ur.UnitCode, ',') AS AllFeeCodes, MAX(sr.WCBFaxStatus) AS WCBFaxStatus, MAX(sr.ClaimType) AS ClaimType, " +
                 "DATEADD(hour, " + timeZoneOffset + ", MAX(ci.CreatedDate)) As SubmissionDate, MAX(sr.CPSClaimNumber) As CPSClaimNumber " +
                 "FROM ServiceRecord sr LEFT JOIN UnitRecord ur ON sr.ServiceRecordId = ur.ServiceRecordId LEFT JOIN ClaimsIn ci ON sr.ClaimsInId = ci.ClaimsInId " +
                 "WHERE sr.UserId = '" + userId + "' AND sr.CPSClaimNumber IS NULL AND sr.RejectedClaimId IS NULL AND sr.ClaimsInId IS NOT NULL " +
@@ -458,6 +458,9 @@ namespace MBS.Web.Portal.Repositories
 
             var query2 = string.Format("UPDATE UnitRecord SET SubmittedRecordIndex = RecordIndex WHERE ServiceRecordId = '{0}'", serviceRecordId);
             context.Database.ExecuteSqlCommand(query2);
+
+            var query3 = string.Format("DELETE FaxDeliver WHERE ServiceRecordId = '{0}'", serviceRecordId);
+            context.Database.ExecuteSqlCommand(query3);
         }
 
         public void ResetSubmittedServiceRecord(Guid userId, Guid serviceRecordId, int rollOverNumber, int newClaimNumber)
@@ -467,6 +470,10 @@ namespace MBS.Web.Portal.Repositories
 
             var query2 = string.Format("UPDATE UnitRecord SET SubmittedRecordIndex = RecordIndex WHERE ServiceRecordId = '{0}'", serviceRecordId);
             context.Database.ExecuteSqlCommand(query2);
+
+            var query3 = string.Format("DELETE FaxDeliver WHERE ServiceRecordId = '{0}'", serviceRecordId);
+            context.Database.ExecuteSqlCommand(query3);
+
         }
 
         public void ResetSubmittedWCBServiceRecord(Guid serviceRecordId, int rollOverNumber, int newClaimNumber)
@@ -483,7 +490,7 @@ namespace MBS.Web.Portal.Repositories
 
         public FaxDeliver GetFaxDeliver(Guid serviceRecordId)
         {
-            return context.FaxDeliver.FirstOrDefault(x => x.ServiceRecordId == serviceRecordId);
+            return context.FaxDeliver.Where(x => x.ServiceRecordId == serviceRecordId).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
         }
 
         public IEnumerable<FaxDeliver> GetPendingFaxes()

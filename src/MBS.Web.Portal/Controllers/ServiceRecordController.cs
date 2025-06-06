@@ -365,24 +365,27 @@ namespace MBS.Web.Portal.Controllers
                     {
                         var serviceRecord = _repository.GetRecordWithUnitRecords(serviceRecordId, _userId);
 
-                        foreach (var unitRecord in serviceRecord.UnitRecord)
+                        if (serviceRecord.ClaimType == 0)
                         {
-                            var resubmitClaim = new ClaimsResubmitted();
-                            resubmitClaim.ClaimNumber = serviceRecord.ClaimNumber;
-                            resubmitClaim.CreatedDate = DateTime.UtcNow;
-                            resubmitClaim.HospitalNumber = serviceRecord.HospitalNumber;
-                            resubmitClaim.PatientLastName = serviceRecord.PatientLastName;
-                            resubmitClaim.RecordId = Guid.NewGuid();
-                            resubmitClaim.ServiceDate = serviceRecord.ServiceDate;
-                            resubmitClaim.UnitCode = unitRecord.UnitCode;
-                            resubmitClaim.UnitNumber = unitRecord.UnitNumber;
-                            resubmitClaim.UnitPremiumCode = unitRecord.UnitPremiumCode;
-                            resubmitClaim.UserId = serviceRecord.UserId;
+                            foreach (var unitRecord in serviceRecord.UnitRecord)
+                            {
+                                var resubmitClaim = new ClaimsResubmitted();
+                                resubmitClaim.ClaimNumber = serviceRecord.ClaimNumber;
+                                resubmitClaim.CreatedDate = DateTime.UtcNow;
+                                resubmitClaim.HospitalNumber = serviceRecord.HospitalNumber;
+                                resubmitClaim.PatientLastName = serviceRecord.PatientLastName;
+                                resubmitClaim.RecordId = Guid.NewGuid();
+                                resubmitClaim.ServiceDate = serviceRecord.ServiceDate;
+                                resubmitClaim.UnitCode = unitRecord.UnitCode;
+                                resubmitClaim.UnitNumber = unitRecord.UnitNumber;
+                                resubmitClaim.UnitPremiumCode = unitRecord.UnitPremiumCode;
+                                resubmitClaim.UserId = serviceRecord.UserId;
 
-                            _repository.Insert(resubmitClaim);
+                                _repository.Insert(resubmitClaim);
+                            }
+
+                            _repository.Save();
                         }
-
-                        _repository.Save();
 
                         var nextNumberModel = _repository.GetNextClaimNumber(_userId);
                         _repository.ResetSubmittedServiceRecord(serviceRecordId, nextNumberModel.RollOverNumber, nextNumberModel.NextClaimNumber);
@@ -513,7 +516,7 @@ namespace MBS.Web.Portal.Controllers
                     {
                         serviceRecord = _repository.GetRecordWithUnitRecords(model.Record.ServiceRecordId, _userId);
 
-                        if (!string.IsNullOrEmpty(model.ButtonUsedToSubmit) && model.ButtonUsedToSubmit.Equals("SaveAsResubmit"))
+                        if (!string.IsNullOrEmpty(model.ButtonUsedToSubmit) && model.ButtonUsedToSubmit.Equals("SaveAsResubmit") && serviceRecord.ClaimType == 0)
                         {
                             foreach (var unitRecord in serviceRecord.UnitRecord)
                             {
@@ -2437,24 +2440,27 @@ namespace MBS.Web.Portal.Controllers
                 {
                     var serviceRecord = _repository.GetRecordWithUnitRecords(serviceRecordId, _userId);
 
-                    foreach(var unitRecord in serviceRecord.UnitRecord)
+                    if (serviceRecord.ClaimType == 0)
                     {
-                        var resubmitClaim = new ClaimsResubmitted();
-                        resubmitClaim.ClaimNumber = serviceRecord.ClaimNumber;
-                        resubmitClaim.CreatedDate = DateTime.UtcNow;
-                        resubmitClaim.HospitalNumber = serviceRecord.HospitalNumber;
-                        resubmitClaim.PatientLastName = serviceRecord.PatientLastName;
-                        resubmitClaim.RecordId = Guid.NewGuid();
-                        resubmitClaim.ServiceDate = serviceRecord.ServiceDate;
-                        resubmitClaim.UnitCode = unitRecord.UnitCode;
-                        resubmitClaim.UnitNumber = unitRecord.UnitNumber;
-                        resubmitClaim.UnitPremiumCode = unitRecord.UnitPremiumCode;
-                        resubmitClaim.UserId = serviceRecord.UserId;
+                        foreach (var unitRecord in serviceRecord.UnitRecord)
+                        {
+                            var resubmitClaim = new ClaimsResubmitted();
+                            resubmitClaim.ClaimNumber = serviceRecord.ClaimNumber;
+                            resubmitClaim.CreatedDate = DateTime.UtcNow;
+                            resubmitClaim.HospitalNumber = serviceRecord.HospitalNumber;
+                            resubmitClaim.PatientLastName = serviceRecord.PatientLastName;
+                            resubmitClaim.RecordId = Guid.NewGuid();
+                            resubmitClaim.ServiceDate = serviceRecord.ServiceDate;
+                            resubmitClaim.UnitCode = unitRecord.UnitCode;
+                            resubmitClaim.UnitNumber = unitRecord.UnitNumber;
+                            resubmitClaim.UnitPremiumCode = unitRecord.UnitPremiumCode;
+                            resubmitClaim.UserId = serviceRecord.UserId;
 
-                        _repository.Insert(resubmitClaim);
+                            _repository.Insert(resubmitClaim);
+                        }
+
+                        _repository.Save();
                     }
-
-                    _repository.Save();
 
                     var nextNumberModel = _repository.GetNextClaimNumber(_userId);                                        
                     _repository.ResetSubmittedServiceRecord(serviceRecordId, nextNumberModel.RollOverNumber, nextNumberModel.NextClaimNumber);
@@ -2568,24 +2574,27 @@ namespace MBS.Web.Portal.Controllers
                     {
                         var serviceRecord = _repository.GetRecordWithUnitRecords(serviceRecordId, _userId);
 
-                        foreach (var unitRecord in serviceRecord.UnitRecord)
+                        if (serviceRecord.ClaimType == 0)
                         {
-                            var resubmitClaim = new ClaimsResubmitted();
-                            resubmitClaim.ClaimNumber = serviceRecord.ClaimNumber;
-                            resubmitClaim.CreatedDate = DateTime.UtcNow;
-                            resubmitClaim.HospitalNumber = serviceRecord.HospitalNumber;
-                            resubmitClaim.PatientLastName = serviceRecord.PatientLastName;
-                            resubmitClaim.RecordId = Guid.NewGuid();
-                            resubmitClaim.ServiceDate = serviceRecord.ServiceDate;
-                            resubmitClaim.UnitCode = unitRecord.UnitCode;
-                            resubmitClaim.UnitNumber = unitRecord.UnitNumber;
-                            resubmitClaim.UnitPremiumCode = unitRecord.UnitPremiumCode;
-                            resubmitClaim.UserId = serviceRecord.UserId;
+                            foreach (var unitRecord in serviceRecord.UnitRecord)
+                            {
+                                var resubmitClaim = new ClaimsResubmitted();
+                                resubmitClaim.ClaimNumber = serviceRecord.ClaimNumber;
+                                resubmitClaim.CreatedDate = DateTime.UtcNow;
+                                resubmitClaim.HospitalNumber = serviceRecord.HospitalNumber;
+                                resubmitClaim.PatientLastName = serviceRecord.PatientLastName;
+                                resubmitClaim.RecordId = Guid.NewGuid();
+                                resubmitClaim.ServiceDate = serviceRecord.ServiceDate;
+                                resubmitClaim.UnitCode = unitRecord.UnitCode;
+                                resubmitClaim.UnitNumber = unitRecord.UnitNumber;
+                                resubmitClaim.UnitPremiumCode = unitRecord.UnitPremiumCode;
+                                resubmitClaim.UserId = serviceRecord.UserId;
 
-                            _repository.Insert(resubmitClaim);
+                                _repository.Insert(resubmitClaim);
+                            }
+
+                            _repository.Save();
                         }
-
-                        _repository.Save();
 
                         var nextNumberModel = _repository.GetNextClaimNumber(_userId);
                         _repository.ResetSubmittedServiceRecord(_userId, serviceRecordId, nextNumberModel.RollOverNumber, nextNumberModel.NextClaimNumber);
@@ -2924,6 +2933,11 @@ namespace MBS.Web.Portal.Controllers
                                     faxDeliver.TransactionId = transactionId;
                                     faxDeliver.Status = (int)DeliverStatus.PENDING;
 
+                                    if (!string.IsNullOrEmpty(creator.GetBase64PDFContent()))
+                                    {
+                                        faxDeliver.PDFContent = creator.GetBase64PDFContent();
+                                    }
+
                                     _repository.InsertFax(faxDeliver);
                                 }
                                 else
@@ -3219,7 +3233,12 @@ namespace MBS.Web.Portal.Controllers
                                         faxDeliver.ServiceRecordId = record.ServiceRecordId;
                                         faxDeliver.TransactionId = transactionId;
                                         faxDeliver.Status = (int)DeliverStatus.PENDING;
-                                        
+
+                                        if (!string.IsNullOrEmpty(creator.GetBase64PDFContent()))
+                                        {
+                                            faxDeliver.PDFContent = creator.GetBase64PDFContent();
+                                        }
+
                                         _repository.InsertFax(faxDeliver);
 
                                         foreach (var deliver in recordFaxDelivers)
@@ -3362,7 +3381,7 @@ namespace MBS.Web.Portal.Controllers
                                 response.FaxStatus = faxRecord.Status == 0 ? "Success" : "Failed";
                                 response.CompletionTime = faxRecord.CompletionTime.AddHours(_timeZoneOffset).ToLongDateString() + " " + faxRecord.CompletionTime.AddHours(_timeZoneOffset).ToLongTimeString();
                                 response.SubmissionTime = faxRecord.SubmitTime.AddHours(_timeZoneOffset).ToLongDateString() + " " + faxRecord.SubmitTime.AddHours(_timeZoneOffset).ToLongTimeString();
-                                response.PageSent = faxRecord.PagesSent.ToString();                                
+                                response.PageSent = faxRecord.PagesSent.ToString();       
                             }                            
                         }
                         catch
@@ -3377,6 +3396,50 @@ namespace MBS.Web.Portal.Controllers
             }
 
             return this.Json(response);
+        }
+
+        #endregion
+
+        #region Get Fax PDF
+
+        public ActionResult DownloadFaxPDF(string id)
+        {
+            var createdDate = DateTime.UtcNow.AddHours(_timeZoneOffset);
+
+            byte[] fileContent = new byte[1];
+            var fileType = "text";
+            var fileExtension = ".txt";
+            var serviceRecordId = Guid.Empty;
+
+            Guid.TryParse(id, out serviceRecordId);
+            if (serviceRecordId != Guid.Empty && _repository.IsServiceRecordBelongToUser(_userId, serviceRecordId))
+            {
+                var faxDelivery = _repository.GetFaxDeliver(serviceRecordId);
+                if (faxDelivery != null)
+                {                    
+                    createdDate = faxDelivery.CreatedDate.AddHours(_timeZoneOffset);
+                    if (string.IsNullOrEmpty(faxDelivery.PDFContent))
+                    {
+                        fileContent = System.Text.ASCIIEncoding.ASCII.GetBytes("No Fax File Available!");
+                    }                       
+                    else
+                    {
+                        fileContent = Convert.FromBase64String(faxDelivery.PDFContent);
+                        fileExtension = ".pdf";
+                        fileType = "pdf";
+                    }
+                }
+                else
+                {
+                    fileContent = System.Text.ASCIIEncoding.ASCII.GetBytes("Unable to retrieve fax file or invalid access! Please check the parameters!");
+                }
+            }
+            else
+            {
+                fileContent = System.Text.ASCIIEncoding.ASCII.GetBytes("Unable to retrieve fax file or invalid access! Please check the parameters!");
+            }
+
+            return File(fileContent, fileType, "WCB_Fax_File_" + createdDate.ToString("yyyyMMddHHmmss") + fileExtension);
         }
 
         #endregion

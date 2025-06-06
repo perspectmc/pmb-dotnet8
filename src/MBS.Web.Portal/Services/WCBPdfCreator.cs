@@ -13,6 +13,7 @@ namespace MBS.Web.Portal.Services
     public class WCBPdfCreator
     {
         private string _pdfFilePath;
+        private byte[] _pdfContent;
 
         public WCBPdfCreator(string pdfFilePath)
         {
@@ -21,14 +22,20 @@ namespace MBS.Web.Portal.Services
 
         public long SendPDF(UserProfiles userProfile, ServiceRecord serviceRecord, IEnumerable<UnitRecord> unitRecords, string referDoctor, string userName, string password, string faxNumber)
         {
-            var pdfBytes = GetPDF(userProfile, serviceRecord, unitRecords, referDoctor);
-            return SendFaxToProvider(pdfBytes, userName, password, faxNumber, userProfile.DoctorNumber.ToString(), serviceRecord.ClaimNumber.ToString());
+            _pdfContent = GetPDF(userProfile, serviceRecord, unitRecords, referDoctor);
+            return SendFaxToProvider(_pdfContent, userName, password, faxNumber, userProfile.DoctorNumber.ToString(), serviceRecord.ClaimNumber.ToString());
         }
 
-        public void SavePDFToLocal(UserProfiles userProfile, ServiceRecord serviceRecord, IEnumerable<UnitRecord> unitRecords, string referDoctor)
+        public long SavePDFToLocal(UserProfiles userProfile, ServiceRecord serviceRecord, IEnumerable<UnitRecord> unitRecords, string referDoctor, string userName, string password, string faxNumber)
         {
-            var pdfBytes = GetPDF(userProfile, serviceRecord, unitRecords, referDoctor);
-            File.WriteAllBytes("C:\\Personal\\MBS\\Medical Billing\\Production\\MBS.Web.Portal\\bin\\output-" + DateTime.UtcNow.ToFileTime() + ".pdf", pdfBytes);
+            SavePDFToLocal(userProfile, serviceRecord, unitRecords, referDoctor);
+            return long.MaxValue;
+        }
+
+        private void SavePDFToLocal(UserProfiles userProfile, ServiceRecord serviceRecord, IEnumerable<UnitRecord> unitRecords, string referDoctor)
+        {
+            _pdfContent = GetPDF(userProfile, serviceRecord, unitRecords, referDoctor);
+            File.WriteAllBytes("C:\\Personal\\MBS\\Medical Billing\\Production\\MBS.Web.Portal\\bin\\output-" + DateTime.UtcNow.ToFileTime() + ".pdf", _pdfContent);
         }
 
         private long SendFaxToProvider(byte[] wcbPDF, string userName, string password, string faxNumber, string doctorNumber, string claimNumber)
@@ -154,26 +161,30 @@ namespace MBS.Web.Portal.Services
                 pdfFormFields.SetField(string.Format("TemplateCGVEBilling-CgvFrm[0].Content[0].TableTeatmentDetails[0].RowTreatment[{0}].FeeAmount[0]", index), string.Format("{0:C}", unitRecord.UnitAmount));
                 pdfFormFields.SetField(string.Format("TemplateCGVEBilling-CgvFrm[0].Content[0].TableTeatmentDetails[0].RowTreatment[{0}].FeeCode[0]", index), unitRecord.UnitCode.ToUpper());
                 pdfFormFields.SetField(string.Format("TemplateCGVEBilling-CgvFrm[0].Content[0].TableTeatmentDetails[0].RowTreatment[{0}].Units[0]", index), unitRecord.UnitNumber.ToString());
-                totalAmount += unitRecord.UnitAmount;
+                totalAmount += unitRecord.PaidAmount;
                 index++;
             }
 
-            var premCode = unitRecords.FirstOrDefault().UnitPremiumCode;
-            if (premCode.Equals("b", StringComparison.OrdinalIgnoreCase) || premCode.Equals("k", StringComparison.OrdinalIgnoreCase))
+            var premCodeList = unitRecords.Where(x => x.UnitPremiumCode.Equals("b", StringComparison.OrdinalIgnoreCase) || x.UnitPremiumCode.Equals("k", StringComparison.OrdinalIgnoreCase)).Select(x => x.UnitPremiumCode).Distinct().ToList();
+            if (premCodeList.Any())
             {
-                var wcbPremiumCode = premCode.Equals("b", StringComparison.OrdinalIgnoreCase) ? "897H" : "899H";
+                var premCode = premCodeList.FirstOrDefault();
+                if (premCode.Equals("b", StringComparison.OrdinalIgnoreCase) || premCode.Equals("k", StringComparison.OrdinalIgnoreCase))
+                {
+                    var wcbPremiumCode = premCode.Equals("b", StringComparison.OrdinalIgnoreCase) ? "897H" : "899H";
 
-                //var wantedRecords = unitRecords.Where(x => _premiumCodeList.IndexOf("," + x.UnitCode.ToUpper() + ",") == -1);
-                var wantedRecords = unitRecords.Where(x => !StaticCodeList.MyPremiumCodeList.Contains(x.UnitCode));
+                    //var wantedRecords = unitRecords.Where(x => _premiumCodeList.IndexOf("," + x.UnitCode.ToUpper() + ",") == -1);
+                    var wantedRecords = unitRecords.Where(x => !StaticCodeList.MyPremiumCodeList.Contains(x.UnitCode));
 
-                var wcbPremiumAmount = wantedRecords.Sum(x => (x.PaidAmount - x.UnitAmount));
-                var wcbPremiumUnitNumber = wantedRecords.Sum(x => x.UnitNumber);
-                totalAmount += wcbPremiumAmount;
+                    var wcbPremiumAmount = wantedRecords.Sum(x => (x.PaidAmount - x.UnitAmount));
+                    var wcbPremiumUnitNumber = wantedRecords.Where(x => x.UnitPremiumCode.Equals(premCode, StringComparison.OrdinalIgnoreCase)).Sum(x => x.UnitNumber);
+                    totalAmount += wcbPremiumAmount;
 
-                pdfFormFields.SetField(string.Format("TemplateCGVEBilling-CgvFrm[0].Content[0].TableTeatmentDetails[0].RowTreatment[{0}].ServiceDate[0]", index), serviceRecord.ServiceDate.ToString("yyyy-MM-dd"), serviceRecord.ServiceDate.ToString("MM-dd-yyyy"));
-                pdfFormFields.SetField(string.Format("TemplateCGVEBilling-CgvFrm[0].Content[0].TableTeatmentDetails[0].RowTreatment[{0}].FeeAmount[0]", index), string.Format("{0:C}", wcbPremiumAmount));
-                pdfFormFields.SetField(string.Format("TemplateCGVEBilling-CgvFrm[0].Content[0].TableTeatmentDetails[0].RowTreatment[{0}].FeeCode[0]", index), wcbPremiumCode);
-                pdfFormFields.SetField(string.Format("TemplateCGVEBilling-CgvFrm[0].Content[0].TableTeatmentDetails[0].RowTreatment[{0}].Units[0]", index), wcbPremiumUnitNumber.ToString());
+                    pdfFormFields.SetField(string.Format("TemplateCGVEBilling-CgvFrm[0].Content[0].TableTeatmentDetails[0].RowTreatment[{0}].ServiceDate[0]", index), serviceRecord.ServiceDate.ToString("yyyy-MM-dd"), serviceRecord.ServiceDate.ToString("MM-dd-yyyy"));
+                    pdfFormFields.SetField(string.Format("TemplateCGVEBilling-CgvFrm[0].Content[0].TableTeatmentDetails[0].RowTreatment[{0}].FeeAmount[0]", index), string.Format("{0:C}", wcbPremiumAmount));
+                    pdfFormFields.SetField(string.Format("TemplateCGVEBilling-CgvFrm[0].Content[0].TableTeatmentDetails[0].RowTreatment[{0}].FeeCode[0]", index), wcbPremiumCode);
+                    pdfFormFields.SetField(string.Format("TemplateCGVEBilling-CgvFrm[0].Content[0].TableTeatmentDetails[0].RowTreatment[{0}].Units[0]", index), wcbPremiumUnitNumber.ToString());
+                }
             }
 
             pdfFormFields.SetField(string.Format("TemplateCGVEBilling-CgvFrm[0].Content[0].TableTeatmentDetails[0].FooterRow[0].TotalAmount[0]", index), string.Format("{0:C}", totalAmount));
@@ -200,6 +211,18 @@ namespace MBS.Web.Portal.Services
             catch
             {
                 return false;
+            }
+        }
+
+        public string GetBase64PDFContent()
+        {
+            if (_pdfContent.Any())
+            {
+                return Convert.ToBase64String(_pdfContent);
+            }
+            else
+            {
+                return null;
             }
         }
     }
