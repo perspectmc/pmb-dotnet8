@@ -20,6 +20,7 @@ namespace MBS.DomainModel
         public long TransactionId { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public int Status { get; set; }
+        public string PDFContent { get; set; }
     
         public virtual Users Users { get; set; }
     }

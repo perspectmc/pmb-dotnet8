@@ -8,7 +8,7 @@ namespace MBS.DataCache
         {
             get
             {
-                return "2.0.0.36";
+                return "2.0.0.40";
             }
         }
 

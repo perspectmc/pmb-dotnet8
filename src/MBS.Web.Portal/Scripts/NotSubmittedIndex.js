@@ -220,7 +220,7 @@ function DisplaySubmissionResult() {
 
             $(".submit_button").removeAttr("disabled");
         } else {
-            var dataTable = $("#notsubmitted").DataTable()
+            var dataTable = $("#notsubmitted").DataTable();
             if (msbSubmissionResult.MSBSubmitted || msbSubmissionResult.MSBServerError) {
                 $.each($(".msbclaim"), function () {
                     var row = dataTable.row($(this));
