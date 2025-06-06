@@ -96,6 +96,7 @@
           <Property Name="TransactionId" Type="bigint" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="PDFContent" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Memberships">
           <Key>
@@ -888,6 +889,7 @@ warning 6002: The table/view 'medicalbillingsystem2017.dbo.ClaimsSearchView' doe
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
           <Property Type="Int32" Name="Status" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="MedicalBillingSystemModel.FK_FaxDeliver_Users" FromRole="FaxDeliver" ToRole="Users" />
+          <Property Name="PDFContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_FaxDeliver_Users">
           <End Type="MedicalBillingSystemModel.Users" Role="Users" Multiplicity="1" />
@@ -1407,6 +1409,7 @@ warning 6002: The table/view 'medicalbillingsystem2017.dbo.ClaimsSearchView' doe
           <EntitySetMapping Name="FaxDeliver">
             <EntityTypeMapping TypeName="MedicalBillingSystemModel.FaxDeliver">
               <MappingFragment StoreEntitySet="FaxDeliver">
+                <ScalarProperty Name="PDFContent" ColumnName="PDFContent" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
