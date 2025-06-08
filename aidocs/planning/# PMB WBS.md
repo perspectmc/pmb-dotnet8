@@ -292,7 +292,7 @@ Migrate application events
 PREPARE: Admin configurability infrastructure
 
 
-Phase 3: Core Claims Processing Migration
+# Phase 3: Core Claims Processing Migration
 Priority: Business-critical claim processing components
 Effort: 70-90 story points
 Timeline: Weeks 7-10
