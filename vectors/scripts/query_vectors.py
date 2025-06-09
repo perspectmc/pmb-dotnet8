@@ -10,6 +10,9 @@ import argparse
 import chromadb
 from openai import OpenAI
 
+# Add model_fallback import
+from model_fallback import query_with_model_fallback
+
 # Import our config
 from pathlib import Path
 import sys
@@ -232,7 +235,8 @@ def main():
         # print("\n🧠 Synthesized Summary\n======================")
         # print(summary)
 
-        # Fallback: print raw formatted results instead of GPT summary
+        # Use fallback model summarization instead of raw formatting
+        # print(query_with_model_fallback(args.query, task_type="vector_query"))
         print(format_results(args.query, results, max_results=args.num_results, simple=args.simple))
         
     except Exception as e:

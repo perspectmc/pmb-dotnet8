@@ -55,6 +55,7 @@ This document outlines future enhancements to the `vector_api.py` interface used
 ---
 
 ## 🔧 Notes
+- 🚫 Never use direct filesystem access (e.g. `os.walk`, `Path.rglob`, `open`) in any scripts or endpoints; always go through the vector API endpoints.
 - All features should respect vector index consistency.
 - Audit log or lightweight usage tracking may be added later.
 - Deprecate direct Python filesystem access (e.g., `os.walk`, `Path.rglob`) in favor of vector API endpoints (`GET /files`, `GET /file-content`) to avoid macOS sandbox issues and maintain consistent visibility.
@@ -63,6 +64,7 @@ This document outlines future enhancements to the `vector_api.py` interface used
 
 - [ ] Test `POST /diff` endpoint with two sample files to ensure diff and summary are returned.
 - [ ] Test `GET /files` endpoint to verify full file listing and filter parameters.
+- [ ] Test `GET /file-content` endpoint to retrieve specific file text (e.g., first 20 lines).
 - [ ] Test `POST /summarize` endpoint on a sample `.cs` and `.md` file.
 - [ ] Test `POST /trace` endpoint for a known class name to validate usage tracing.
 - [ ] Test `POST /tag` and `GET /tags` endpoints to confirm tagging functionality.
