@@ -53,12 +53,23 @@ def list_files(type: Optional[str] = None):
     Optional filter by file extension.
     """
     try:
-        files = collection.list_paths()
+        # Get all documents and extract unique file paths
+        all_docs = collection.get()
+        file_paths = set()
+        
+        if all_docs['metadatas']:
+            for metadata in all_docs['metadatas']:
+                if 'file_path' in metadata:
+                    file_paths.add(metadata['file_path'])
+        
+        files = sorted(list(file_paths))
+        
+        if type:
+            return [f for f in files if f.endswith(type)]
+        return files
+        
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error listing files: {e}")
-    if type:
-        return [f for f in files if f.endswith(type)]
-    return files
 
 
 @app.get("/file-content")
@@ -66,24 +77,72 @@ def get_file_content(path: str, lines: int = 20):
     """
     Return the first `lines` lines of the full document stored in the vector index at `path`.
     """
-    # Validate that the file is indexed
-    indexed_paths = collection.list_paths()
-    if path not in indexed_paths:
-        raise HTTPException(status_code=404, detail=f"Path not found: {path}")
-
-    # Query all chunks for this file via metadata filter
-    result = collection.query(
-        query_texts=[""],            # dummy query to trigger metadata filter
-        where={"file_path": path},
-        n_results=9999               # retrieve all chunks
-    )
-    # Extract and concatenate chunks in order
-    chunks = result.get("documents", [[]])[0]
-    full_text = "".join(chunks)
-
-    # Split into lines and return the requested slice
-    text_lines = full_text.splitlines()
-    return {"lines": text_lines[:lines]}
+    try:
+        print(f"🔍 DEBUG: Requesting content for path: {path}")
+        
+        # Use get() with where filter instead of query() for metadata-based retrieval
+        result = collection.get(
+            where={"file_path": path},
+            include=['documents', 'metadatas']
+        )
+        
+        print(f"🔍 DEBUG: Found {len(result.get('documents', []))} chunks for {path}")
+        
+        if not result.get('documents'):
+            raise HTTPException(status_code=404, detail=f"No content found for path: {path}")
+        
+        # Extract chunks with their metadata
+        chunks_with_metadata = []
+        documents = result['documents']
+        metadatas = result['metadatas']
+        
+        for doc, metadata in zip(documents, metadatas):
+            chunk_index = metadata.get('chunk_index', 0)
+            chunks_with_metadata.append((chunk_index, doc, metadata))
+            print(f"🔍 DEBUG: Chunk {chunk_index}: {len(doc)} chars, starts with: {doc[:50]}...")
+        
+        # Sort chunks by chunk_index to maintain original file order
+        chunks_with_metadata.sort(key=lambda x: x[0])
+        
+        # Reconstruct full content
+        full_content_parts = []
+        for chunk_index, doc, metadata in chunks_with_metadata:
+            # Remove the context prefix that was added during ingestion
+            content = doc
+            
+            # Look for the double newline that separates context from actual content
+            if '\n\n' in content:
+                # Split and take everything after the first double newline
+                parts = content.split('\n\n', 1)
+                if len(parts) > 1:
+                    content = parts[1]
+            
+            full_content_parts.append(content)
+        
+        # Join all chunks
+        full_text = ''.join(full_content_parts)
+        
+        print(f"🔍 DEBUG: Reconstructed {len(full_text)} total characters")
+        print(f"🔍 DEBUG: Content starts with: {full_text[:100]}...")
+        
+        # Split into lines and return the requested slice
+        text_lines = full_text.splitlines()
+        
+        print(f"🔍 DEBUG: Returning {min(lines, len(text_lines))} of {len(text_lines)} total lines")
+        
+        return {
+            "path": path,
+            "total_lines": len(text_lines),
+            "requested_lines": lines,
+            "total_chunks": len(chunks_with_metadata),
+            "lines": text_lines[:lines]
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"❌ ERROR in get_file_content: {e}")
+        raise HTTPException(status_code=500, detail=f"Error retrieving file content: {str(e)}")
 
 class QueryRequest(BaseModel):
     query: str
@@ -289,6 +348,54 @@ async def query_vectors(req: QueryRequest):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Search error: {str(e)}")
+
+@app.get("/debug-file")
+def debug_file_chunks(path: str):
+    """Debug endpoint to show all chunks stored for a specific file path"""
+    try:
+        print(f"🔍 DEBUG: Analyzing chunks for path: {path}")
+        
+        # Get all chunks for this file path
+        result = collection.get(
+            where={"file_path": path},
+            include=['documents', 'metadatas', 'ids']
+        )
+        
+        if not result.get('documents'):
+            return {"error": f"No chunks found for path: {path}"}
+        
+        chunks_info = []
+        documents = result['documents']
+        metadatas = result['metadatas']
+        ids = result['ids']
+        
+        for doc, metadata, chunk_id in zip(documents, metadatas, ids):
+            chunk_info = {
+                "chunk_id": chunk_id,
+                "chunk_index": metadata.get('chunk_index', 'unknown'),
+                "total_chunks": metadata.get('total_chunks', 'unknown'),
+                "file_path": metadata.get('file_path', 'unknown'),
+                "file_type": metadata.get('file_type', 'unknown'),
+                "project_name": metadata.get('project_name', 'unknown'),
+                "content_length": len(doc),
+                "content_preview": doc[:200] + "..." if len(doc) > 200 else doc,
+                "full_metadata": metadata
+            }
+            chunks_info.append(chunk_info)
+        
+        # Sort by chunk_index for display
+        chunks_info.sort(key=lambda x: x.get('chunk_index', 0))
+        
+        return {
+            "path": path,
+            "total_chunks_found": len(chunks_info),
+            "chunks": chunks_info
+        }
+        
+    except Exception as e:
+        print(f"❌ ERROR in debug_file_chunks: {e}")
+        raise HTTPException(status_code=500, detail=f"Debug error: {str(e)}")
+
 
 @app.get("/stats")
 async def get_stats():

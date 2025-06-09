@@ -308,7 +308,7 @@ def main():
     
     # Add to ChromaDB in batches
     print("\n💾 Adding to vector database...")
-    batch_size = 100
+    batch_size = 200
     
     for i in range(0, len(all_documents), batch_size):
         batch = all_documents[i:i + batch_size]
