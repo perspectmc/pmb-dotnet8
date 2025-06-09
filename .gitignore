@@ -45,3 +45,6 @@ appsettings.*.local.json
 # Global cache folders
 node_modules/
 packages/
+
+# Ignore ChromaDB database directory
+vectors/chroma_db/
