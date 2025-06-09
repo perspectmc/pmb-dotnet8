@@ -243,6 +243,8 @@ def main():
     print(f"Total vectors: {len(all_documents)}")
     print(f"Database location: {CHROMA_DB_DIR}")
     
+    # client.persist()  # <-- added line to persist the collection
+
     # Quick test query
     print("\n🔍 Testing search...")
     results = collection.query(
