@@ -6,15 +6,12 @@ Quick semantic search across PMB codebase and documentation
 
 import sys
 import argparse
-from pathlib import Path
 
 import chromadb
 from openai import OpenAI
-import os
 
 # Import our config
-sys.path.append(str(Path(__file__).parent.parent))
-from config import *
+import config
 
 def format_results(query: str, results: dict, max_results: int = 10, simple: bool = False) -> str:
     """Format search results for Cline consumption"""
@@ -118,9 +115,9 @@ def main():
     
     # Connect to ChromaDB
     try:
-        client = chromadb.PersistentClient(path=str(CHROMA_DB_DIR))
-        collection = client.get_collection(name=COLLECTION_NAME)
-        print(f"Connected to collection: {COLLECTION_NAME} ({collection.count()} documents)\n")
+        client = chromadb.PersistentClient(path=str(config.CHROMA_DB_DIR))
+        collection = client.get_collection(name=config.COLLECTION_NAME)
+        print(f"Connected to collection: {config.COLLECTION_NAME} ({collection.count()} documents)\n")
     except Exception as e:
         print(f"Error connecting to vector database: {e}")
         return
@@ -188,7 +185,13 @@ def main():
         )
         
         # Synthesized summary using OpenAI
-        api_key = os.getenv("OPENAI_API_KEY")
+        api_key = None
+        try:
+            import os
+            api_key = os.getenv("OPENAI_API_KEY")
+        except ImportError:
+            pass
+
         if not api_key:
             raise ValueError("Missing OPENAI_API_KEY environment variable")
 
