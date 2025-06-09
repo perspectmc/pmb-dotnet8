@@ -4,64 +4,73 @@ This guide explains how to run the FastAPI-powered vector search engine for the 
 
 ---
 
+
+## 🚀 Cold Start: How to Launch the PMB Vector API from Scratch
+
+Follow these steps any time your machine is rebooted or nothing is running.
+
+### 1. Start the FastAPI "Vector" Server Locally
+
+In terminal : 
+```bash
+cd ~/Desktop/PMB\ dotnet8/vectors/scripts
+python3 vector_api.py
+
+Then leave running in background.
+```
+
+You should see:
+```
+✅ Connected to pmb_complete with XXXX documents
+🚀 Starting PMB Vector Search API...
+📊 Web interface: http://localhost:8000
+📚 API docs: http://localhost:8000/docs
+```
+
+### 2. Open a New Terminal Window and Launch ngrok tunnel so GPT can access vectors
+
+```bash
+ngrok http 8000
+```
+
+You'll get a public URL like:
+```
+Forwarding https://a1b2c3d4.ngrok-free.app → http://localhost:8000
+```
+
+Copy the `https://...ngrok-free.app` link.
+
+### 2a - Visit: xxxx.ngrok-free.app
+
+After running ngrok, paste the public URL into your browser. You’ll land on a screen that says:
+
+You are about to visit: xxxx.ngrok-free.app
+
+Click the “Visit Site” button to confirm trust and activate the tunnel.
+This step is required by ngrok for free-tier tunnels and must be done once per session.
+
+### 3. Paste the URL into ChatGPT When Prompted
+
+If the GPT session asks for your local vector API, paste the ngrok URL to activate connection.
+
+---
+
+To use vector search automatically, simply type:
+
+```
+VQ
+```
+
+in a new chat. This tells GPT to activate the Perspect Medical Billing vector database context and treat it as built-in memory for this project.
+
+---
+
 ## 🔧 Requirements
 
 - Python 3.10+
 - Chroma vector DB already built (`ingest_pmb.py`)
 - FastAPI + Uvicorn
 - ngrok (installed via Homebrew)
-
----
-
-## 🟩 1. Start the Local Vector API
-
-```bash
-cd ~/Desktop/PMB\ dotnet8/vectors/scripts
-python3 vector_api.py
-```
-
-You should see:
-
-```
-✅ Connected to pmb_complete with 5244 documents
-🚀 Starting PMB Vector Search API...
-📊 Web interface: http://localhost:8000
-📚 API docs: http://localhost:8000/docs
-```
-
-You can now test the vector search via the browser at `http://localhost:8000` or use the Swagger docs UI at `http://localhost:8000/docs`.
-
----
-
-## 🌍 2. Expose the API with ngrok
-
-This step allows ChatGPT (or any external tool) to query your local FastAPI service.
-
-### 🧪 Step-by-step:
-
-1. Install ngrok via Homebrew:
-   ```bash
-   brew install --cask ngrok
-   ```
-
-2. Authenticate ngrok with your account (only needed once):
-   - Get your token from: https://dashboard.ngrok.com/get-started/your-authtoken
-   - Then run:
-     ```bash
-     ngrok config add-authtoken YOUR_TOKEN_HERE
-     ```
-
-3. Start the tunnel:
-   ```bash
-   ngrok http 8000
-   ```
-
-   You'll see output like:
-   ```
-   Forwarding https://a1b2c3d4.ngrok-free.app → http://localhost:8000
-   ```
-
-4. Copy the `https://...ngrok.io` URL and paste it into ChatGPT when prompted, or use it in any remote tool to send requests to your API.
 
 ---
 
@@ -104,28 +113,55 @@ Use tools like:
 To ensure high-quality responses from ChatGPT when interacting with the PMB Vector API, use the following structured prompt:
 
 ---
-You are a senior AI engineer helping modernize a commercial medical billing platform called Perspect Medical Billing (PMB). The platform includes legacy .NET 4.8 source code, markdown documentation, and business planning files. You are connected to a vector database that contains the full content of both the source code and documentation.
+You are a senior AI engineer modernizing a live commercial medical billing system called Perspect Medical Billing (PMB). The system includes legacy .NET 4.8 source code, markdown documentation, and business planning artifacts.
 
-When asked a question, you will:
-1. Search the vector database using semantic and exact keyword matches.
-2. Reference the actual content found — code, markdown, or config — not just summaries.
-3. Interpret the content to infer how it functions in production, how it was designed, and what impact changes may have.
-4. Always prioritize clarity, using concise bullet points, small code blocks, and plain language reasoning.
-5. Highlight business rationale where applicable, especially for architectural or modernization decisions.
-6. Provide relevant file paths and class/method names for traceability.
-7. Avoid speculative or verbose responses unless explicitly requested.
+You are connected to a vector database that contains:
+- All source code (`src/`)
+- All business and architecture documentation (`aidocs/`)
+- All markdown planning files, including WBS, risk, validation, and migration docs
 
-Example prompt:
+When asked a question:
+1. Search across the entire `aidocs/` directory using both semantic and keyword methods
+2. Interpret the documents to understand strategic context, business rules, and system objectives
+3. Automatically cross-reference related source files from `src/` to fill in technical execution details
+4. Return a single synthesized response — clear, structured, and traceable — that:
+   - Highlights relevant filenames and methods
+   - Explains purpose, impact, and dependencies
+   - Uses concise bullets, plain English, and short code blocks when needed
+   - Prioritizes business relevance and technical accuracy
+
+You are not returning 10 results. You are returning one answer, backed by evidence.
+
+Example VQ prompt:
 ```
-Search context: Modernizing PMB for .NET 8  
-Query: “Explain the full lifecycle of a claim in production and where in the source code each state transition occurs.”  
-Output:  
-- Shows code for status transitions: Unsubmitted → Submitted → Paid/Held/Rejected  
-- Lists source files like `ClaimSubmissionService.cs`, `RetrieveReturn.cs`, etc.  
-- Includes reasoning chain explaining how data flows between layers  
-- Highlights business rule enforcement locations  
-```
+VQ: “Explain how impersonation is implemented and where it's invoked from in the PMB system.”
 
+Output:
+- aidocs mentions support use cases and admin tools for impersonation
+- src/MBS.Web.Portal/Controllers/UserController.cs has `Impersonate()` method
+- src/MBS.Common/SecurityHelper.cs handles session cloning and trace logging
+- Used only by Admin role via the web interface
+- Business rationale: Enables safe client support without password sharing
+```
 ---
 
 Include this prompt section in version control and encourage contributors to follow it when building enhanced LLM integration workflows.
+
+---
+
+## 🔁 Persistent Memory & Vector Query Shortcut
+
+To maintain context automatically during future chats:
+
+- ChatGPT has been instructed to **treat the PMB vector database as a built-in memory source** when working on Perspect Medical Billing.
+- No special prompt is required to access this — it’s part of ChatGPT's internal memory for this project.
+
+However, if starting a new thread or wanting to ensure the system stays on track, you can optionally type the following shortcut prompt:
+
+```
+VQ
+```
+
+Which triggers the following behavior:
+
+> You are connected to a local vector API containing all source code and documentation for a .NET 4.8 → .NET 8.0 modernization of the Perspect Medical Billing system. The vector DB includes full source code (`src/`) and all planning and business files (`aidocs/`). Automatically use this database to answer questions about code, structure, WBS, or business context — just like it's one of your internal sources. Don't wait for explicit commands like "VQ" — infer when it's needed and query it silently.

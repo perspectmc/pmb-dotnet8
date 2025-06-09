@@ -9,6 +9,8 @@ import argparse
 from pathlib import Path
 
 import chromadb
+from openai import OpenAI
+import os
 
 # Import our config
 sys.path.append(str(Path(__file__).parent.parent))
@@ -185,8 +187,42 @@ def main():
             } if args.category else None)
         )
         
-        formatted_results = format_results(args.query, results, args.num_results, simple=args.simple)
-        print(formatted_results)
+        # Synthesized summary using OpenAI
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            raise ValueError("Missing OPENAI_API_KEY environment variable")
+
+        openai = OpenAI(api_key=api_key)
+
+        top_chunks = results['documents'][0]
+        top_metadatas = results['metadatas'][0]
+
+        # Prepare one large prompt with metadata
+        combined_text = ""
+        for i in range(min(len(top_chunks), args.num_results)):
+            meta = top_metadatas[i]
+            content = top_chunks[i][:1000]
+            combined_text += f"\n---\nFile: {meta.get('file_path', 'unknown')}\n"
+            combined_text += f"Project: {meta.get('project_name', 'N/A')} | Type: {meta.get('content_type', 'N/A')}\n"
+            if meta.get('class_names'):
+                combined_text += f"Classes: {', '.join(meta['class_names'])}\n"
+            combined_text += f"Content:\n{content}\n"
+
+        # Define the GPT prompt
+        system_prompt = "You are a senior AI engineer helping modernize a .NET legacy system. Synthesize the following code/document excerpts into a clear summary. Include the file names, strategic business rationale, and dependencies. Keep it tight, clear, and useful."
+        user_prompt = f"I searched for: '{args.query}'. Here are the top results:\n{combined_text}\n\nPlease return a single structured answer."
+
+        response = openai.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ]
+        )
+
+        summary = response.choices[0].message.content
+        print("\n🧠 Synthesized Summary\n======================")
+        print(summary)
         
     except Exception as e:
         print(f"Error performing search: {e}")
