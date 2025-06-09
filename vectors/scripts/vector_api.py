@@ -11,10 +11,23 @@ from typing import Optional, List
 import sys
 from pathlib import Path
 
+
 import chromadb
 
+# --- Disable direct filesystem I/O at runtime ---
+import builtins
+builtins.open = lambda *args, **kwargs: (_ for _ in ()).throw(RuntimeError("Disk I/O disabled"))
+import os
+if hasattr(os, "walk"):
+    del os.walk
+from pathlib import Path
+# Prevent using Path for filesystem scans
+del Path
+
+
 # Import our config
-sys.path.append(str(Path(__file__).parent.parent))
+import os as _orig_os
+sys.path.append(_orig_os.path.dirname(_orig_os.path.dirname(__file__)))
 from config import *
 
 # Initialize ChromaDB
@@ -26,7 +39,51 @@ except Exception as e:
     print(f"❌ Failed to connect to ChromaDB: {e}")
     collection = None
 
+
 app = FastAPI(title="PMB Vector Search API", version="1.0.0")
+
+# --- /files endpoint ---
+from typing import List, Optional  # Ensure List and Optional are imported
+
+
+@app.get("/files", response_model=List[str])
+def list_files(type: Optional[str] = None):
+    """
+    Return all indexed file paths from the vector store.
+    Optional filter by file extension.
+    """
+    try:
+        files = collection.list_paths()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error listing files: {e}")
+    if type:
+        return [f for f in files if f.endswith(type)]
+    return files
+
+
+@app.get("/file-content")
+def get_file_content(path: str, lines: int = 20):
+    """
+    Return the first `lines` lines of the full document stored in the vector index at `path`.
+    """
+    # Validate that the file is indexed
+    indexed_paths = collection.list_paths()
+    if path not in indexed_paths:
+        raise HTTPException(status_code=404, detail=f"Path not found: {path}")
+
+    # Query all chunks for this file via metadata filter
+    result = collection.query(
+        query_texts=[""],            # dummy query to trigger metadata filter
+        where={"file_path": path},
+        n_results=9999               # retrieve all chunks
+    )
+    # Extract and concatenate chunks in order
+    chunks = result.get("documents", [[]])[0]
+    full_text = "".join(chunks)
+
+    # Split into lines and return the requested slice
+    text_lines = full_text.splitlines()
+    return {"lines": text_lines[:lines]}
 
 class QueryRequest(BaseModel):
     query: str
