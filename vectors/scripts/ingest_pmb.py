@@ -78,6 +78,7 @@ def process_file(file_path: Path) -> List[Dict[str, Any]]:
             content = f.read()
         
         if not content.strip():
+            print(f"⚠️ Skipping empty file: {file_path}")
             return []
         
         # Get file stats
@@ -218,6 +219,11 @@ def main():
     # Find source files
     print("\n🔍 Finding source files...")
     source_files = find_source_files()
+
+    if not source_files:
+        print("❌ No source files found! Please check that SRC_DIR and DOCS_DIR are correctly configured.")
+        return
+
     print(f"Found {len(source_files)} files to process")
 
     # Create manifest log
@@ -246,6 +252,16 @@ def main():
     print("  File types:")
     for ext, count in manifest_log["file_types"].items():
         print(f"    {ext}: {count}")
+
+    print("  Project summary:")
+    project_counts = {}
+    for file_path in source_files:
+        project = get_project_name(file_path)
+        if project:
+            project_counts[project] = project_counts.get(project, 0) + 1
+    for proj, count in sorted(project_counts.items(), key=lambda x: -x[1]):
+        print(f"    {proj}: {count}")
+
     print("  First 5 files:")
     for f in manifest_log["files"][:5]:
         print(f"    {f}")
@@ -257,16 +273,28 @@ def main():
     print("\n📝 Processing files...")
     all_documents = []
     processed_count = 0
-    
+    skipped_files = []
+
     for file_path in source_files:
         print(f"Processing: {file_path.relative_to(PROJECT_ROOT)}")
         documents = process_file(file_path)
+        if not documents:
+            skipped_files.append(str(file_path.relative_to(PROJECT_ROOT)))
+            continue
         all_documents.extend(documents)
         processed_count += 1
         
         if processed_count % 10 == 0:
             print(f"  Processed {processed_count}/{len(source_files)} files")
     
+    print(f"\n📊 Summary:")
+    print(f"  Embedded files: {len(source_files) - len(skipped_files)}")
+    print(f"  Skipped files: {len(skipped_files)}")
+    if skipped_files:
+        print("  Skipped file list:")
+        for sf in skipped_files:
+            print(f"    {sf}")
+
     if not all_documents:
         print("❌ No documents to embed!")
         return
