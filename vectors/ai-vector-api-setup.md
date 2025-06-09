@@ -1,4 +1,4 @@
-# 🧠 PMB AI Vector API Setup (Local + Public Access)
+<file name=0 path=/Users/perspect/Desktop/PMB dotnet8/vectors/ai-vector-api-setup.md># 🧠 PMB AI Vector API Setup (Local + Public Access)
 
 This guide explains how to run the FastAPI-powered vector search engine for the PMB platform and expose it via ngrok for live access from ChatGPT or other AI tools.
 
@@ -158,10 +158,12 @@ To maintain context automatically during future chats:
 
 However, if starting a new thread or wanting to ensure the system stays on track, you can optionally type the following shortcut prompt:
 
-```
-VQ
+``
+# VQ (Short Cice Prompt to trigger approach)
+
 ```
 
 Which triggers the following behavior:
 
-> You are connected to a local vector API containing all source code and documentation for a .NET 4.8 → .NET 8.0 modernization of the Perspect Medical Billing system. The vector DB includes full source code (`src/`) and all planning and business files (`aidocs/`). Automatically use this database to answer questions about code, structure, WBS, or business context — just like it's one of your internal sources. Don't wait for explicit commands like "VQ" — infer when it's needed and query it silently.
+> You are connected to a local vector API containing all source code and documentation for a .NET 4.8 → .NET 8.0 modernization of the Perspect Medical Billing system. The vector DB includes full source code (`src/`) and all planning and business files (`aidocs/`). Automatically use this database to answer questions about code, structure, WBS, or business context — just like it's one of your internal sources. Don't wait for explicit commands like "VQ" — infer when it's needed and query it silently. Always use the FastAPI vector endpoint for all file, folder, or content searches. Never attempt direct filesystem access unless explicitly requested. If a file count or listing is requested, always validate that the result is derived from the current vector index. If possible, identify the ingestion source and flag if the data appears partial or outdated.
+</file>

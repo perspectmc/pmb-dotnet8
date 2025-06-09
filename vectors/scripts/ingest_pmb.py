@@ -219,6 +219,39 @@ def main():
     print("\n🔍 Finding source files...")
     source_files = find_source_files()
     print(f"Found {len(source_files)} files to process")
+
+    # Create manifest log
+    manifest_log = {
+        "ingestion_timestamp": datetime.now().isoformat(),
+        "file_count": len(source_files),
+        "file_types": {},
+        "files": []
+    }
+
+    for file_path in source_files:
+        file_type = file_path.suffix
+        manifest_log["file_types"][file_type] = manifest_log["file_types"].get(file_type, 0) + 1
+        manifest_log["files"].append(str(file_path.relative_to(PROJECT_ROOT)))
+
+    # Write manifest log to disk
+    manifest_path = PROJECT_ROOT / "vectors" / "logs" / "vector_ingest_report.json"
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(manifest_path, "w") as mf:
+        import json
+        json.dump(manifest_log, mf, indent=2)
+    print(f"\n🧾 Manifest written to: {manifest_path}")
+    # Print manifest summary
+    print("\n📋 Manifest Summary:")
+    print(f"  Total files: {manifest_log['file_count']}")
+    print("  File types:")
+    for ext, count in manifest_log["file_types"].items():
+        print(f"    {ext}: {count}")
+    print("  First 5 files:")
+    for f in manifest_log["files"][:5]:
+        print(f"    {f}")
+    if len(manifest_log["files"]) > 5:
+        print(f"    ...and {len(manifest_log['files']) - 5} more")
+    print("Ingestion manifest includes file count and type summary.")
     
     # Process files
     print("\n📝 Processing files...")

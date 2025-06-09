@@ -11,6 +11,10 @@ import chromadb
 from openai import OpenAI
 
 # Import our config
+from pathlib import Path
+import sys
+
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 import config
 
 def format_results(query: str, results: dict, max_results: int = 10, simple: bool = False) -> str:
@@ -215,17 +219,21 @@ def main():
         system_prompt = "You are a senior AI engineer helping modernize a .NET legacy system. Synthesize the following code/document excerpts into a clear summary. Include the file names, strategic business rationale, and dependencies. Keep it tight, clear, and useful."
         user_prompt = f"I searched for: '{args.query}'. Here are the top results:\n{combined_text}\n\nPlease return a single structured answer."
 
-        response = openai.chat.completions.create(
-            model="gpt-4",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
-            ]
-        )
+        # Commented out GPT summarization block
+        # response = openai.chat.completions.create(
+        #     model="gpt-4",
+        #     messages=[
+        #         {"role": "system", "content": system_prompt},
+        #         {"role": "user", "content": user_prompt}
+        #     ]
+        # )
+        #
+        # summary = response.choices[0].message.content
+        # print("\n🧠 Synthesized Summary\n======================")
+        # print(summary)
 
-        summary = response.choices[0].message.content
-        print("\n🧠 Synthesized Summary\n======================")
-        print(summary)
+        # Fallback: print raw formatted results instead of GPT summary
+        print(format_results(args.query, results, max_results=args.num_results, simple=args.simple))
         
     except Exception as e:
         print(f"Error performing search: {e}")
