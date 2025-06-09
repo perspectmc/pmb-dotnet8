@@ -19,6 +19,12 @@ import sys
 sys.path.append(str(Path(__file__).parent.parent))
 from config import *
 
+# File extensions to exclude from ingestion
+DENY_EXTENSIONS = {
+    '.dll', '.exe', '.png', '.jpg', '.jpeg', '.zip',
+    '.psd', '.ico', '.pdf', '.docx', '.xls', '.xlsx', '.bak'
+}
+
 def extract_csharp_metadata(content: str, file_path: Path) -> Dict[str, Any]:
     """Extract C# specific metadata from file content"""
     metadata = {}
@@ -171,24 +177,23 @@ def process_file(file_path: Path) -> List[Dict[str, Any]]:
         return []
 
 def find_source_files() -> List[Path]:
-    """Find all source files to process"""
+    """
+    Find source files only under SRC_DIR and DOCS_DIR,
+    excluding ignored files and denied extensions.
+    """
     source_files = []
-    
-    # Scan source code directory
-    for ext in SUPPORTED_EXTENSIONS:
-        pattern = f"**/*{ext}"
-        for file_path in SRC_DIR.glob(pattern):
-            if not is_file_ignored(file_path):
-                source_files.append(file_path)
-    
-    # Scan AI documentation directory
-    if DOCS_DIR.exists():
-        for ext in SUPPORTED_EXTENSIONS:
-            pattern = f"**/*{ext}"
-            for file_path in DOCS_DIR.glob(pattern):
-                if not is_file_ignored(file_path):
-                    source_files.append(file_path)
-    
+    # Only scan src and aidocs directories
+    for base_dir in (SRC_DIR, DOCS_DIR):
+        if not base_dir.exists():
+            continue
+        for path in base_dir.rglob('*'):
+            if not path.is_file():
+                continue
+            if is_file_ignored(path):
+                continue
+            if path.suffix.lower() in DENY_EXTENSIONS:
+                continue
+            source_files.append(path)
     return sorted(source_files)
 
 def main():
