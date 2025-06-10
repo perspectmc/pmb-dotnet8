@@ -82,14 +82,20 @@ def process_file(file_path: Path) -> List[Dict[str, Any]]:
         # Read file content
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
             content = f.read()
-        
+
         if not content.strip():
             print(f"⚠️ Skipping empty file: {file_path}")
             return []
-        
+
         # Get file stats
         stat = file_path.stat()
         rel_path = file_path.relative_to(PROJECT_ROOT)
+
+        # Add doc header for aidocs/*.md files before chunking
+        relative_path = str(rel_path)
+        if relative_path.startswith("aidocs/") and relative_path.endswith(".md"):
+            doc_header = f"File: {relative_path}\nCategory: {Path(relative_path).stem}\nType: Documentation\n\n"
+            content = doc_header + content
         
         # Base metadata for all chunks
         base_metadata = {
