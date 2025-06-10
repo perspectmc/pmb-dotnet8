@@ -139,6 +139,18 @@ def update_file_vectors(collection, file_path: Path):
     
     # Process the file
     documents = process_file(file_path)
+
+    # ✅ June 10, 2025 @ 2:55 PM — normalize file_path and add keywords for consistency with ingest_pmb
+    import re
+    from collections import Counter
+
+    for doc in documents:
+        meta = doc["metadata"]
+        meta["file_path"] = meta["file_path"].lower()
+        tokens = re.findall(r'\b[a-zA-Z]{3,}\b', doc["content"].lower())
+        stopwords = {"the", "and", "for", "are", "with", "that", "this", "from", "have", "not", "you", "but", "your"}
+        keywords = [word for word, count in Counter(tokens).items() if word not in stopwords and count > 1]
+        meta["keywords"] = keywords
     
     if documents:
         # Add new vectors
