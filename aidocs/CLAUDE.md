@@ -81,6 +81,96 @@
 ### Remember
 Every recommendation affects real medical practices. When uncertain, choose safety over efficiency. Use Opus 4 when code changes are involved - the cost difference is negligible compared to debugging broken medical billing systems.
 
+## VECTOR DATABASE SEARCH GUIDE
+
+### Current Capabilities & Limitations
+
+#### ✅ What Works Well
+1. **Direct file access**: `get_file_content("aidocs/CLAUDE.md")` - Always works if you know the path
+2. **Listing files**: `list_files(type=".md")` - Shows all indexed files
+3. **Content searches**: Searching for exact headings or unique phrases
+   - `"# PMB CODE REVIEW MASTER TRACKER"` → finds CLAUDE.md
+   - `"PMB_Migration_Plan_NET8"` → finds that specific document
+4. **Semantic searches**: General topic queries return related documents
+   - `"billing system migration"` → returns relevant docs
+
+#### ❌ Current Limitations
+1. **Filename searches unreliable**: `"CLAUDE.md"` may not find the file
+2. **No metadata filtering**: Can't use `where` clauses to filter by path
+3. **Header searches inconsistent**: `"File: aidocs/CLAUDE.md"` doesn't guarantee results
+4. **Recent files may rank low**: Newly indexed content appears after older similar content
+
+### Effective Search Strategies
+
+#### 🎯 To Find Specific Files
+Instead of searching for filename, use:
+1. **Unique content**: Search for the main heading or a distinctive phrase
+   ```
+   query: "PMB CODE REVIEW MASTER TRACKER"  # Finds CLAUDE.md
+   query: "PMB_Migration_Plan_NET8"         # Finds migration plan
+   ```
+
+2. **Two-step approach**: List files first, then access directly
+   ```
+   Step 1: list_files(type=".md")  # Find the path
+   Step 2: get_file_content("aidocs/CLAUDE.md")  # Read it
+   ```
+
+#### 🔍 To Find Topics/Concepts
+Use semantic searches with domain terms:
+- `"medical billing migration NET8"`
+- `"claim processing architecture"`
+- `"PMB validation requirements"`
+
+#### 📁 To Navigate Documentation
+1. **By category**: Search for category names
+   - `"planning documents"` 
+   - `"architecture analysis"`
+   - `"infrastructure setup"`
+
+2. **By content type**: Include document markers
+   - `"Type: Documentation"`
+   - `"Category: planning"`
+
+### Quick Reference Commands
+
+```python
+# Get this file (CLAUDE.md)
+get_file_content("aidocs/CLAUDE.md")
+
+# List all documentation
+list_files(type=".md")
+
+# Find by exact heading
+query_vector_db("# PMB CODE REVIEW MASTER TRACKER")
+
+# Find by topic
+query_vector_db("billing system architecture")
+
+# Access specific file when path is known
+get_file_content("aidocs/planning/PMB_Migration_Plan_NET8.md")
+```
+
+### Working Around Limitations
+
+**Problem**: Need to find a file by name
+**Solution**: Search for its unique heading or first line of content
+
+**Problem**: Search returns wrong files
+**Solution**: Use more specific content phrases from inside the document
+
+**Problem**: Can't filter by folder
+**Solution**: Include category names in search: "planning validation requirements"
+
+**Problem**: Recent updates not found
+**Solution**: Search for exact new content added, or use direct file access
+
+### Future Improvements Needed
+1. Enable metadata filtering in `query_vector_db()`
+2. Add dedicated filename search function
+3. Implement path-based filtering
+4. Improve ranking for recently updated files
+
 ## DOCUMENTATION TEMPLATE
 
 ### File Documentation Standard
