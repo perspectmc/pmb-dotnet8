@@ -178,7 +178,7 @@ def process_file(file_path: Path) -> List[Dict[str, Any]]:
             tokens = re.findall(r'\b[a-zA-Z]{3,}\b', chunk.lower())
             stopwords = {"the", "and", "for", "are", "with", "that", "this", "from", "have", "not", "you", "but", "your"}
             keywords = [word for word, count in Counter(tokens).items() if word not in stopwords and count > 1]
-            metadata['keywords'] = keywords
+            metadata['keywords'] = ", ".join(keywords) if keywords else ""
 
             documents.append({
                 'id': chunk_id,

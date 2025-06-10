@@ -150,7 +150,12 @@ def update_file_vectors(collection, file_path: Path):
         tokens = re.findall(r'\b[a-zA-Z]{3,}\b', doc["content"].lower())
         stopwords = {"the", "and", "for", "are", "with", "that", "this", "from", "have", "not", "you", "but", "your"}
         keywords = [word for word, count in Counter(tokens).items() if word not in stopwords and count > 1]
-        meta["keywords"] = keywords
+        # Ensure keywords is never a list (flatten or stringify as needed)
+        if isinstance(keywords, list):
+            meta["keywords"] = ", ".join(keywords)
+        else:
+            meta["keywords"] = str(keywords)
+        # ✅ June 10, 2025 @ 3:38 PM — Flatten keywords list into string to comply with ChromaDB metadata rules
     
     if documents:
         # Add new vectors
