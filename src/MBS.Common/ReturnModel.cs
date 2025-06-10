@@ -1,4 +1,59 @@
-﻿using System;
+﻿/*
+=============================================================================
+FILE: ReturnModel.cs (Foundation File - Used by entire system)
+BUSINESS PURPOSE: 
+Defines the "language" for communicating with MSB (Medical Services Branch).
+When MSB sends back responses to claims, this file tells our system how to 
+interpret and categorize those responses.
+
+CORE BUSINESS WORKFLOW:
+1. Physicians submit claims → MSB reviews → MSB sends return files
+2. DAILY returns = Rejections only (allows quick fixes before 2-week deadline)
+3. BIWEEKLY returns = Complete results (paid + rejected claims)
+4. WCB returns = Workers compensation (separate fax workflow)
+5. System automatically processes these using API keys embedded per practice
+
+KEY COMPONENTS:
+- ReturnFileType enum: Categorizes MSB response files (DAILY/BIWEEKLY/WCB/MANUAL)
+- ErrorType enum: Defines 9 types of processing errors that can occur
+- MSBAccessToken class: Handles API authentication with MSB systems
+- ReturnModel classes: Data structures for file processing
+
+UPSTREAM DEPENDENCIES (Files that use this):
+- ServiceRecordController.cs (claim submission & status display)
+- ReturnRetrivalJob.cs (automated daily/biweekly file pickup)
+- ClaimService.cs (MSB API integration)
+- ReturnParser.cs (converts MSB format to database format)
+- SubmitPendingClaims.cs (processes submitted claim responses)
+
+DOWNSTREAM DEPENDENCIES (What this file uses):
+- Only basic .NET System libraries (very stable)
+- No dependencies on other MBS files
+
+BUSINESS IMPACT: HIGH - OPERATIONAL CRITICAL
+- If broken: Automated claim processing stops, manual intervention required
+- Revenue impact: Delayed processing, missed 2-week correction deadlines
+- Fallback: Manual download from MSB portal + manual upload (labor intensive)
+- Affects: All practices using the automated billing platform
+
+MIGRATION ACTIONS NEEDED (.NET Framework → .NET 8):
+- [ ] Verify enum serialization patterns work in .NET 8
+- [ ] Test JSON serialization for API communication
+- [ ] Validate MSBAccessToken OAuth flow compatibility
+- [ ] Test ReturnFileType enum database storage/retrieval
+- [ ] Verify ErrorType enum handling in error scenarios
+
+FUTURE ENHANCEMENTS RECOMMENDED:
+- [ ] Add manual file upload capability as backup to API processing
+- [ ] Consider adding more granular error types for better troubleshooting
+- [ ] Evaluate adding retry logic definitions for failed API calls
+
+MIGRATION PRIORITY: High (Foundation file - many others depend on this)
+COMPLEXITY LEVEL: Low (Simple data structures, minimal dependencies)
+=============================================================================
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;

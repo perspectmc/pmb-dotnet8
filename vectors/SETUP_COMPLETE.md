@@ -111,16 +111,30 @@ Claude: [Uses list_files tool automatically]
    ```
 
 ### If Claude Desktop Method Doesn't Work:
+
+#### Common Error: "spawn python ENOENT"
+This means Claude Desktop can't find Python. The configuration has been updated to use your virtual environment's Python.
+
 1. **Completely quit Claude Desktop** (Cmd+Q)
 2. **Reopen Claude Desktop**
-3. Test the MCP server:
+3. Test the MCP server manually:
    ```bash
-   cd /Users/perspect/Desktop/PMB\ dotnet8/vectors/scripts
-   python test_mcp.py
+   /Users/perspect/Desktop/PMB\ dotnet8/.venv/bin/python3 /Users/perspect/Desktop/PMB\ dotnet8/vectors/scripts/test_mcp.py
    ```
 4. If test fails, check the configuration file:
    ```bash
    cat ~/Library/Application\ Support/Claude/claude_desktop_config.json
+   ```
+5. The config should show the full path to your virtual environment Python:
+   ```json
+   {
+     "mcpServers": {
+       "pmb-vector-db": {
+         "command": "/Users/perspect/Desktop/PMB dotnet8/.venv/bin/python3",
+         "args": ["/Users/perspect/Desktop/PMB dotnet8/vectors/scripts/mcp_server.py"]
+       }
+     }
+   }
    ```
 
 ---
