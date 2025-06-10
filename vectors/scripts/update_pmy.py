@@ -66,6 +66,33 @@ def get_changed_files_since(since_time: datetime) -> Set[Path]:
                         if file_path.suffix in SUPPORTED_EXTENSIONS:
                             changed_files.add(file_path)
         
+        # --- ALSO INCLUDE UNTRACKED FILES ---------------------------------
+        try:
+            untracked_cmd = [
+                'git', 'ls-files',
+                '--others',
+                '--exclude-standard',
+                'src/', 'aidocs/'
+            ]
+            unres = subprocess.run(
+                untracked_cmd,
+                cwd=PROJECT_ROOT,
+                capture_output=True,
+                text=True
+            )
+            if unres.returncode == 0:
+                for ln in unres.stdout.split('\n'):
+                    ln = ln.strip()
+                    if ln and (ln.startswith('src/') or ln.startswith('aidocs/')):
+                        fp = PROJECT_ROOT / ln
+                        if fp.exists() and not is_file_ignored(fp):
+                            if fp.suffix in SUPPORTED_EXTENSIONS:
+                                changed_files.add(fp)
+        except Exception:
+            # Ignore errors (e.g., non‑git folder); mtime fallback covers it
+            pass
+        # -------------------------------------------------------------------
+        
     except Exception as e:
         print(f"Error getting git changes: {e}")
         print("Falling back to filesystem timestamp check...")
