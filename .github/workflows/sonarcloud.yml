@@ -28,10 +28,10 @@ jobs:
           dotnet-version: '6.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ./src/MBS.Web.Portal/MBS.Web.Portal.csproj
 
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build ./src/MBS.Web.Portal/MBS.Web.Portal.csproj --no-restore
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
