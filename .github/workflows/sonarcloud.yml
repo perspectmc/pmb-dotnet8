@@ -40,9 +40,18 @@ jobs:
           # Create .nuget directory
           New-Item -Path "./src/.nuget" -ItemType Directory -Force
           
-          # Download NuGet.targets file
-          $targetsUrl = "https://raw.githubusercontent.com/NuGet/Home/dev/resources/nuget.targets"
-          Invoke-WebRequest -Uri $targetsUrl -OutFile "./src/.nuget/NuGet.targets"
+          # Download NuGet.targets from correct location
+          $targetsContent = @'
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildProjectDirectory)\..\</SolutionDir>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+</Project>
+'@
+          $targetsContent | Out-File -FilePath "./src/.nuget/NuGet.targets" -Encoding utf8
           
           # Download NuGet.exe
           $nugetUrl = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
