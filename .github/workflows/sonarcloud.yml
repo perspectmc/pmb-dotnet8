@@ -1,43 +1,97 @@
 name: SonarCloud
 on:
- push:
-   branches:
-     - main
-     - dev
- pull_request:
-   branches:
-     - main
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
+
 jobs:
- build:
-   name: Build and analyze on SonarCloud
-   runs-on: windows-latest
-   steps:
-     - name: Checkout necessary files
-       uses: actions/checkout@v4
-       with:
-         sparse-checkout: |
-           src
-           .nuget
-         sparse-checkout-cone-mode: false
-         clean: true
-     
-     - name: Setup MSBuild
-       uses: microsoft/setup-msbuild@v2
- 
-     - name: Setup NuGet
-       uses: nuget/setup-nuget@v2
-     
-     - name: Restore NuGet packages
-       run: nuget restore ./src/MedicalBillingSystem.sln -NoCache -Verbosity Detailed
-     
-     - name: Build with MSBuild
-       run: msbuild ./src/MedicalBillingSystem.sln /p:Configuration=Release
-     
-     - name: SonarCloud Scan
-       uses: SonarSource/sonarcloud-github-action@v2
-       with:
-         projectBaseDir: ./src
-       env:
-         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-         SONAR_PROJECT_KEY: perspectmc_pmb-dotnet8
-         SONAR_ORGANIZATION: perspectmc
+  build:
+    runs-on: windows-latest
+    steps:
+      # Step 1: Full checkout (required for .nuget folder structure)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for SonarCloud
+
+      # Step 2: Setup .NET Framework & tools
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+
+      - name: Setup .NET Framework
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '4.8.x'
+
+      # Step 3: Cache NuGet packages
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.nuget/packages
+            ./src/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.config') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      # Step 4: Restore NuGet packages (legacy style)
+      - name: Restore NuGet packages
+        run: |
+          # Enable NuGet package restore
+          nuget restore ./src/MedicalBillingSystem.sln -PackagesDirectory ./src/packages
+          
+          # Ensure .nuget folder targets exist
+          if (!(Test-Path "./src/.nuget/NuGet.targets")) {
+            nuget install NuGet.CommandLine -OutputDirectory ./src/.nuget -ExcludeVersion
+            Copy-Item "./src/.nuget/NuGet.CommandLine/tools/*" "./src/.nuget/" -Force
+          }
+
+      # Step 5: Setup Java for SonarScanner
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      # Step 6: Install SonarScanner for .NET
+      - name: Install SonarScanner for .NET
+        shell: powershell
+        run: |
+          New-Item -Path .sonar/scanner -ItemType Directory -Force
+          dotnet tool update dotnet-sonarscanner --tool-path .sonar/scanner
+
+      # Step 7: Build and analyze
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        shell: powershell
+        run: |
+          .sonar/scanner/dotnet-sonarscanner begin `
+            /k:"perspectmc_pmb-dotnet8" `
+            /o:"perspectmc" `
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
+            /d:sonar.host.url="https://sonarcloud.io" `
+            /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml `
+            /d:sonar.exclusions="**/obj/**,**/bin/**,**/packages/**"
+          
+          msbuild ./src/MedicalBillingSystem.sln `
+            /p:Configuration=Release `
+            /p:Platform="Any CPU" `
+            /p:RestorePackages=true
+          
+          .sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
+      # Step 8: Upload build artifacts (optional)
+      - name: Upload build artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: |
+            **/*.log
+            **/msbuild.binlog
