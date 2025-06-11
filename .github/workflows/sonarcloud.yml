@@ -63,21 +63,21 @@ jobs:
         run: |
           nuget restore ./src/MedicalBillingSystem.sln -PackagesDirectory ./src/packages
 
-      # Step 5: Setup Java for SonarScanner
+      # Step 6: Setup Java for SonarScanner
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'temurin'
 
-      # Step 6: Install SonarScanner for .NET
+      # Step 7: Install SonarScanner for .NET
       - name: Install SonarScanner for .NET
         shell: powershell
         run: |
           New-Item -Path .sonar/scanner -ItemType Directory -Force
           dotnet tool update dotnet-sonarscanner --tool-path .sonar/scanner
 
-      # Step 7: Build and analyze
+      # Step 8: Build and analyze
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -91,10 +91,14 @@ jobs:
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
             /d:sonar.host.url="https://sonarcloud.io" `
             /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml `
-            /d:sonar.exclusions="**/obj/**,**/bin/**,**/packages/**" `
+            /d:sonar.exclusions="**/obj/**,**/bin/**,**/packages/**,**/.DS_Store,**/jquery*.js,**/bootstrap*.js,**/modernizr*.js,**/jquery-ui*.js,**/jquery.*.js,**/vectors/**" `
+            /d:sonar.sources="src/" `
+            /d:sonar.inclusions="**/*.cs,**/*.js,**/*.cshtml,**/*.css" `
+            /d:sonar.test.inclusions="**/*Test*.cs,**/*Tests*.cs" `
+            /d:sonar.coverage.exclusions="**/Program.cs,**/AssemblyInfo.cs,**/Global.asax.cs,**/*Designer.cs,**/Reference.cs" `
             /d:sonar.verbose=true
           
-          Write-Host "Building solution (11 projects)..." -ForegroundColor Green
+          Write-Host "Building solution (9 projects)..." -ForegroundColor Green
           Write-Host "This may take 2-5 minutes..." -ForegroundColor Yellow
           
           # Build with detailed progress
@@ -114,7 +118,7 @@ jobs:
           
           Write-Host "Analysis complete!" -ForegroundColor Green
 
-      # Step 8: Upload build artifacts (optional)
+      # Step 9: Upload build artifacts (optional)
       - name: Upload build artifacts
         if: failure()
         uses: actions/upload-artifact@v4
