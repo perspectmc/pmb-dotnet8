@@ -84,7 +84,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          Write-Host "🔍 Starting SonarScanner..." -ForegroundColor Green
+          Write-Host "Starting SonarScanner..." -ForegroundColor Green
           .sonar/scanner/dotnet-sonarscanner begin `
             /k:"perspectmc_pmb-dotnet8" `
             /o:"perspectmc" `
@@ -94,7 +94,7 @@ jobs:
             /d:sonar.exclusions="**/obj/**,**/bin/**,**/packages/**" `
             /d:sonar.verbose=true
           
-          Write-Host "🔨 Building solution (11 projects)..." -ForegroundColor Green
+          Write-Host "Building solution (11 projects)..." -ForegroundColor Green
           Write-Host "This may take 2-5 minutes..." -ForegroundColor Yellow
           
           # Build with detailed progress
@@ -106,13 +106,13 @@ jobs:
             /consoleloggerparameters:Summary `
             /bl:build.binlog
           
-          Write-Host "✅ Build completed!" -ForegroundColor Green
-          Write-Host "📤 Uploading analysis to SonarCloud..." -ForegroundColor Green
+          Write-Host "Build completed!" -ForegroundColor Green
+          Write-Host "Uploading analysis to SonarCloud..." -ForegroundColor Green
           Write-Host "This may take 3-5 minutes..." -ForegroundColor Yellow
           
           .sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
           
-          Write-Host "🎉 Analysis complete!" -ForegroundColor Green
+          Write-Host "Analysis complete!" -ForegroundColor Green
 
       # Step 8: Upload build artifacts (optional)
       - name: Upload build artifacts
