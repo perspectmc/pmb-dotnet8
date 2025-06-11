@@ -12,11 +12,12 @@ jobs:
    name: Build and analyze on SonarCloud
    runs-on: windows-latest
    steps:
-     - name: Checkout only /src folder
+     - name: Checkout necessary files
        uses: actions/checkout@v4
        with:
          sparse-checkout: |
            src
+           .nuget
          sparse-checkout-cone-mode: false
          clean: true
      
@@ -27,7 +28,7 @@ jobs:
        uses: nuget/setup-nuget@v2
      
      - name: Restore NuGet packages
-       run: nuget restore ./src/MedicalBillingSystem.sln
+       run: nuget restore ./src/MedicalBillingSystem.sln -NoCache -Verbosity Detailed
      
      - name: Build with MSBuild
        run: msbuild ./src/MedicalBillingSystem.sln /p:Configuration=Release
