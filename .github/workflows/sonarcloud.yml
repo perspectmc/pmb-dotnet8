@@ -1,43 +1,42 @@
 name: SonarCloud
 on:
-  push:
-    branches:
-      - main
-      - dev
-  pull_request:
-    branches:
-      - main
-
+ push:
+   branches:
+     - main
+     - dev
+ pull_request:
+   branches:
+     - main
 jobs:
-  build:
-    name: Build and analyze on SonarCloud
-    runs-on: windows-latest
-
-    steps:
-      - name: Checkout only /src folder
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            src
-          sparse-checkout-cone-mode: false
-          clean: true
-
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '6.0.x'
-
-      - name: Restore dependencies
-        run: dotnet restore ./src/MBS.Web.Portal/MBS.Web.Portal.csproj
-
-      - name: Build
-        run: dotnet build ./src/MBS.Web.Portal/MBS.Web.Portal.csproj --no-restore
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
-        with:
-          projectBaseDir: ./src
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY: perspectmc_pmb-dotnet8
-          SONAR_ORGANIZATION: perspectmc
+ build:
+   name: Build and analyze on SonarCloud
+   runs-on: windows-latest
+   steps:
+     - name: Checkout only /src folder
+       uses: actions/checkout@v4
+       with:
+         sparse-checkout: |
+           src
+         sparse-checkout-cone-mode: false
+         clean: true
+     
+     - name: Setup MSBuild
+       uses: microsoft/setup-msbuild@v2
+ 
+     - name: Setup NuGet
+       uses: nuget/setup-nuget@v2
+     
+     - name: Restore NuGet packages
+       run: nuget restore ./src/MBS.Web.Portal/MBS.Web.Portal.csproj
+     
+     - name: Build with MSBuild
+       run: msbuild ./src/MBS.Web.Portal/MBS.Web.Portal.csproj /p:Configuration=Release
+     
+     - name: SonarCloud Scan
+       uses: SonarSource/sonarcloud-github-action@v2
+       with:
+         projectBaseDir: ./src
+       env:
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+         SONAR_PROJECT_KEY: perspectmc_pmb-dotnet8
+         SONAR_ORGANIZATION: perspectmc
