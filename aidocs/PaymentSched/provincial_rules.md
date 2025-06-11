@@ -1,0 +1,16 @@
+# Provincial Rules
+
+```json
+[
+  {
+    "page": 41,
+    "section": "Provincial Rules",
+    "text": "Payment Schedule for Insured Services Provided by a Physician\nRECIPROCAL MEDICAL BILLING SYSTEM FORMAT OF\nPROVINCIAL/TERRITORIAL HEALTH IDENTIFICATION NUMBERS & CODES\nProvince Provincial Code Health Identification Format\n9 DIGIT NUMBER\nALBERTA AB\n9 numeric individual registration\n10 DIGIT NUMBER\nBRITISH COLUMBIA BC\n10 numeric individual registration\n9 DIGIT NUMBER\nMANITOBA MB\n9 numeric individual registration\n12 DIGIT NUMBER\nNEWFOUNDLAND NF\n12 numeric individual registration\n9 DIGIT NUMBER\nNEW BRUNSWICK NB\n9 numeric individual registration\n8 DIGIT NUMBER\nNORTHWEST TERRITORIES NT One of the following ALPHA characters\nD, H, M, N or T (followed by 7 numeric)\n10 DIGIT NUMBER\nNOVA SCOTIA NS\n10 numeric individual registration\n9 DIGIT NUMBER\nNUNAVUT NU\n1 followed by 8 numeric individual registration\n10 DIGIT NUMBER\nONTARIO ON\n10 numeric individual registration\n8 DIGIT NUMBER\nPRINCE EDWARD ISLAND PE\n8 numeric individual registration\n9 DIGIT NUMBER\nSASKATCHEWAN SK\n9 numeric individual registration\n9 DIGIT NUMBER\nYUKON YT\n9 numeric individual registration\nNOTE: Spaces or \u201c-\u201c should never be submitted at the start or in the middle of a number.\nVisual examples of Insured Health Services Plan Cards for Reciprocal Billing can be found at the following\nlink:\nhttps://www.ehealthsask.ca/services/resources/establish-operate-practice/Pages/Physicians.aspx\nApril 1, 2025 Page 41"
+  },
+  {
+    "page": 42,
+    "section": "Provincial Rules",
+    "text": "Payment Schedule for Insured Services Provided by a Physician\nPHYSICIAN SERVICES EXCLUDED UNDER THE INTER-PROVINCIAL\nAGREEMENTS FOR THE RECIPROCAL PROCESSING OF\nOUT-OF-PROVINCE MEDICAL CLAIMS\nThe following services should be billed directly to the non-resident:\n1. Surgery for alteration of appearance (cosmetic surgery).\n2. Gender reassignment surgery.\n3. Surgery for reversal of sterilization.\n4. Routine periodic health examinations including routine eye examinations.\n5. In-vitro fertilization, artificial insemination.\n6. Lithotripsy for gallbladder stones.\n7. The treatment of port-wine stains on other than the face or neck, regardless of the modality of\ntreatment.\n8. Acupuncture, acupressure, transcutaneous electro-nerve stimulation (TENS), moxibustion,\nbiofeedback, hypnotherapy.\n9. Services to persons covered by other agencies: Armed Forces, Workers' Compensation Board,\nDepartment of Veterans Affairs, Correctional Services of Canada (Federal penitentiaries).\n10. Services requested by a \"third party\" \u2013 including but not limited to: employers, educational facilities,\ninsurance companies, daycares, sports organizations, motor vehicle or other licensing bodies, etc.\n11. Team conference(s).\n12. Genetic screening and other genetic investigations, including DNA probes.\n13. Procedures still in the experimental/developmental phase/clinical research.\n14. Anesthetic services and surgical assistant services associated with all of the foregoing.\n15. Dental services (not including oral surgery) when provided by a dentist.\n16. PET Scans.\n17. Gamma Knife.\n18. Telemedicine (virtual care) services.\nApril 1, 2025 Page 42"
+  }
+]
+```
