@@ -20,6 +20,7 @@ jobs:
           sparse-checkout: |
             src
           sparse-checkout-cone-mode: false
+          clean: true
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v4
