@@ -91,24 +91,20 @@ jobs:
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
             /d:sonar.host.url="https://sonarcloud.io" `
             /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml `
-            /d:sonar.exclusions="**/obj/**,**/bin/**,**/packages/**,**/.DS_Store,**/jquery*.js,**/bootstrap*.js,**/modernizr*.js,**/jquery-ui*.js,**/jquery.*.js,**/vectors/**" `
-            /d:sonar.sources="src/" `
-            /d:sonar.inclusions="**/*.cs,**/*.js,**/*.cshtml,**/*.css" `
-            /d:sonar.test.inclusions="**/*Test*.cs,**/*Tests*.cs" `
+            /d:sonar.exclusions="**/obj/**,**/bin/**,**/packages/**,**/.DS_Store,**/jquery*.js,**/bootstrap*.js,**/modernizr*.js,**/jquery-ui*.js,**/jquery.*.js,**/vectors/**,**/.nuget/**" `
             /d:sonar.coverage.exclusions="**/Program.cs,**/AssemblyInfo.cs,**/Global.asax.cs,**/*Designer.cs,**/Reference.cs" `
             /d:sonar.verbose=true
           
           Write-Host "Building solution (9 projects)..." -ForegroundColor Green
           Write-Host "This may take 2-5 minutes..." -ForegroundColor Yellow
           
-          # Build with detailed progress
+          # Build with MSBuild integration for SonarCloud
           msbuild ./src/MedicalBillingSystem.sln `
             /p:Configuration=Release `
             /p:Platform="Any CPU" `
             /p:RestorePackages=true `
-            /v:minimal `
-            /consoleloggerparameters:Summary `
-            /bl:build.binlog
+            /verbosity:minimal `
+            /consoleloggerparameters:Summary
           
           Write-Host "Build completed!" -ForegroundColor Green
           Write-Host "Uploading analysis to SonarCloud..." -ForegroundColor Green
