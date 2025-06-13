@@ -102,6 +102,7 @@
 ## 🧰 5. Developer Toolchain
 ### Essential Installs:
 - [ ] **Visual Studio 2022**
+- [ ] **.NET 8 SDK** – Download from [official site](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) and verify via `dotnet --list-sdks`
   - .NET 4.8, .NET 6+, ASP.NET + Web Dev, Desktop Dev with C#
 - [ ] **SQL Server 2022 Express**
   - With SQL Server Management Studio (SSMS)
